@@ -184,7 +184,20 @@
                  placeholder="https://x.com/..." />
         </div>
       </div>
+
+      {{-- BAGIAN BARU: FITUR TAMBAHAN --}}
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold border-b pb-2 mb-4">Fitur Tambahan</h2>
+                <div class="mb-4">
+                    <label for="whatsapp_link" class="block text-gray-700 font-bold mb-2">Link Popup WhatsApp</label>
+                    <input type="url" name="whatsapp_link" id="whatsapp_link" value="{{ $settings['whatsapp_link'] ?? '' }}" class="shadow border rounded w-full py-2 px-3" placeholder="https://heylink.me/URLAnda">
+                    <p class="text-xs text-gray-600 mt-1">Link ini akan ditampilkan sebagai tombol WhatsApp melayang di pojok kanan bawah website.</p>
+                </div>
+            </div>
+
     </section>
+
+    
 
     {{-- Actions --}}
     <div class="flex items-center gap-3">

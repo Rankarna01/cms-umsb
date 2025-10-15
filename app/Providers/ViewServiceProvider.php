@@ -22,9 +22,21 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Bagikan data ke semua view yang menggunakan layout frontend
+        // Bagikan data ke semua view frontend
         View::composer('layouts.frontend', function ($view) {
-            $headerMenu = Menu::where('location', 'header')->with('items.children')->first();
+            
+            // Query menu dengan filter 'active'
+            $headerMenu = Menu::where('location', 'header')
+                ->with([
+                    'items' => function ($query) {
+                        $query->where('active', true)->orderBy('sort_order');
+                    },
+                    'items.children' => function ($query) {
+                        $query->where('active', true)->orderBy('sort_order');
+                    }
+                ])
+                ->first();
+
             $siteSettings = Setting::pluck('value', 'key');
             
             $view->with(compact('headerMenu', 'siteSettings'));

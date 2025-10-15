@@ -23,10 +23,22 @@ class Video extends Model
         return $this->belongsTo(User::class, 'author_id');
     }
 
-    /**
-     * Accessor untuk mendapatkan URL thumbnail YouTube secara otomatis.
-     */
     protected function thumbnailUrl(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                if (preg_match('/(youtube\.com|youtu\.be)\/(watch\?v=|embed\/|v\/|)(.{11})/', $this->video_url, $matches)) {
+                    return "https://img.youtube.com/vi/{$matches[3]}/mqdefault.jpg";
+                }
+                return 'https://via.placeholder.com/480x360?text=Video';
+            }
+        );
+    }
+
+    /**
+     * Accessor BARU untuk membuat URL embed secara otomatis.
+     */
+    protected function embedUrl(): Attribute
     {
         return Attribute::make(
             get: function () {
@@ -36,11 +48,9 @@ class Video extends Model
                 }
 
                 if ($videoId) {
-                    return "https://img.youtube.com/vi/{$videoId}/mqdefault.jpg";
+                    return "https://www.youtube.com/embed/{$videoId}?autoplay=1";
                 }
-
-                // Gambar placeholder jika bukan link YouTube
-                return 'https://via.placeholder.com/480x360?text=Video';
+                return $this->video_url; // Fallback jika bukan link YouTube
             }
         );
     }

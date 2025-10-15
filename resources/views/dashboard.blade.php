@@ -6,25 +6,89 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-{{-- efek kartu reusable --}}
+{{-- ============================
+     🔥 STYLE LAYER (UI only)
+     ============================ --}}
 <style>
+  :root{
+    --blur: 10px;
+    --ring: 24, 144, 255;
+    --card-glow: 59,130,246; /* Tailwind blue-500 */
+  }
+  /* Header glass */
+  .glass{backdrop-filter:saturate(140%) blur(var(--blur));}
+
+  /* Fancy divider */
+  .fx-divider{height:1px; background:linear-gradient(90deg,transparent,rgba(148,163,184,.35),transparent)}
+
+  /* Re-usable card hover glow */
   .fx-card{ position:relative; overflow:hidden; }
   .fx-card::before{
     content:""; position:absolute; inset:-40%; background:
-      radial-gradient(120px 120px at var(--x,80%) var(--y,0%), rgba(59,130,246,.18), transparent 60%);
+      radial-gradient(140px 140px at var(--x,80%) var(--y,0%), rgba(var(--card-glow),.18), transparent 60%);
     opacity:0; transition:opacity .25s ease;
   }
   .fx-card:hover::before{ opacity:1; }
+
+  /* Subtle border light sweep */
+  .fx-sheen{ position:relative; }
+  .fx-sheen::after{
+    content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+    background: conic-gradient(from 180deg at 50% 50%, rgba(255,255,255,.0), rgba(255,255,255,.12), rgba(255,255,255,.0));
+    mask: linear-gradient(#000,#000) exclude, linear-gradient(#000,#000);
+    opacity:.0; transition:opacity .25s ease;
+  }
+  .fx-sheen:hover::after{ opacity:.45 }
+
+  /* Pulse dot */
+  .dot{ width:8px; height:8px; border-radius:9999px; background:#22c55e; box-shadow:0 0 0 0 rgba(34,197,94,.6); animation:pulse 2s infinite }
+  @keyframes pulse{ 0%{box-shadow:0 0 0 0 rgba(34,197,94,.6)} 70%{box-shadow:0 0 0 12px rgba(34,197,94,0)} 100%{box-shadow:0 0 0 0 rgba(34,197,94,0)} }
+
+  /* Tiny badges */
+  .badge{font-size:10px; letter-spacing:.2px}
+
+  /* Gradient ring helpers */
+  .ring-gradient{ box-shadow: 0 0 0 1px rgba(255,255,255,.08), 0 10px 25px -8px rgba(2,6,23,.25) }
+
+  /* Scrollbar minimal (WebKit) */
+  ::-webkit-scrollbar{height:8px;width:8px} ::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:9999px} ::-webkit-scrollbar-track{background:transparent}
 </style>
 
-<div class="space-y-6">
+<div class="space-y-8">
 
-  {{-- HEADER --}}
-  <div class="flex items-center justify-between">
-    <h1 class="text-3xl font-bold text-slate-800">Dashboard</h1>
-  </div>
+  {{-- ============================ HEADER ============================ --}}
+  <header class="sticky top-0 z-10 glass bg-white/60 border border-slate-200/60 rounded-2xl p-5 sm:p-6 shadow-sm">
+    <div class="flex items-center justify-between gap-4">
+      <div class="flex items-center gap-4">
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-indigo-600 to-blue-500 grid place-content-center text-white shadow-md ring-1 ring-white/20">
+          <span class="font-bold">UM</span>
+        </div>
+        <div>
+          <p class="text-xs text-slate-500">Sistem</p>
+          <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-800">Dashboard Admin Universitas Muhammadiyah Sumatera Barat</h1>
+        </div>
+      </div>
+      <div class="hidden sm:flex items-center gap-3">
+        <span class="dot"></span>
+        <span class="badge px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">Online</span>
+        <span class="badge px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200"></span>
+      </div>
+    </div>
+    <div class="fx-divider mt-4"></div>
+    <div class="mt-4 flex flex-wrap items-center gap-3">
+      <div class="relative">
+        <i class="fa-solid fa-magnifying-glass text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+        <input type="text" placeholder="Cari cepat…" class="pl-9 pr-3 py-2 text-sm rounded-xl border border-slate-200 bg-white/80 focus:outline-none focus:ring-2 focus:ring-indigo-500/40">
+      </div>
+      <div class="ml-auto flex items-center gap-2">
+        <button class="px-3 py-2 text-xs rounded-lg bg-white border border-slate-200 hover:bg-slate-50">Hari ini</button>
+        <button class="px-3 py-2 text-xs rounded-lg bg-white border border-slate-200 hover:bg-slate-50">Minggu ini</button>
+        <button class="px-3 py-2 text-xs rounded-lg bg-white border border-slate-200 hover:bg-slate-50">Bulan ini</button>
+      </div>
+    </div>
+  </header>
 
-  {{-- METRIC CARDS (tetap pakai $stats) --}}
+  {{-- ============================ METRIC CARDS ============================ --}}
   <div class="grid grid-cols-12 gap-6">
     @php
       $cards = [
@@ -41,20 +105,21 @@
 
     @foreach ($cards as $c)
       <div class="col-span-12 md:col-span-6 xl:col-span-3">
-        <div class="fx-card group rounded-2xl p-5 sm:p-6 bg-gradient-to-br {{ $c['from'] }} {{ $c['to'] }}
-                    text-white shadow-lg ring-1 ring-white/10
-                    hover:shadow-2xl hover:-translate-y-0.5 transition
-                    duration-200 ease-out will-change-transform">
+        <div class="fx-card fx-sheen group rounded-2xl p-5 sm:p-6 bg-gradient-to-br {{ $c['from'] }} {{ $c['to'] }} text-white ring-gradient
+                    hover:shadow-2xl hover:-translate-y-0.5 transition duration-200 ease-out will-change-transform">
           <div class="flex items-start justify-between">
             <div>
               <p class="text-white/80 text-sm">{{ $c['label'] }}</p>
               <h3 class="text-3xl font-bold text-white mt-1">{{ $c['val'] }}</h3>
+              <div class="mt-2 flex items-center gap-2">
+                
+              </div>
             </div>
             <div class="p-2 rounded-xl bg-white/10 text-white">
               <i class="fa-solid {{ $c['icon'] }}"></i>
             </div>
           </div>
-          <div class="absolute -right-8 -top-8 opacity-20 text-white">
+          <div class="absolute -right-8 -top-8 opacity-15 text-white pointer-events-none">
             <i class="fa-solid {{ $c['icon'] }} text-8xl"></i>
           </div>
         </div>
@@ -62,14 +127,18 @@
     @endforeach
   </div>
 
-  {{-- GRID BAWAH: chart kiri + panel kanan --}}
+  {{-- ============================ GRID BAWAH ============================ --}}
   <div class="grid grid-cols-12 gap-6">
-    {{-- KIRI: Chart utama (pakai $chartData) --}}
+
+    {{-- KIRI: Chart utama --}}
     <div class="col-span-12 xl:col-span-8">
-      <div class="fx-card bg-white rounded-2xl shadow-md hover:shadow-lg transition p-6"
+      <div class="fx-card bg-white rounded-2xl ring-1 ring-slate-100 shadow-md hover:shadow-lg transition p-6"
            onmousemove="this.style.setProperty('--x', event.offsetX+'px'); this.style.setProperty('--y', event.offsetY+'px')">
         <div class="flex items-center justify-between">
-          <h2 class="text-lg font-semibold text-slate-800">Grafik Berita (6 Bulan Terakhir)</h2>
+          <div>
+            <h2 class="text-lg font-semibold text-slate-800">Grafik Berita (6 Bulan Terakhir)</h2>
+            <p class="text-xs text-slate-500 mt-0.5">Sumber: Database CMS • <span class="badge px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">Bar</span></p>
+          </div>
           <div class="text-slate-400"><i class="fa-solid fa-chart-column"></i></div>
         </div>
         <div class="h-72 mt-4">
@@ -78,12 +147,11 @@
       </div>
     </div>
 
-    {{-- KANAN: dua kartu kecil + BERITA TERAKHIR di bawahnya --}}
+    {{-- KANAN: dua kartu kecil + BERITA TERAKHIR --}}
     <div class="col-span-12 xl:col-span-4 space-y-6">
 
       {{-- card kecil 1 --}}
-      <div class="fx-card rounded-2xl p-5 bg-white shadow-md ring-1 ring-slate-100
-                  hover:shadow-xl hover:-translate-y-0.5 transition"
+      <div class="fx-card rounded-2xl p-5 bg-white shadow-md ring-1 ring-slate-100 hover:shadow-xl hover:-translate-y-0.5 transition"
            onmousemove="this.style.setProperty('--x', event.offsetX+'px'); this.style.setProperty('--y', event.offsetY+'px')">
         <div class="flex items-center gap-3">
           <span class="w-11 h-11 rounded-xl grid place-content-center bg-blue-100 text-blue-600">
@@ -97,8 +165,7 @@
       </div>
 
       {{-- card kecil 2 --}}
-      <div class="fx-card rounded-2xl p-5 bg-white shadow-md ring-1 ring-slate-100
-                  hover:shadow-xl hover:-translate-y-0.5 transition"
+      <div class="fx-card rounded-2xl p-5 bg-white shadow-md ring-1 ring-slate-100 hover:shadow-xl hover:-translate-y-0.5 transition"
            onmousemove="this.style.setProperty('--x', event.offsetX+'px'); this.style.setProperty('--y', event.offsetY+'px')">
         <div class="flex items-center gap-3">
           <span class="w-11 h-11 rounded-xl grid place-content-center bg-emerald-100 text-emerald-600">
@@ -112,16 +179,15 @@
       </div>
 
       {{-- BERITA TERAKHIR --}}
-      <div class="fx-card rounded-2xl bg-white shadow-md ring-1 ring-slate-100
-                  hover:shadow-lg transition p-5"
+      <div class="fx-card rounded-2xl bg-white shadow-md ring-1 ring-slate-100 hover:shadow-lg transition p-5"
            onmousemove="this.style.setProperty('--x', event.offsetX+'px'); this.style.setProperty('--y', event.offsetY+'px')">
         <div class="flex items-center justify-between mb-3">
           <h3 class="text-slate-800 font-semibold">Berita Terakhir</h3>
-          
+          <span class="badge px-2 py-0.5 rounded-full bg-slate-50 text-slate-600 border border-slate-200">5 item</span>
         </div>
 
         @php
-          // pastikan controller mengirim $latestPosts (collection)
+          // Controller harus mengirim $latestPosts (collection)
           // contoh: Post::latest()->take(5)->with('category')->get();
         @endphp
 
@@ -165,7 +231,7 @@
 
 </div>
 
-{{-- Chart.js: tetap pakai $chartData milikmu --}}
+{{-- ============================ CHART.JS (no logic change) ============================ --}}
 <script>
   const ctx = document.getElementById('postsChart').getContext('2d');
   new Chart(ctx, {
@@ -192,7 +258,7 @@
     }
   });
 
-  // efek glow mengikuti posisi cursor
+  // Glow follows cursor
   document.querySelectorAll('.fx-card').forEach(el=>{
     el.addEventListener('mousemove', (e)=>{
       const r = el.getBoundingClientRect();

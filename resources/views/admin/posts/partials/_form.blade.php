@@ -33,10 +33,10 @@
                     <textarea name="excerpt" id="excerpt" rows="3" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">{{ old('excerpt', $post->excerpt ?? '') }}</textarea>
                 </div>
 
-                <div class="mb-4">
-                    <label for="content" class="block text-gray-700 text-sm font-bold mb-2">Konten Lengkap</label>
-                    <textarea name="content" id="content" rows="10" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>{{ old('content', $post->content ?? '') }}</textarea>
-                </div>
+               <div class="mb-4">
+            <label for="content-editor" class="block font-bold mb-2">Konten</label>
+            <textarea name="content" id="content-editor" rows="15" class="shadow border rounded w-full py-2 px-3">{{ old('content', $page->content ?? '') }}</textarea>
+        </div>
             </div>
 
             <div class="md:col-span-1">
@@ -88,3 +88,61 @@
         </div>
     </form>
 </div>
+
+<script>
+    tinymce.init({
+        selector: 'textarea#content-editor',
+        plugins: 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table help wordcount',
+        toolbar: 'undo redo | blocks | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | code',
+        
+        // --- PERBAIKAN UTAMA DI SINI ---
+        // Kita gunakan handler manual agar bisa menyisipkan CSRF Token
+        images_upload_handler: (blobInfo, progress) => new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.withCredentials = false;
+            xhr.open('POST', '{{ route('admin.images.upload') }}');
+            
+            // Ambil CSRF token dari meta tag
+            const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            xhr.setRequestHeader('X-CSRF-TOKEN', token);
+
+            xhr.upload.onprogress = (e) => {
+                progress(e.loaded / e.total * 100);
+            };
+
+            xhr.onload = () => {
+                if (xhr.status === 403) {
+                    reject({ message: 'HTTP Error: ' + xhr.status, remove: true });
+                    return;
+                }
+
+                if (xhr.status < 200 || xhr.status >= 300) {
+                    reject('HTTP Error: ' + xhr.status);
+                    return;
+                }
+
+                const json = JSON.parse(xhr.responseText);
+
+                if (!json || typeof json.location != 'string') {
+                    reject('Invalid JSON: ' + xhr.responseText);
+                    return;
+                }
+
+                resolve(json.location);
+            };
+
+            xhr.onerror = () => {
+                reject('Image upload failed due to a XHR Transport error. Code: ' + xhr.status);
+            };
+
+            const formData = new FormData();
+            // 'upload' adalah nama field yang diharapkan oleh ImageUploadController kita
+            formData.append('upload', blobInfo.blob(), blobInfo.filename());
+
+            xhr.send(formData);
+        }),
+
+        height: 500,
+        content_style: 'body { font-family:Poppins,sans-serif; font-size:16px }'
+    });
+</script>

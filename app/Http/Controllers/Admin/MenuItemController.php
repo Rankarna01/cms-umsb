@@ -14,20 +14,19 @@ class MenuItemController extends Controller
     {
         $parentItems = $menu->items;
         $pages = Page::where('active', true)->orderBy('title')->get();
-        
-        // --- PERBAIKAN DI SINI ---
         return view('admin.menu-items.create', compact('menu', 'parentItems', 'pages'));
     }
 
     public function store(Request $request, Menu $menu)
     {
-        $request->validate([
+        $validated = $request->validate([
             'label' => 'required|string|max:255',
             'url' => 'required|string|max:255',
             'parent_id' => 'nullable|exists:menu_items,id',
+            'active' => 'required|boolean',
         ]);
-
-        $menu->items()->create($request->all());
+        
+        $menu->items()->create($validated);
 
         return redirect()->route('admin.menus.show', $menu)->with('success', 'Item menu berhasil ditambahkan.');
     }
@@ -37,21 +36,20 @@ class MenuItemController extends Controller
         $menu = $menuItem->menu;
         $parentItems = $menu->items()->where('id', '!=', $menuItem->id)->get();
         $pages = Page::where('active', true)->orderBy('title')->get();
-        
-        // Bagian ini sudah benar
         return view('admin.menu-items.edit', compact('menuItem', 'menu', 'parentItems', 'pages'));
     }
 
     public function update(Request $request, MenuItem $menuItem)
     {
-        $request->validate([
+        $validated = $request->validate([
             'label' => 'required|string|max:255',
             'url' => 'required|string|max:255',
             'parent_id' => 'nullable|exists:menu_items,id',
             'sort_order' => 'required|integer',
+            'active' => 'required|boolean',
         ]);
         
-        $menuItem->update($request->all());
+        $menuItem->update($validated);
         return redirect()->route('admin.menus.show', $menuItem->menu_id)->with('success', 'Item menu berhasil diperbarui.');
     }
     

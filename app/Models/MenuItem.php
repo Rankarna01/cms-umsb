@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class MenuItem extends Model
 {
     use HasFactory;
-    protected $fillable = ['menu_id', 'label', 'url', 'target', 'parent_id', 'sort_order'];
+    protected $fillable = ['menu_id', 'label', 'url', 'target', 'parent_id', 'sort_order', 'active'];
 
     /**
      * Relasi ke "wadah" menu utamanya.

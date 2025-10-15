@@ -1,83 +1,40 @@
 <?php
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
-use App\Models\Album;
+use App\Models\Album; // Tetap pakai model Album, tapi fungsinya jadi Kategori
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class AlbumController extends Controller
 {
+    // Menampilkan daftar kategori
     public function index()
     {
-        $albums = Album::withCount('photos')->latest()->get();
-        return view('admin.albums.index', compact('albums'));
+        $categories = Album::latest()->get();
+        return view('admin.albums.index-category', compact('categories'));
     }
 
+    // Form tambah kategori
     public function create()
     {
-        return view('admin.albums.create');
+        return view('admin.albums.create-category');
     }
 
+    // Simpan kategori baru
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'cover_image' => 'nullable|image|max:2048',
+        $validated = $request->validate(['title' => 'required|string|max:255|unique:albums,title']);
+        Album::create([
+            'title' => $validated['title'],
+            'slug' => Str::slug($validated['title']),
         ]);
-
-        $validated['slug'] = Str::slug($validated['title']);
-
-        if ($request->hasFile('cover_image')) {
-            $path = $request->file('cover_image')->store('public/album_covers');
-            $validated['cover_image'] = $path;
-        }
-
-        Album::create($validated);
-        return redirect()->route('admin.albums.index')->with('success', 'Album berhasil dibuat.');
+        return redirect()->route('admin.albums.index')->with('success', 'Kategori Galeri berhasil dibuat.');
     }
 
-    public function show(Album $album)
-    {
-        // Tampilkan detail album dan semua fotonya
-        $photos = $album->photos()->latest()->get();
-        return view('admin.albums.show', compact('album', 'photos'));
-    }
-
-    public function edit(Album $album)
-    {
-        return view('admin.albums.edit', compact('album'));
-    }
-
-    public function update(Request $request, Album $album)
-    {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'cover_image' => 'nullable|image|max:2048',
-        ]);
-        
-        $validated['slug'] = Str::slug($validated['title']);
-
-        if ($request->hasFile('cover_image')) {
-            if($album->cover_image) Storage::delete($album->cover_image);
-            $path = $request->file('cover_image')->store('public/album_covers');
-            $validated['cover_image'] = $path;
-        }
-
-        $album->update($validated);
-        return redirect()->route('admin.albums.index')->with('success', 'Album berhasil diperbarui.');
-    }
-
+    // Hapus kategori
     public function destroy(Album $album)
     {
-        if($album->cover_image) Storage::delete($album->cover_image);
-        // Hapus semua file foto di dalam album
-        foreach ($album->photos as $photo) {
-            Storage::delete($photo->image_path);
-        }
-        $album->delete(); // Ini akan menghapus album dan semua relasi fotonya (cascade)
-        return redirect()->route('admin.albums.index')->with('success', 'Album berhasil dihapus.');
+        $album->delete();
+        return redirect()->route('admin.albums.index')->with('success', 'Kategori Galeri berhasil dihapus.');
     }
 }

@@ -10,6 +10,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script src="https://cdn.tiny.cloud/1/ys23h8gwq05sytggrgbbeg3l7vu0shazc0igmb58rikzvrgu/tinymce/7/tinymce.min.js"
+        referrerpolicy="origin"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" />
@@ -54,8 +57,10 @@
     sidebarOpen: false,
     collapsed: false,
     init() { this.collapsed = localStorage.getItem('cms.sidebar.collapsed') === '1' },
-    toggleCollapse() { this.collapsed = !this.collapsed;
-        localStorage.setItem('cms.sidebar.collapsed', this.collapsed ? '1' : '0'); }
+    toggleCollapse() {
+        this.collapsed = !this.collapsed;
+        localStorage.setItem('cms.sidebar.collapsed', this.collapsed ? '1' : '0');
+    }
 }">
 
     <div class="flex h-screen">
@@ -178,7 +183,10 @@
                     <li class="px-3 pt-4 text-[11px] uppercase tracking-wide text-white/50" x-show="!collapsed">
                         Dokumentasi</li>
                     @can('kelola galeri')
-                        {!! navLink('admin.albums.index', 'fa-regular fa-images', 'Album Foto', ['admin.albums.*', 'photos.*']) !!}
+                        @can('kelola galeri')
+                            {!! navLink('admin.albums.index', 'fa-solid fa-layer-group', 'Kategori Galeri', ['admin.albums.*']) !!}
+                            {!! navLink('admin.photos.index', 'fa-regular fa-images', 'Galeri Foto', ['admin.photos.*']) !!}
+                        @endcan
                         {!! navLink('admin.videos.index', 'fa-regular fa-circle-play', 'Galeri Video', ['admin.videos.*']) !!}
                     @endcan
 
@@ -186,16 +194,20 @@
                     <li class="px-3 pt-4 text-[11px] uppercase tracking-wide text-white/50" x-show="!collapsed">Pimpinan
                         & Dosen</li>
                     @can('kelola data master')
-    {!! navLink('admin.leaders.index', 'fa-solid fa-user-tie', 'Pimpinan', ['admin.leaders.*']) !!}
-@endcan
+                        {!! navLink('admin.leaders.index', 'fa-solid fa-user-tie', 'Pimpinan', ['admin.leaders.*']) !!}
+                    @endcan
+                    {!! navLink('admin.lecturers.index', 'fa-solid fa-chalkboard-user', 'Dosen', ['admin.lecturers.*']) !!}
 
                     {{-- 7. KERJA SAMA & MEDIA --}}
                     {!! navLink('admin.partners.index', 'fa-solid fa-handshake', 'Kerja Sama & Media', ['admin.partners.*']) !!}
 
                     {{-- 10. POPUP KONTAK WA --}}
-                    <li class="px-3 pt-4 text-[11px] uppercase tracking-wide text-white/50" x-show="!collapsed">Pop-up
-                    </li>
+                    {{-- <li class="px-3 pt-4 text-[11px] uppercase tracking-wide text-white/50" x-show="!collapsed">Pop-up
+                    </li> --}}
                     {!! navDisabled('fa-brands fa-whatsapp', 'Pop-up Kontak WA') !!}
+                    @can('kelola pengaturan') 
+        {!! navLink('admin.quick-links.index', 'fa-solid fa-bolt', 'Link Cepat', ['admin.quick-links.*']) !!}
+    @endcan
 
                     {{-- 11. MEMBUAT USER (User & Hak Akses) --}}
                     <li class="px-3 pt-4 text-[11px] uppercase tracking-wide text-white/50" x-show="!collapsed">User &
@@ -205,7 +217,7 @@
                         {!! navLink('admin.roles.index', 'fa-solid fa-user-shield', 'Manajemen Role', ['admin.roles.*']) !!}
                     @endcan
 
-                   
+
 
                     {{-- 13. TESTIMONI ALUMNI --}}
                     {{-- {!! navDisabled('fa-solid fa-quote-left', 'Testimoni Alumni') !!} --}}
@@ -230,7 +242,6 @@
                         {!! navLink('admin.study-programs.index', 'fa-solid fa-graduation-cap', 'Program Studi', [
                             'admin.study-programs.*',
                         ]) !!}
-                        
                     @endcan
 
                     {{-- SISTEM --}}
