@@ -205,9 +205,9 @@
                     {{-- <li class="px-3 pt-4 text-[11px] uppercase tracking-wide text-white/50" x-show="!collapsed">Pop-up
                     </li> --}}
                     {!! navDisabled('fa-brands fa-whatsapp', 'Pop-up Kontak WA') !!}
-                    @can('kelola pengaturan') 
-        {!! navLink('admin.quick-links.index', 'fa-solid fa-bolt', 'Link Cepat', ['admin.quick-links.*']) !!}
-    @endcan
+                    @can('kelola pengaturan')
+                        {!! navLink('admin.quick-links.index', 'fa-solid fa-bolt', 'Link Cepat', ['admin.quick-links.*']) !!}
+                    @endcan
 
                     {{-- 11. MEMBUAT USER (User & Hak Akses) --}}
                     <li class="px-3 pt-4 text-[11px] uppercase tracking-wide text-white/50" x-show="!collapsed">User &
