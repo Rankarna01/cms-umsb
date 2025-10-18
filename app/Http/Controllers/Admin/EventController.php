@@ -41,7 +41,7 @@ class EventController extends Controller
         }
 
         if ($request->hasFile('poster')) {
-            $path = $request->file('poster')->store('public/posters');
+            $path = $request->file('poster')->store('posters', 'public');
             $validated['poster'] = $path;
         }
 
@@ -78,7 +78,7 @@ class EventController extends Controller
 
         if ($request->hasFile('poster')) {
             Storage::delete($event->poster);
-            $path = $request->file('poster')->store('public/posters');
+            $path = $request->file('poster')->store('posters', 'public');
             $validated['poster'] = $path;
         }
 

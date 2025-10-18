@@ -41,7 +41,7 @@ class AnnouncementController extends Controller
         }
 
         if ($request->hasFile('attachment')) {
-            $path = $request->file('attachment')->store('public/attachments');
+            $path = $request->file('attachment')->store('attachments', 'public');
             $validated['attachment'] = $path;
         }
 
@@ -77,7 +77,7 @@ class AnnouncementController extends Controller
 
         if ($request->hasFile('attachment')) {
             Storage::delete($announcement->attachment);
-            $path = $request->file('attachment')->store('public/attachments');
+            $path = $request->file('attachment')->store('attachments', 'public');
             $validated['attachment'] = $path;
         }
 

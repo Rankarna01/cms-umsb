@@ -24,7 +24,7 @@ class SettingController extends Controller
             // Cek jika ada file upload
             if ($request->hasFile($key)) {
                 $file = $request->file($key);
-                $path = $file->store('public/settings');
+                $path = $file->store('settings', 'public');
                 $value = $path;
 
                 // Hapus file lama jika ada

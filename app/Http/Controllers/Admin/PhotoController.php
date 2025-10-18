@@ -28,7 +28,7 @@ class PhotoController extends Controller
         'album_id' => 'required|exists:albums,id',
     ]);
 
-    $path = $request->file('image_path')->store('public/gallery');
+    $path = $request->file('image_path')->store('gallery', 'public');
     $validated['image_path'] = $path;
 
     Photo::create($validated); // Perintah ini sekarang akan menyimpan 'title'

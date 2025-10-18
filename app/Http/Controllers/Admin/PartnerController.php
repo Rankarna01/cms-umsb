@@ -31,7 +31,7 @@ class PartnerController extends Controller
         ]);
 
         if ($request->hasFile('logo')) {
-            $path = $request->file('logo')->store('public/partners');
+            $path = $request->file('logo')->store('partners', 'public');
             $validated['logo'] = $path;
         }
 
@@ -56,7 +56,7 @@ class PartnerController extends Controller
 
         if ($request->hasFile('logo')) {
             if ($partner->logo) Storage::delete($partner->logo);
-            $path = $request->file('logo')->store('public/partners');
+            $path = $request->file('logo')->store('partners', 'public');
             $validated['logo'] = $path;
         }
         

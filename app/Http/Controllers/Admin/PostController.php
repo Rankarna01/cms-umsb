@@ -47,7 +47,7 @@ class PostController extends Controller
         }
 
         if ($request->hasFile('thumbnail')) {
-            $path = $request->file('thumbnail')->store('public/thumbnails');
+           $path = $request->file('thumbnail')->store('thumbnails', 'public');
             $validated['thumbnail'] = $path;
         }
 

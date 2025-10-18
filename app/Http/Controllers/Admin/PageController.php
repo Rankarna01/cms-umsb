@@ -46,7 +46,7 @@ class PageController extends Controller
         $validated['active'] = $request->has('active');
 
         if ($request->hasFile('header_image')) {
-            $path = $request->file('header_image')->store('public/page_headers');
+            $path = $request->file('header_image')->store('page_headers', 'public');
             $validated['header_image'] = $path;
         }
 
@@ -84,7 +84,7 @@ class PageController extends Controller
             if ($page->header_image) {
                 Storage::delete($page->header_image);
             }
-            $path = $request->file('header_image')->store('public/page_headers');
+            $path = $request->file('header_image')->store('page_headers', 'public');
             $validated['header_image'] = $path;
         }
 

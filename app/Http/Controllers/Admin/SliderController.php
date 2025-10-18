@@ -83,7 +83,7 @@ class SliderController extends Controller
         if ($request->hasFile('images')) {
             $order = (int)($slider->images()->max('sort_order') ?? 0) + 1;
             foreach ($request->file('images') as $file) {
-                $path = $file->store('public/sliders');
+            $path = $file->store('sliders', 'public');
                 $slider->images()->create([
                     'image_path' => $path,
                     'sort_order' => $order++,

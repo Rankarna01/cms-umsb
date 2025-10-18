@@ -32,7 +32,8 @@ class DocumentController extends Controller
             'file' => 'required|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,zip|max:10240', // Maks 10MB
         ]);
 
-        $path = $request->file('file')->store('public/documents');
+        $path = $request->file('file')->store('documents', 'public');
+
         
         Document::create([
             'title' => $validated['title'],
@@ -65,7 +66,8 @@ class DocumentController extends Controller
 
         if ($request->hasFile('file')) {
             Storage::delete($document->file_path);
-            $path = $request->file('file')->store('public/documents');
+            $path = $request->file('file')->store('documents', 'public');
+
             $validated['file_path'] = $path;
         }
 

@@ -52,7 +52,7 @@ class LecturerController extends Controller
         ]);
 
         if ($request->hasFile('photo')) {
-            $path = $request->file('photo')->store('public/lecturer-photos');
+            $path = $request->file('photo')->store('lecturer-photos', 'public');
             $validated['photo'] = $path;
         }
 
@@ -97,7 +97,7 @@ class LecturerController extends Controller
             if ($lecturer->photo) {
                 Storage::delete($lecturer->photo);
             }
-            $path = $request->file('photo')->store('public/lecturer-photos');
+           $path = $request->file('photo')->store('lecturer-photos', 'public');
             $validated['photo'] = $path;
         }
 
