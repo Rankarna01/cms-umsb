@@ -30,7 +30,10 @@ use App\Http\Controllers\Admin\{
     SliderController,
     StudyProgramController,
     UserController,
-    VideoController
+    VideoController,
+    SlideImageController,
+    TestimonialController,
+    AcademicServiceController
 };
 use App\Http\Controllers\Frontend\{
     GalleryController,
@@ -51,6 +54,7 @@ use App\Http\Controllers\Frontend\{
 Route::redirect('/', '/home');
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/berita', [FrontendPostController::class, 'index'])->name('posts.index');
+Route::get('/pmb', [FrontendPageController::class, 'showPmb'])->name('page.pmb');
 Route::get('/berita/{slug}', [FrontendPostController::class, 'show'])->name('posts.show');
 Route::get('/halaman/{slug}', [FrontendPageController::class, 'show'])->name('pages.show');
 Route::get('/galeri', [GalleryController::class, 'index'])->name('gallery.index');
@@ -76,6 +80,8 @@ Route::middleware('auth')->group(function () {
         Route::resource('pages', AdminPageController::class);
         Route::resource('categories', PostCategoryController::class);
         Route::resource('sliders', SliderController::class);
+        Route::delete('/slide-images/{image}', [SlideImageController::class, 'destroy'])
+        ->name('slide-images.destroy');
         Route::resource('announcements', AnnouncementController::class);
         Route::resource('events', EventController::class);
         Route::resource('faculties', FacultyController::class);
@@ -91,6 +97,8 @@ Route::middleware('auth')->group(function () {
         Route::resource('partners', PartnerController::class);
         Route::resource('leaders', LeaderController::class);
         Route::resource('users', UserController::class)->middleware('role:Super Admin');
+        Route::resource('testimonials', TestimonialController::class);
+        Route::resource('academic-services', AcademicServiceController::class);
 
         // --- Route Custom (Non-Resource) ---
         Route::post('images/upload', [ImageUploadController::class, 'store'])->name('images.upload');

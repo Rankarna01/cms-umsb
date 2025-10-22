@@ -79,6 +79,13 @@ class PageController extends Controller
         $validated['slug'] = Str::slug($validated['title']);
         $validated['active'] = $request->has('active');
 
+         if ($request->has('delete_header_image')) {
+            if ($page->header_image) {
+                Storage::delete($page->header_image); // Hapus file dari storage
+            }
+            $validated['header_image'] = null; // Siapkan untuk mengosongkan kolom di database
+        }
+
         if ($request->hasFile('header_image')) {
             // Hapus gambar lama jika ada sebelum upload yang baru
             if ($page->header_image) {

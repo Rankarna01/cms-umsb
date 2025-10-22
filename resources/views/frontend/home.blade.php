@@ -24,10 +24,10 @@
                                 {{ $slide->title }}
                             </h1>
                             @if(!empty($slide->caption))
-                                <p class="mt-5 text-lg md:text-xl text-slate-600">{{ $slide->caption }}</p>
+                                <p class="mt-5 text-lg md:text-xl text-slate-800">{{ $slide->caption }}</p>
                             @endif
                             @if($slide->link_url && $slide->button_text)
-                                <a href="{{ $slide->link_url }}" class="mt-8 inline-flex items-center gap-2 rounded-full bg-red-600 hover:bg-red-700 text-white font-semibold px-6 md:px-8 py-3 shadow-lg shadow-red-600/20 transition">
+                                <a href="{{ $slide->link_url }}" class="mt-8 inline-flex items-center gap-2 rounded-full bg-red-800 hover:bg-red-700 text-white font-semibold px-6 md:px-8 py-3 shadow-lg shadow-red-800/20 transition">
                                     {{ $slide->button_text }}
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
                                         <path d="M13.172 12 8.222 7.05l1.414-1.414L16 12l-6.364 6.364-1.414-1.414z"/>
@@ -81,7 +81,7 @@
                                 <p class="mt-4 text-lg md:text-xl">{{ $slide->caption }}</p>
                             @endif
                             @if($slide->link_url && $slide->button_text)
-                                <a href="{{ $slide->link_url }}" class="mt-8 inline-flex items-center gap-2 rounded-full bg-red-600 hover:bg-red-700 text-white font-semibold px-6 md:px-8 py-3 shadow-lg shadow-red-600/20 transition">
+                                <a href="{{ $slide->link_url }}" class="mt-8 inline-flex items-center gap-2 rounded-full bg-red-800 hover:bg-red-700 text-white font-semibold px-6 md:px-8 py-3 shadow-lg shadow-red-800/20 transition">
                                     {{ $slide->button_text }}
                                 </a>
                             @endif
@@ -211,7 +211,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                         </div>
                                         <h3 class="mt-1 font-semibold text-slate-900 line-clamp-2 group-hover:text-red-700">
                                             {{ $post->title }}</h3>
-                                        <p class="mt-2 text-sm text-slate-600 line-clamp-2">
+                                        <p class="mt-2 text-sm text-slate-800 line-clamp-2">
                                             {{ Str::limit($post->excerpt, 90) }}</p>
                                         <span
                                             class="mt-auto inline-flex items-center gap-1 text-red-700 font-medium group-hover:translate-x-1 transition">Baca
@@ -288,11 +288,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-12">
-                    <h2 class="text-xs font-semibold tracking-widest uppercase text-red-600/90">Fakta Kampus</h2>
+                    <h2 class="text-xs font-semibold tracking-widest uppercase text-red-800/90">Fakta Kampus</h2>
                     <p class="mt-2 text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
                         UM Sumatera Barat dalam Angka
                     </p>
-                    <p class="mt-3 text-sm text-slate-600">Data ringkas yang kami banggakan</p>
+                    <p class="mt-3 text-sm text-slate-800">Data ringkas yang kami banggakan</p>
                 </div>
 
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 lg:gap-8">
@@ -300,7 +300,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <div class="group relative rounded-2xl bg-white/60 backdrop-blur-xl ring-1 ring-slate-200
                   hover:ring-red-300 transition-all duration-300
                   hover:-translate-y-1 hover:shadow-xl"
-                            style="animation: factoid-fade 600ms both; animation-delay: {{ $loop->index * 80 }}ms">
+                            style="animation: factoid-fade 800ms both; animation-delay: {{ $loop->index * 80 }}ms">
                             {{-- subtle gradient border glow on hover --}}
                             <div
                                 class="pointer-events-none absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition
@@ -310,7 +310,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             <div class="relative px-4 py-6 sm:px-6 sm:py-8 text-center">
                                 <div
                                     class="mx-auto mb-4 sm:mb-5 w-16 h-16 sm:w-20 sm:h-20 rounded-full grid place-items-center
-                      bg-gradient-to-br from-red-600 to-rose-600 text-white text-2xl sm:text-3xl shadow-lg
+                      bg-gradient-to-br from-red-800 to-rose-800 text-white text-2xl sm:text-3xl shadow-lg
                       ring-1 ring-white/20
                       transition-transform duration-300 group-hover:scale-105 group-hover:rotate-[2deg]">
                                     <i class="{{ $factoid->icon ?? 'fa-solid fa-graduation-cap' }}"></i>
@@ -321,7 +321,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     will-change-contents"
                                     data-countup data-target="{{ $factoid->value }}">{{ $factoid->value }}</p>
 
-                                <p class="mt-1 text-slate-600 text-sm sm:text-base">{{ $factoid->label }}</p>
+                                <p class="mt-1 text-slate-800 text-sm sm:text-base">{{ $factoid->label }}</p>
 
                                 {{-- underline accent on hover --}}
                                 <span
@@ -428,10 +428,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         {{-- Ikon dalam lingkaran gradien --}}
         <div class="mx-auto mb-4 w-24 h-24 rounded-full p-[3px]
-                    bg-gradient-to-br from-red-600 via-rose-500 to-pink-500">
+                    bg-gradient-to-br from-red-800 via-rose-500 to-pink-500">
           <div class="flex h-full w-full items-center justify-center rounded-full
                       bg-white text-red-700 ring-4 ring-red-50
-                      transition-colors duration-300 group-hover:bg-red-600 group-hover:text-white">
+                      transition-colors duration-300 group-hover:bg-red-800 group-hover:text-white">
             <i class="{{ $link->icon }} text-4xl"></i>
           </div>
         </div>
@@ -451,11 +451,32 @@ document.addEventListener('DOMContentLoaded', function () {
 
         {{-- Border bottom gradien saat hover --}}
         <span class="pointer-events-none absolute inset-x-0 bottom-0 h-1
-                     bg-gradient-to-r from-red-600 via-rose-500 to-pink-500
+                     bg-gradient-to-r from-red-800 via-rose-500 to-pink-500
                      opacity-0 transition-opacity duration-300 group-hover:opacity-100"></span>
       </a>
     @endforeach
   </div>
+</section>
+@endif
+
+@if($academicServices->isNotEmpty())
+<section class="bg-gray-50 py-16 lg:py-20">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900">Informasi Layanan Akademik</h2>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            @foreach($academicServices as $service)
+            <a href="{{ url($service->url) }}" target="_blank" class="block bg-white p-8 rounded-2xl shadow-lg ring-1 ring-slate-200/70 text-center group hover:-translate-y-2 transition-transform duration-300">
+                @if($service->image)
+                <img class="h-24 w-24 rounded-full object-cover mx-auto mb-4" src="{{ Storage::url($service->image) }}" alt="{{ $service->title }}">
+                @endif
+                <h3 class="font-bold text-xl text-blue-800 group-hover:text-red-800 transition-colors">{{ $service->title }}</h3>
+                <p class="text-slate-800 mt-2 text-sm">{{ $service->description }}</p>
+            </a>
+            @endforeach
+        </div>
+    </div>
 </section>
 @endif
 
@@ -465,14 +486,14 @@ document.addEventListener('DOMContentLoaded', function () {
 <section class="container mx-auto px-6 md:px-10 lg:px-16 py-12 md:py-16">
   {{-- Header --}}
   <div class="text-center mb-10">
-    <span class="inline-block text-red-600 font-extrabold tracking-widest uppercase text-xs sm:text-sm">
+    <span class="inline-block text-red-800 font-extrabold tracking-widest uppercase text-xs sm:text-sm">
       Dokumentasi
     </span>
     <h2 class="mt-2 text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
       Galeri Foto Kegiatan
     </h2>
     <div class="mt-4 flex items-center justify-center">
-      <span class="h-0.5 w-16 bg-red-600 rounded-full"></span>
+      <span class="h-0.5 w-16 bg-red-800 rounded-full"></span>
       <span class="mx-2 text-slate-400">•</span>
       <span class="h-0.5 w-16 bg-slate-200 rounded-full"></span>
     </div>
@@ -679,7 +700,7 @@ document.addEventListener('DOMContentLoaded', () => {
 <section class="bg-white text-slate-900">
   <div class="container mx-auto px-6 py-12 md:py-16">
     <div class="text-center mb-10">
-      <span class="inline-block text-red-600 font-extrabold tracking-widest uppercase text-xs sm:text-sm">Galeri</span>
+      <span class="inline-block text-red-800 font-extrabold tracking-widest uppercase text-xs sm:text-sm">Galeri</span>
       <h2 class="mt-2 text-2xl sm:text-3xl font-bold">Galeri Video</h2>
       <p class="mt-1 text-slate-500">Liputan dan dokumentasi kegiatan dalam format video.</p>
     </div>
@@ -702,7 +723,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         {{-- Play button --}}
         <div class="absolute inset-0 flex items-center justify-center">
-          <div class="p-4 rounded-full bg-red-600/95 group-hover:bg-red-600 transition-transform duration-300 scale-95 group-hover:scale-100 shadow-lg shadow-red-600/30">
+          <div class="p-4 rounded-full bg-red-800/95 group-hover:bg-red-800 transition-transform duration-300 scale-95 group-hover:scale-100 shadow-lg shadow-red-800/30">
             <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path d="M8 5v14l11-7z"/>
             </svg>
@@ -805,7 +826,7 @@ document.addEventListener('DOMContentLoaded', function () {
         <section class="py-16 lg:py-20">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-12">
-                    <h2 class="text-base font-semibold text-red-600 tracking-wider uppercase">Agenda</h2>
+                    <h2 class="text-base font-semibold text-red-800 tracking-wider uppercase">Agenda</h2>
                     <p class="mt-2 text-3xl font-extrabold text-gray-900 tracking-tight sm:text-4xl">Jadwal Kegiatan
                         Terdekat</p>
                 </div>
@@ -813,13 +834,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     @forelse($upcomingEvents as $event)
                         <div class="bg-white p-6 rounded-xl shadow-md flex items-center space-x-6 ring-1 ring-slate-100">
                             <div
-                                class="text-center bg-red-600 text-white rounded-lg p-4 w-20 h-20 flex flex-col justify-center">
+                                class="text-center bg-red-800 text-white rounded-lg p-4 w-20 h-20 flex flex-col justify-center">
                                 <p class="text-3xl font-bold leading-none">{{ $event->start_date->format('d') }}</p>
                                 <p class="text-sm uppercase tracking-wider">{{ $event->start_date->format('M') }}</p>
                             </div>
                             <div>
                                 <h3 class="font-bold text-lg text-gray-900">{{ $event->title }}</h3>
-                                <p class="text-gray-600 text-sm mt-1">{{ $event->location }}</p>
+                                <p class="text-gray-800 text-sm mt-1">{{ $event->location }}</p>
                             </div>
                         </div>
                     @empty
@@ -837,7 +858,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     {{-- Judul --}}
     <div class="text-center mb-12">
-      <span class="inline-block text-red-600 font-extrabold text- tracking-widest uppercase text-sm border-b-2 border-red-500 pb-1">
+      <span class="inline-block text-red-800 font-extrabold text- tracking-widest uppercase text-sm border-b-2 border-red-500 pb-1">
         Pimpinan Universitas
       </span>
       <p class="mt-2 text-slate-500 text-sm sm:text-base">
@@ -861,13 +882,13 @@ document.addEventListener('DOMContentLoaded', function () {
                        alt="{{ $leader->name }}"
                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 group-hover:brightness-110">
                 </div>
-                <h3 class="text-lg font-bold text-slate-800 group-hover:text-red-600 transition">
+                <h3 class="text-lg font-bold text-slate-800 group-hover:text-red-800 transition">
                   {{ $leader->name }}
                 </h3>
                 <p class="text-slate-500 text-sm">{{ $leader->position }}</p>
                 <div class="mt-4 flex justify-center space-x-3">
                   @if ($leader->social_facebook)
-                    <a href="{{ $leader->social_facebook }}" target="_blank" class="text-gray-400 hover:text-blue-600 transform hover:scale-125 transition">
+                    <a href="{{ $leader->social_facebook }}" target="_blank" class="text-gray-400 hover:text-blue-800 transform hover:scale-125 transition">
                       <i class="fa-brands fa-facebook-f text-xl"></i>
                     </a>
                   @endif
@@ -900,13 +921,13 @@ document.addEventListener('DOMContentLoaded', function () {
                        alt=""
                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 group-hover:brightness-110">
                 </div>
-                <h3 class="text-lg font-bold text-slate-800 group-hover:text-red-600 transition">
+                <h3 class="text-lg font-bold text-slate-800 group-hover:text-red-800 transition">
                   {{ $leader->name }}
                 </h3>
                 <p class="text-slate-500 text-sm">{{ $leader->position }}</p>
                 <div class="mt-4 flex justify-center space-x-3">
                   @if ($leader->social_facebook)
-                    <a href="{{ $leader->social_facebook }}" target="_blank" class="text-gray-400 hover:text-blue-600 transform hover:scale-125 transition">
+                    <a href="{{ $leader->social_facebook }}" target="_blank" class="text-gray-400 hover:text-blue-800 transform hover:scale-125 transition">
                       <i class="fa-brands fa-facebook-f text-xl"></i>
                     </a>
                   @endif
@@ -942,7 +963,7 @@ document.addEventListener('DOMContentLoaded', function () {
   <div class="container mx-auto px-4 sm:px-6 lg:px-8">
     <div class="mb-10 text-center">
       <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-gray-900">Dosen Pengajar</h2>
-      <p class="mt-2 text-lg text-slate-600">Tenaga pendidik profesional di bidangnya.</p>
+      <p class="mt-2 text-lg text-slate-800">Tenaga pendidik profesional di bidangnya.</p>
     </div>
 
     {{-- Swiper --}}
@@ -965,10 +986,10 @@ document.addEventListener('DOMContentLoaded', function () {
                       class="w-full h-full rounded-full object-cover shadow-lg ring-2 ring-red-50 transition-transform duration-300 group-hover:scale-105"
                     >
                   </div>
-                  <h3 class="mt-4 text-base md:text-lg font-extrabold text-gray-800 group-hover:text-red-600 transition-colors">
+                  <h3 class="mt-4 text-base md:text-lg font-extrabold text-gray-800 group-hover:text-red-800 transition-colors">
                     {{ $lecturer->name }}
                   </h3>
-                  <p class="text-xs md:text-sm text-red-600 font-semibold">
+                  <p class="text-xs md:text-sm text-red-800 font-semibold">
                     {{ $lecturer->functional_position ?? $lecturer->position }}
                   </p>
                 </a>
@@ -1084,7 +1105,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     {{-- Judul (tetap) --}}
     <div class="text-center mb-12">
-      <span class="inline-block text-red-600 font-extrabold tracking-widest uppercase text-sm border-b-2 border-red-500 pb-1">
+      <span class="inline-block text-red-800 font-extrabold tracking-widest uppercase text-sm border-b-2 border-red-500 pb-1">
         Koneksi
       </span>
       <p class="mt-2 text-3xl sm:text-4xl font-extrabold tracking-tight text-gray-900">Mitra Kerja Sama</p>
@@ -1158,6 +1179,81 @@ document.addEventListener('DOMContentLoaded', function () {
 @endif
 
 
+@if($testimonials->isNotEmpty())
+<section class="py-16 lg:py-20">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900">Apa Kata Alumni?</h2>
+      <p class="mt-2 text-lg text-slate-800">Pengalaman mereka yang telah menjadi mahasiswa Universitas Muhammadiyah Sumatera Barat.</p>
+    </div>
+
+    {{-- Swiper Container --}}
+    <div class="swiper mySwiper !overflow-visible">
+      <div class="swiper-wrapper">
+        @foreach($testimonials as $testimonial)
+        <div class="swiper-slide">
+          <div class="bg-white p-8 rounded-2xl shadow-lg ring-1 ring-slate-200/70 mx-2">
+            <div class="flex items-start gap-6">
+              <img class="h-16 w-16 rounded-full object-cover flex-shrink-0"
+                src="{{ $testimonial->photo ? Storage::url($testimonial->photo) : 'https://ui-avatars.com/api/?name='.urlencode($testimonial->name) }}"
+                alt="{{ $testimonial->name }}">
+              <div class="flex-grow">
+                <blockquote class="text-slate-700 italic">
+                  <p>"{{ $testimonial->content }}"</p>
+                </blockquote>
+                <figcaption class="mt-4">
+                  <div class="font-bold text-slate-900">{{ $testimonial->name }}</div>
+                  <div class="text-slate-500 text-sm">
+                    {{ $testimonial->occupation ? $testimonial->occupation . ' - ' : '' }} Angkatan {{ $testimonial->graduation_year }}
+                  </div>
+                </figcaption>
+              </div>
+            </div>
+          </div>
+        </div>
+        @endforeach
+      </div>
+
+      {{-- Optional controls --}}
+      <div class="swiper-pagination mt-6"></div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+    </div>
+  </div>
+</section>
+
+{{-- SwiperJS CDN --}}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script>
+  new Swiper(".mySwiper", {
+    slidesPerView: 1,
+    spaceBetween: 30,
+    loop: true,
+    autoplay: {
+      delay: 3000,
+      disableOnInteraction: false,
+    },
+    breakpoints: {
+      768: {
+        slidesPerView: 2,
+      },
+      1024: {
+        slidesPerView: 3,
+      },
+    },
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+    },
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
+    },
+  });
+</script>
+@endif
 
 
 @endsection

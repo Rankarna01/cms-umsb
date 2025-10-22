@@ -4,7 +4,7 @@
 @section('content')
 
 {{-- HEADER GRADIENT --}}
-<header class="relative overflow-hidden bg-gradient-to-br from-red-800 to-red-600 text-white">
+<header class="relative overflow-hidden bg-gradient-to-br from-red-800 to-red-800 text-white">
   <div class="absolute inset-0 opacity-10">
     <div class="h-full w-full bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
   </div>

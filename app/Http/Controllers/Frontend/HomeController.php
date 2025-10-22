@@ -15,6 +15,8 @@ use App\Models\Partner;
 use App\Models\Leader;
 use App\Models\QuickLink; //
 use App\Models\Lecturer;
+use App\Models\Testimonial;
+use App\Models\AcademicService;
 
 
 class HomeController extends Controller
@@ -34,6 +36,8 @@ class HomeController extends Controller
         $totalPhotos = Photo::count(); // <-- Variabel ini sekarang ada di atas
         $latestVideos = Video::latest()->take(3)->get();
         $quickLinks = QuickLink::orderBy('sort_order')->get();
+        $testimonials = Testimonial::where('active', true)->orderBy('sort_order')->take(4)->get();
+        $academicServices = AcademicService::orderBy('sort_order')->get();
 
         // -------------------------------
         // LOGIKA BERITA (robust + fallback)
@@ -136,7 +140,9 @@ class HomeController extends Controller
             'galleryPhotos',
             'latestVideos',
             'quickLinks',
-            'latestLecturers'
+            'latestLecturers',
+            'testimonials',
+            'academicServices'
         ));
     }
 }

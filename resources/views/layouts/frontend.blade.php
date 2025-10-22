@@ -74,7 +74,7 @@
              alt="{{ $siteSettings['site_name'] ?? 'Logo' }}"
              class="h-8 md:h-9 w-auto" />
       @else
-        <span class="text-lg md:text-xl font-extrabold tracking-tight text-red-700">
+        <span class="text-lg md:text-xl font-extrabold tracking-tight text-red-800">
           {{ $siteSettings['site_name'] ?? 'Universitas' }}
         </span>
       @endif
@@ -94,7 +94,7 @@
       <svg x-show="!open" x-cloak xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m0 6H10"/>
       </svg>
-      <svg x-show="open" x-cloak xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-700" viewBox="0 0 24 24" fill="currentColor">
+      <svg x-show="open" x-cloak xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-800" viewBox="0 0 24 24" fill="currentColor">
         <path d="M6.225 4.811 4.811 6.225 10.586 12l-5.775 5.775 1.414 1.414L12 13.414l5.775 5.775 1.414-1.414L13.414 12l5.775-5.775-1.414-1.414L12 10.586 6.225 4.811z"/>
       </svg>
     </button>
@@ -187,7 +187,7 @@
   <div class="container mx-auto px-6">
     {{-- Heading --}}
     <div class="text-center mb-12">
-      <span class="inline-block text-red-600 font-extrabold tracking-widest uppercase text-sm border-b-2 border-red-500 pb-1">
+      <span class="inline-block text-red-800 font-extrabold tracking-widest uppercase text-sm border-b-2 border-red-500 pb-1">
         Kontak
       </span>
       <p class="mt-2 text-slate-500 text-sm">Hubungi kami melalui alamat, email, atau telepon.</p>
@@ -253,7 +253,7 @@
     <section class="relative py-16 bg-gradient-to-b from-white to-red-50">
   <div class="container mx-auto px-6">
     <div class="text-center mb-10">
-      <span class="inline-block text-red-600 font-extrabold tracking-widest uppercase text-sm border-b-2 border-red-500 pb-1">
+      <span class="inline-block text-red-800 font-extrabold tracking-widest uppercase text-sm border-b-2 border-red-800 pb-1">
         Lokasi Kami
       </span>
       <h2 class="mt-3 text-3xl sm:text-4xl font-extrabold text-gray-800">Temukan Kami di Peta</h2>
@@ -279,7 +279,7 @@
 </section>
 
 
-    <footer class="relative bg-red-700 text-white">
+    <footer class="relative bg-red-800 text-white">
   {{-- aksen tipis --}}
   <div class="absolute inset-0 pointer-events-none opacity-10"
        style="background-image: linear-gradient(to right, #fff 1px, transparent 1px),

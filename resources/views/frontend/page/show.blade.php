@@ -33,7 +33,7 @@
       </div>
     </section>
   @else
-    <header class="relative bg-gradient-to-br from-red-800 to-red-700 text-white">
+    <header class="relative bg-gradient-to-br from-red-800 to-red-800 text-white">
       <div class="container mx-auto px-6 md:px-10 lg:px-16 py-12 md:py-16">
         <nav class="mb-3 text-sm text-white/80">
           <a href="{{ url('/') }}" class="hover:text-white">Home</a>
@@ -123,6 +123,25 @@
                 @empty
                   <li class="text-sm text-slate-500">Tidak ada agenda terdekat.</li>
                 @endforelse
+
+
+                @if($quickLinks->isNotEmpty())
+                    <div class="rounded-2xl bg-white ring-1 ring-slate-200/70 shadow-md p-6">
+                        <h3 class="text-lg font-bold mb-4 pb-2 border-b border-slate-200">Akses Cepat</h3>
+                        <ul class="space-y-3">
+                            @foreach($quickLinks as $link)
+                                <li>
+                                    <a href="{{ url($link->url) }}" class="flex items-center gap-3 p-3 rounded-md text-gray-700 hover:bg-red-50 hover:text-red-700 font-medium transition-colors">
+                                        <div class="flex-shrink-0 w-8 text-center">
+                                            <i class="{{ $link->icon }} text-red-600 text-xl"></i>
+                                        </div>
+                                        <span>{{ $link->title }}</span>
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
               </ul>
             </div>
 

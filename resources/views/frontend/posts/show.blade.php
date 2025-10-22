@@ -4,11 +4,11 @@
 
 @section('content')
     {{-- ===== Reading Progress Bar ===== --}}
-    <div id="readingProgress" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-red-600 via-rose-500 to-orange-400 w-0 z-50"></div>
+    <div id="readingProgress" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-red-800 via-rose-500 to-orange-400 w-0 z-50"></div>
 
     {{-- ===== HERO HEADER (tema merah, dua kolom) ===== --}}
     <section class="relative isolate overflow-hidden">
-      <div class="bg-gradient-to-br from-red-700 via-rose-600 to-red-500">
+      <div class="bg-gradient-to-br from-red-800 via-rose-600 to-red-500">
         <div class="container mx-auto px-6 py-10 md:py-14 lg:py-16">
           <div class="grid items-center gap-8 lg:grid-cols-12">
             {{-- KIRI: breadcrumb + judul + meta --}}
@@ -140,7 +140,7 @@
               <ul class="space-y-4">
                 @forelse(($upcomingEvents ?? collect()) as $event)
                   <li class="flex items-center space-x-4">
-                    <div class="text-center bg-red-100 text-red-700 rounded-lg p-3 shrink-0 dark:bg-red-200 dark:text-red-800">
+                    <div class="text-center bg-red-100 text-red-800 rounded-lg p-3 shrink-0 dark:bg-red-200 dark:text-red-800">
                       <p class="text-2xl font-bold">{{ optional($event->start_date)->format('d') }}</p>
                       <p class="text-xs uppercase">{{ optional($event->start_date)->format('M') }}</p>
                     </div>
@@ -162,7 +162,7 @@
 
     {{-- Back to top --}}
     <button id="backToTop"
-            class="hidden fixed bottom-6 right-6 p-3 rounded-full bg-red-600 text-white shadow-lg hover:bg-red-700 transition">
+            class="hidden fixed bottom-6 right-6 p-3 rounded-full bg-red-600 text-white shadow-lg hover:bg-red-800 transition">
       <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 8l6 6H6z"/></svg>
     </button>
 

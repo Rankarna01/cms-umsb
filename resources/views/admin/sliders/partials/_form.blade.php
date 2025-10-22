@@ -1,7 +1,7 @@
 <div class="bg-white shadow-md rounded-lg p-8">
     @if ($errors->any())
         <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert">
-            <ul>
+            <ul class="list-disc ml-5">
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
                 @endforeach
@@ -9,6 +9,7 @@
         </div>
     @endif
 
+    {{-- FORM UTAMA: create / update slider --}}
     <form action="{{ isset($slider) ? route('admin.sliders.update', ['slider' => $slider->id]) : route('admin.sliders.store') }}"
           method="POST" enctype="multipart/form-data">
         @csrf
@@ -70,20 +71,35 @@
                    class="shadow border rounded w-full py-2 px-3"
                    multiple
                    @if(!isset($slider)) required @endif>
-            <p class="text-xs text-gray-600 mt-1">Anda bisa memilih lebih dari satu gambar.
+            <p class="text-xs text-gray-600 mt-1">
+                Anda bisa memilih lebih dari satu gambar.
                 @if(isset($slider)) Kosongkan jika tidak ingin menambah gambar baru.@endif
             </p>
         </div>
 
-        {{-- Preview gambar yang sudah ada (hanya edit) --}}
-        @if(isset($slider) && $slider->relationLoaded('images') ? $slider->images->isNotEmpty() : ($slider->images ?? collect())->isNotEmpty())
-            <div class="mb-4">
+        {{-- Preview + tombol hapus per gambar (hanya saat edit) --}}
+        @if(isset($slider) && ($slider->relationLoaded('images') ? $slider->images->isNotEmpty() : ($slider->images ?? collect())->isNotEmpty()))
+            <div class="mb-6">
                 <p class="block font-bold mb-2">Gambar Saat Ini:</p>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                     @foreach($slider->images as $image)
-                        <div class="relative">
-                            <img src="{{ Storage::url($image->image_path) }}" class="w-full h-24 object-cover rounded-lg">
-                            {{-- (opsional) tombol hapus per gambar bisa ditambahkan di sini --}}
+                        <div class="relative group">
+                            <img src="{{ Storage::url($image->image_path) }}"
+                                 alt="slide-{{ $image->id }}"
+                                 class="w-full h-24 object-cover rounded-lg">
+                            <div class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-lg">
+                                {{-- TOMBOL HAPUS: submit ke FORM TERPISAH lewat atribut form --}}
+                                <button
+                                    type="submit"
+                                    form="delete-image-{{ $image->id }}"
+                                    onclick="return confirm('Yakin ingin menghapus gambar ini?')"
+                                    class="text-white text-xs bg-red-600 px-3 py-1.5 rounded-md font-semibold">
+                                    <i class="fa-solid fa-trash-can mr-1"></i> Hapus
+                                </button>
+                            </div>
+                            <div class="absolute bottom-1 left-1 bg-white/90 text-xs px-2 py-0.5 rounded">
+                                #{{ $image->sort_order }}
+                            </div>
                         </div>
                     @endforeach
                 </div>
@@ -122,4 +138,18 @@
             </a>
         </div>
     </form>
+
+    {{-- =========================
+         FORM HAPUS TERPISAH
+         ========================= --}}
+    @isset($slider)
+        @foreach($slider->images as $image)
+            <form id="delete-image-{{ $image->id }}"
+                  action="{{ route('admin.slide-images.destroy', $image->id) }}"
+                  method="POST" class="hidden">
+                @csrf
+                @method('DELETE')
+            </form>
+        @endforeach
+    @endisset
 </div>

@@ -204,10 +204,15 @@
                     {{-- 10. POPUP KONTAK WA --}}
                     {{-- <li class="px-3 pt-4 text-[11px] uppercase tracking-wide text-white/50" x-show="!collapsed">Pop-up
                     </li> --}}
-                    {!! navDisabled('fa-brands fa-whatsapp', 'Pop-up Kontak WA') !!}
+                    @can('kelola halaman') {{-- Atau izin lain yang sesuai --}}
+    {!! navLink('admin.testimonials.index', 'fa-solid fa-comment-dots', 'Testimoni', ['admin.testimonials.*']) !!}
+@endcan
                     @can('kelola pengaturan')
                         {!! navLink('admin.quick-links.index', 'fa-solid fa-bolt', 'Link Cepat', ['admin.quick-links.*']) !!}
                     @endcan
+                    @can('kelola halaman') {{-- Ganti dengan izin yang sesuai jika perlu --}}
+    {!! navLink('admin.academic-services.index', 'fa-solid fa-graduation-cap', 'Layanan Akademik', ['admin.academic-services.*']) !!}
+@endcan
 
                     {{-- 11. MEMBUAT USER (User & Hak Akses) --}}
                     <li class="px-3 pt-4 text-[11px] uppercase tracking-wide text-white/50" x-show="!collapsed">User &

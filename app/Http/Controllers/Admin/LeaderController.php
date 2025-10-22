@@ -34,7 +34,7 @@ public function store(Request $request)
     ]);
 
     if ($request->hasFile('photo')) {
-        $path = $request->file('photo')->store('public/leaders');
+        $path = $request->file('photo')->store('leaders', 'public');
         $validated['photo'] = $path;
     }
 
@@ -58,7 +58,7 @@ public function update(Request $request, Leader $leader)
 
     if ($request->hasFile('photo')) {
         if ($leader->photo) Storage::delete($leader->photo);
-        $path = $request->file('photo')->store('public/leaders');
+        $path = $request->file('photo')->store('leaders', 'public');
         $validated['photo'] = $path;
     }
 

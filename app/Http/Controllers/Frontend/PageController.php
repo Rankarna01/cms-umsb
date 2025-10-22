@@ -7,6 +7,8 @@ use App\Models\Event;
 use App\Models\Page;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use App\Models\QuickLink;
+
 
 class PageController extends Controller
 {
@@ -28,7 +30,20 @@ class PageController extends Controller
                                 ->take(3)
                                 ->get();
 
+         $quickLinks = QuickLink::orderBy('sort_order')->get();
         // 4. Kirim semua data ke view
-        return view('frontend.page.show', compact('page', 'latestPosts', 'upcomingEvents'));
+        return view('frontend.page.show', compact('page', 'latestPosts', 'upcomingEvents', 'quickLinks'));
+    }
+
+    public function showPmb()
+    {
+        // 1. Ambil konten utama dari halaman 'Penerimaan Mahasiswa Baru'
+        $page = Page::where('slug', 'penerimaan-mahasiswa-baru')->firstOrFail();
+
+        // 2. Ambil semua data dari 'Link Cepat' untuk sidebar
+        $quickLinks = QuickLink::orderBy('sort_order')->get();
+
+        // 3. Kirim kedua data ke view baru
+        return view('frontend.page.pmb', compact('page', 'quickLinks'));
     }
 }

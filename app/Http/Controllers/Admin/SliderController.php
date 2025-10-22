@@ -43,12 +43,12 @@ class SliderController extends Controller
 
         $slide = Slide::create($validated);
 
-        // simpan semua gambar
+        // simpan semua gambar (DISK 'public' agar Storage::url() -> /storage/..)
         $order = 1;
         foreach ($request->file('images') as $file) {
-            $path = $file->store('public/sliders');
+            $path = $file->store('sliders', 'public'); // <- konsisten
             $slide->images()->create([
-                'image_path' => $path,
+                'image_path' => $path, // simpan tanpa "public/"
                 'sort_order' => $order++,
             ]);
         }
@@ -83,7 +83,7 @@ class SliderController extends Controller
         if ($request->hasFile('images')) {
             $order = (int)($slider->images()->max('sort_order') ?? 0) + 1;
             foreach ($request->file('images') as $file) {
-            $path = $file->store('sliders', 'public');
+                $path = $file->store('sliders', 'public'); // <- konsisten
                 $slider->images()->create([
                     'image_path' => $path,
                     'sort_order' => $order++,
@@ -99,7 +99,7 @@ class SliderController extends Controller
         $slider->load('images');
 
         foreach ($slider->images as $image) {
-            Storage::delete($image->image_path);
+            \Storage::disk('public')->delete($image->image_path); // <- pakai disk public
         }
         $slider->images()->delete();
         $slider->delete();
