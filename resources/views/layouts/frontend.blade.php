@@ -66,9 +66,9 @@
 <style>[x-cloak]{display:none !important}</style>
 
 <header x-data="{ open:false }" class="sticky top-0 z-50 bg-white/80 backdrop-blur supports-backdrop-blur:border-b border-slate-200 shadow-sm">
-  <nav class="container mx-auto px-4 py-1.5 md:py-2 flex justify-between items-center">
+  <nav class="container mx-auto px-4 py-1.5 md:py-2 flex items-center justify-between gap-2 flex-nowrap min-h-[48px]">
     {{-- Brand --}}
-    <a href="{{ route('home') }}" class="flex items-center gap-2">
+    <a href="{{ route('home') }}" class="flex items-center gap-2 shrink-0">
       @if (!empty($siteSettings['site_logo']))
         <img src="{{ Storage::url($siteSettings['site_logo']) }}"
              alt="{{ $siteSettings['site_name'] ?? 'Logo' }}"
@@ -80,42 +80,73 @@
       @endif
     </a>
 
-    {{-- Desktop Menu --}}
-    <div class="hidden md:flex items-center gap-0.5 font-semibold nav-links">
+    {{-- Desktop Menu (nowrap supaya tidak jadi 2 baris saat zoom) --}}
+    <div class="hidden md:flex items-center gap-0.5 font-semibold nav-links whitespace-nowrap">
       @if ($headerMenu && $headerMenu->items->isNotEmpty())
         @include('frontend.partials._header_menu', ['items' => $headerMenu->items])
       @endif
     </div>
 
-    {{-- Mobile Toggle (lebih kecil) --}}
+    {{-- Mobile Toggle (selalu 1 baris; tombol tidak ikut wrap) --}}
     <button @click="open = !open"
-            class="md:hidden inline-flex items-center justify-center rounded-lg p-1 ring-1 ring-slate-300 hover:ring-red-300 hover:bg-red-50 transition"
-            aria-label="Toggle menu">
-      <svg x-show="!open" x-cloak xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            class="md:hidden inline-flex items-center justify-center shrink-0 rounded-lg p-2 ring-1 ring-slate-300 hover:ring-red-300 hover:bg-red-50 transition"
+            aria-label="Toggle menu" :aria-expanded="open.toString()">
+      <svg x-show="!open" x-cloak xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m0 6H10"/>
       </svg>
-      <svg x-show="open" x-cloak xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-800" viewBox="0 0 24 24" fill="currentColor">
+      <svg x-show="open" x-cloak xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-red-800" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
         <path d="M6.225 4.811 4.811 6.225 10.586 12l-5.775 5.775 1.414 1.414L12 13.414l5.775 5.775 1.414-1.414L13.414 12l5.775-5.775-1.414-1.414L12 10.586 6.225 4.811z"/>
       </svg>
     </button>
   </nav>
 
-  {{-- Mobile Panel (se-scope dengan header) --}}
-  <div x-show="open"
-       x-transition.opacity
-       x-transition.duration.200ms
-       @click.outside="open=false"
-       class="md:hidden border-t border-slate-200/70 bg-white/95">
-    @if ($headerMenu && $headerMenu->items->isNotEmpty())
-      <div class="container mx-auto px-4 py-1 mobile-panel">
-        @include('frontend.partials._header_menu', ['items' => $headerMenu->items])
+  {{-- Modal Mobile Menu (teleport ke body supaya full-screen & seperti modal) --}}
+  <template x-teleport="body">
+    <div
+      x-show="open"
+      x-cloak
+      x-transition.opacity.duration.200ms
+      x-trap.noscroll.inert="open"  {{-- jika Alpine x-trap tersedia, ini kunci fokus + scroll --}}
+      @keydown.escape.window="open=false"
+      class="fixed inset-0 z-[60] md:hidden">
+
+      {{-- Backdrop --}}
+      <div @click="open=false" class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"></div>
+
+      {{-- Panel (modal sheet) --}}
+      <div
+        class="absolute inset-x-0 top-0 mt-0 rounded-b-2xl border border-slate-200/70 bg-white shadow-xl"
+        x-transition:enter="transition ease-out duration-200"
+        x-transition:enter-start="opacity-0 -translate-y-2"
+        x-transition:enter-end="opacity-100 translate-y-0"
+        x-transition:leave="transition ease-in duration-150"
+        x-transition:leave-start="opacity-100 translate-y-0"
+        x-transition:leave-end="opacity-0 -translate-y-2"
+        @click.outside="open=false"
+      >
+        <div class="container mx-auto px-4 py-3">
+          <div class="flex items-center justify-between">
+            <span class="text-sm font-semibold text-slate-500">Menu</span>
+            <button @click="open=false" class="p-2 rounded-lg ring-1 ring-slate-300 hover:bg-slate-50" aria-label="Close menu">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-slate-700" viewBox="0 0 24 24" fill="currentColor"><path d="M6.225 4.811 4.811 6.225 10.586 12l-5.775 5.775 1.414 1.414L12 13.414l5.775 5.775 1.414-1.414L13.414 12l5.775-5.775-1.414-1.414L12 10.586 6.225 4.811z"/></svg>
+            </button>
+          </div>
+
+          @if ($headerMenu && $headerMenu->items->isNotEmpty())
+            <div class="mt-2 mobile-panel">
+              @include('frontend.partials._header_menu', ['items' => $headerMenu->items])
+            </div>
+          @endif
+        </div>
       </div>
-    @endif
-  </div>
+    </div>
+  </template>
 </header>
 
-{{-- styling link (opsional, tetap seperti sebelumnya) --}}
+{{-- Styling link (dipertahankan; tambah util untuk nowrap & no-scrollbar opsional) --}}
 <style>
+  /* --- Desktop links --- */
+  .nav-links{ white-space:nowrap; } /* cegah 2 baris saat zoom */
   .nav-links a{
     font-weight:700; padding:.5rem .75rem; border-radius:.75rem;
     color:#334155; position:relative; transition:color .2s, background-color .2s;
@@ -127,54 +158,19 @@
   }
   .nav-links a:hover::after{ transform:scaleX(1); }
 
+  /* --- Mobile panel --- */
   .mobile-panel a{
     display:block; font-weight:700; padding:.75rem 0; color:#334155;
     border-bottom:1px solid #e5e7eb; transition:color .2s, background-color .2s;
   }
   .mobile-panel a:last-child{ border-bottom:0; }
   .mobile-panel a:hover{ color:#b91c1c; background:#fff1f2; }
+
+  /* optional: sembunyikan scrollbar jika menu panjang */
+  .no-scrollbar::-webkit-scrollbar{ display:none; }
+  .no-scrollbar{ -ms-overflow-style:none; scrollbar-width:none; }
 </style>
 
-{{-- Styling ringan (tanpa ubah partial menu) --}}
-<style>
-  /* Desktop links */
-  .nav-links a{
-    font-weight:700; /* bold tiap item */
-    padding:.5rem .75rem;
-    border-radius:.75rem;
-    color:#334155;               /* slate-700 */
-    position:relative;
-    transition:color .2s, background-color .2s;
-  }
-  .nav-links a:hover{
-    color:#b91c1c;               /* red-700 */
-    background:#fff1f2;          /* rose-50-ish */
-  }
-  .nav-links a::after{
-    content:"";
-    position:absolute;
-    left:12px; right:12px; bottom:6px;
-    height:2px; border-radius:2px;
-    background:#ef4444;          /* red-500 */
-    transform:scaleX(0);
-    transform-origin:left;
-    transition:transform .25s ease;
-    opacity:.9;
-  }
-  .nav-links a:hover::after{ transform:scaleX(1); }
-
-  /* Mobile list inside panel */
-  .mobile-panel a{
-    display:block;
-    font-weight:700;             /* bold juga di mobile */
-    padding:.75rem 0;
-    color:#334155;
-    border-bottom:1px solid #e5e7eb; /* slate-200 */
-    transition:color .2s, background-color .2s;
-  }
-  .mobile-panel a:last-child{ border-bottom:0; }
-  .mobile-panel a:hover{ color:#b91c1c; background:#fff1f2; }
-</style>
 
 
 
