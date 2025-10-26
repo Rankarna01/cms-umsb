@@ -9,4 +9,4 @@
 @include('admin.quick-links.partials._form', ['quickLink' => $quickLink])
 
 
-@endsectionxamp
+@endsection

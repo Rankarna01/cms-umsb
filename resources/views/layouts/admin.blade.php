@@ -204,15 +204,19 @@
                     {{-- 10. POPUP KONTAK WA --}}
                     {{-- <li class="px-3 pt-4 text-[11px] uppercase tracking-wide text-white/50" x-show="!collapsed">Pop-up
                     </li> --}}
-                    @can('kelola halaman') {{-- Atau izin lain yang sesuai --}}
-    {!! navLink('admin.testimonials.index', 'fa-solid fa-comment-dots', 'Testimoni', ['admin.testimonials.*']) !!}
-@endcan
+                    @can('kelola halaman')
+                        {{-- Atau izin lain yang sesuai --}}
+                        {!! navLink('admin.testimonials.index', 'fa-solid fa-comment-dots', 'Testimoni', ['admin.testimonials.*']) !!}
+                    @endcan
                     @can('kelola pengaturan')
                         {!! navLink('admin.quick-links.index', 'fa-solid fa-bolt', 'Link Cepat', ['admin.quick-links.*']) !!}
                     @endcan
-                    @can('kelola halaman') {{-- Ganti dengan izin yang sesuai jika perlu --}}
-    {!! navLink('admin.academic-services.index', 'fa-solid fa-graduation-cap', 'Layanan Akademik', ['admin.academic-services.*']) !!}
-@endcan
+                    @can('kelola halaman')
+                        {{-- Ganti dengan izin yang sesuai jika perlu --}}
+                        {!! navLink('admin.academic-services.index', 'fa-solid fa-graduation-cap', 'Layanan Akademik', [
+                            'admin.academic-services.*',
+                        ]) !!}
+                    @endcan
 
                     {{-- 11. MEMBUAT USER (User & Hak Akses) --}}
                     <li class="px-3 pt-4 text-[11px] uppercase tracking-wide text-white/50" x-show="!collapsed">User &
@@ -268,8 +272,8 @@
         <div class="fixed inset-0 bg-black/40 backdrop-blur-sm z-30 md:hidden" x-show="sidebarOpen" x-transition.opacity
             @click="sidebarOpen=false"></div>
 
-        <div class="flex-1 flex flex-col overflow-hidden transition-all duration-300 ease-in-out pt-16 md:pt-20"
-            :class="collapsed ? 'md:ml-collapsed' : 'md:ml-64'">
+        <div class="flex-1 flex flex-col overflow-hidden transition-all duration-300 ease-in-out pt-16 md:pt-20" 
+             :class="collapsed ? 'md:ml-collapsed' : 'md:ml-64'">
             <header class="fixed top-0 inset-x-0 z-30 bg-white/80 backdrop-blur border-b border-slate-200">
                 <div class="px-4 py-3 flex items-center justify-between">
                     <div class="flex items-center gap-2">
