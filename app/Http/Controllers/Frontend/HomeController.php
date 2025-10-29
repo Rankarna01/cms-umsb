@@ -13,16 +13,16 @@ use App\Models\Video;
 use App\Models\Factoid;
 use App\Models\Partner;
 use App\Models\Leader;
-use App\Models\QuickLink; //
+use App\Models\QuickLink;
 use App\Models\Lecturer;
 use App\Models\Testimonial;
 use App\Models\AcademicService;
-
 
 class HomeController extends Controller
 {
     public function index()
     {
+        // --- Data Lain (Biarkan Saja) ---
         $sliders = Slide::where('active', true)->orderBy('sort_order')->get();
         $upcomingEvents = Event::where('active', true)
             ->where('start_date', '>=', now())
@@ -33,100 +33,34 @@ class HomeController extends Controller
         $leaders = Leader::orderBy('sort_order')->get();
         $partners = Partner::orderBy('sort_order')->get();
         $galleryPhotos = Photo::latest()->paginate(8);
-        $totalPhotos = Photo::count(); // <-- Variabel ini sekarang ada di atas
+        $totalPhotos = Photo::count();
         $latestVideos = Video::latest()->take(3)->get();
         $quickLinks = QuickLink::orderBy('sort_order')->get();
         $testimonials = Testimonial::where('active', true)->orderBy('sort_order')->take(4)->get();
         $academicServices = AcademicService::orderBy('sort_order')->get();
-
-        // -------------------------------
-        // LOGIKA BERITA (robust + fallback)
-        // -------------------------------
-
-        // Kategori bertipe 'news'
-        $newsCategoryIds = PostCategory::where('type', 'news')->pluck('id');
-        
-
-        // 1) Featured: prioritaskan dari kategori 'news'
-        $featuredPost = Post::where('status', 'published')
-            ->when($newsCategoryIds->isNotEmpty(), fn ($q) => $q->whereIn('category_id', $newsCategoryIds))
-            ->latest()
-            ->first();
-
-        // Fallback featured: jika belum ada post 'news', ambil post published terbaru apa pun
-        if (!$featuredPost) {
-            $featuredPost = Post::where('status', 'published')
-                ->latest()
-                ->first();
-        }
-
         $latestLecturers = Lecturer::latest()->take(4)->get();
 
-        // Jika belum ada post sama sekali, pastikan otherPosts koleksi kosong agar view tetap aman
-        if (!$featuredPost) {
-            $otherPosts = collect();
-            return view('frontend.home', compact(
-                'sliders',
-                'upcomingEvents',
-                'factoids',
-                'leaders',
-                'partners',
-                'featuredPost',
-                'otherPosts',
-                
-                
-            ));
-        }
 
-        // 2) Target total other posts = 7
-        $target = 7;
-
-        // Ambil non-news terlebih dahulu (utamakan sesuai requirement awal)
-        $nonNews = Post::where('status', 'published')
-            ->where('id', '!=', $featuredPost->id)
-            ->when($newsCategoryIds->isNotEmpty(), fn ($q) => $q->whereNotIn('category_id', $newsCategoryIds))
-            ->latest()
-            ->take($target)
+        // ---------------------------------
+        // [ LOGIKA BERITA - VERSI BARU UNTUK TES ]
+        // ---------------------------------
+        // 1. Ambil semua kategori yang 'active'
+        // 2. DAN HANYA yang 'memiliki' (whereHas) postingan berstatus 'published'
+        // 3. 'Sertakan' (with) postingan tersebut, tapi...
+        // 4. Batasi HANYA 5 postingan 'published' terbaru per kategori
+        
+        $categoriesWithPosts = PostCategory::where('active', true)
+            ->whereHas('posts', function ($query) {
+                $query->where('status', 'published');
+            })
+            ->with(['posts' => function ($query) {
+                $query->where('status', 'published')
+                      ->latest()
+                      ->take(3); // <-- MENJADI 3
+            }])
+            ->orderBy('name', 'asc') // Urutkan kategori berdasarkan nama A-Z
             ->get();
 
-        // Siapkan daftar ID untuk dikecualikan saat backfill
-        $excludeIds = collect([$featuredPost->id])
-            ->merge($nonNews->pluck('id'))
-            ->unique()
-            ->values()
-            ->all();
-
-        // Backfill jika non-news kurang dari target
-        if ($nonNews->count() < $target) {
-            $need = $target - $nonNews->count();
-            $backfill = collect();
-
-            // 2a) Coba isi dari kategori 'news' (kecuali featured)
-            if ($newsCategoryIds->isNotEmpty()) {
-                $backfill = Post::where('status', 'published')
-                    ->whereIn('category_id', $newsCategoryIds)
-                    ->whereNotIn('id', $excludeIds)
-                    ->latest()
-                    ->take($need)
-                    ->get();
-            }
-
-            // 2b) Jika masih kurang, isi dari post apa pun (kecuali yang sudah terambil)
-            $stillNeed = $need - $backfill->count();
-            if ($stillNeed > 0) {
-                $excludeMore = array_merge($excludeIds, $backfill->pluck('id')->all());
-                $extra = Post::where('status', 'published')
-                    ->whereNotIn('id', $excludeMore)
-                    ->latest()
-                    ->take($stillNeed)
-                    ->get();
-                $backfill = $backfill->concat($extra);
-            }
-
-            $otherPosts = $nonNews->concat($backfill);
-        } else {
-            $otherPosts = $nonNews;
-        }
 
         // Kirim ke view
         return view('frontend.home', compact(
@@ -135,8 +69,10 @@ class HomeController extends Controller
             'factoids',
             'leaders',
             'partners',
-            'featuredPost',
-            'otherPosts',
+            // Variabel berita lama ($featuredPost, $otherPosts) HILANG
+            // Kita ganti dengan variabel baru:
+            'categoriesWithPosts', // <-- INI VARIABEL BARU KITA
+            
             'galleryPhotos',
             'latestVideos',
             'quickLinks',
