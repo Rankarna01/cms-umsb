@@ -34,9 +34,9 @@
                 </div>
 
                <div class="mb-4">
-            <label for="content-editor" class="block font-bold mb-2">Konten</label>
-            <textarea name="content" id="content-editor" rows="15" class="shadow border rounded w-full py-2 px-3">{{ old('content', $page->content ?? '') }}</textarea>
-        </div>
+                    <label for="content-editor" class="block font-bold mb-2">Konten</label>
+                    <textarea name="content" id="content-editor" rows="15" class="shadow border rounded w-full py-2 px-3">{{ old('content', $post->content ?? '') }}</textarea>
+                </div>
             </div>
 
             <div class="md:col-span-1">
