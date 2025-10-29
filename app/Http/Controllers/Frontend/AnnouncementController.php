@@ -3,31 +3,30 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Announcement; // Untuk sidebar
-use App\Models\Event;
+use App\Models\Announcement;
+use App\Models\Event; // Untuk sidebar
 
-class EventController extends Controller
+class AnnouncementController extends Controller
 {
     /**
-     * Menampilkan halaman detail agenda.
+     * Menampilkan halaman detail pengumuman.
      */
-    public function show(Event $event)
+    public function show(Announcement $announcement)
     {
         // Ambil data untuk sidebar
         $latestAnnouncements = Announcement::where('active', true)
+                                ->where('id', '!=', $announcement->id) // Jangan tampilkan yang sedang dibuka
                                 ->latest('published_at')
                                 ->take(5)
                                 ->get();
                                 
         $latestEvents = Event::where('active', true)
-                                ->where('id', '!=', $event->id) // Jangan tampilkan yang sedang dibuka
                                 ->latest('start_date')
                                 ->take(5)
                                 ->get();
 
-        // Mengirim data event lengkap dan data sidebar ke view
-        return view('frontend.pages.event_show', compact(
-            'event', 
+        return view('frontend.page.announcement_show', compact(
+            'announcement', 
             'latestAnnouncements', 
             'latestEvents'
         ));

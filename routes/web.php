@@ -38,6 +38,8 @@ use App\Http\Controllers\Admin\{
 use App\Http\Controllers\Frontend\{
     GalleryController,
     HomeController,
+    AnnouncementController as FrontendAnnouncementController,
+    EventController as FrontendEventController,
     LecturerController as FrontendLecturerController,
     PageController as FrontendPageController,
     PostController as FrontendPostController
@@ -60,6 +62,18 @@ Route::get('/halaman/{slug}', [FrontendPageController::class, 'show'])->name('pa
 Route::get('/galeri', [GalleryController::class, 'index'])->name('gallery.index');
 Route::get('/dosen', [FrontendLecturerController::class, 'index'])->name('lecturers.index');
 Route::get('/dosen/{lecturer:nidn}', [FrontendLecturerController::class, 'show'])->name('lecturers.show');
+
+// ==========================================================
+// ## PERBAIKAN DI SINI ##
+// Kita gunakan alias 'FrontendAnnouncementController'
+// ==========================================================
+Route::get('/pengumuman/{announcement:slug}', [FrontendAnnouncementController::class, 'show'])->name('announcements.show');
+
+// ==========================================================
+// ## PERBAIKAN DI SINI ##
+// Kita gunakan alias 'FrontendEventController'
+// ==========================================================
+Route::get('/agenda/{event:slug}', [FrontendEventController::class, 'show'])->name('events.show');
 
 
 // --- ROUTE UNTUK SISTEM LOGIN & ADMIN ---
@@ -133,4 +147,3 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__ . '/auth.php';
-

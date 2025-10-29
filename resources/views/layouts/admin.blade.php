@@ -165,10 +165,9 @@
                     @endcan
 
                     {{-- 4. INFORMASI (Informasi, Pengumuman, Agenda) --}}
-                    <li class="px-3 pt-4 text-[11px] uppercase tracking-wide text-white/50" x-show="!collapsed">
-                        Informasi</li>
+                    
                     {{-- Tidak ada route khusus Informasi → nonaktif --}}
-                    {!! navDisabled('fa-solid fa-circle-info', 'Informasi') !!}
+                    
                     @can('kelola pengumuman')
                         {!! navLink('admin.announcements.index', 'fa-solid fa-bullhorn', 'Pengumuman', ['admin.announcements.*']) !!}
                     @endcan

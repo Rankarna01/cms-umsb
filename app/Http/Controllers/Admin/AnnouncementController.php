@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Announcement;
+use App\Models\Document; // <-- TAMBAHKAN INI
 use App\Models\PostCategory;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Storage; // <-- TAMBAHKAN INI
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
@@ -14,15 +15,15 @@ class AnnouncementController extends Controller
 {
     public function index()
     {
-        $announcements = Announcement::with(['category', 'author'])->latest()->get();
+        $announcements = Announcement::with(['category', 'author', 'document'])->latest()->get();
         return view('admin.announcements.index', compact('announcements'));
     }
 
     public function create()
     {
-        // Ambil kategori yang tipenya 'information' saja
-        $categories = PostCategory::where('type', 'information')->orderBy('name')->get();
-        return view('admin.announcements.create', compact('categories'));
+        
+        $documents = Document::orderBy('title')->get(); // Ambil daftar dokumen
+        return view('admin.announcements.create', compact('documents'));
     }
 
     public function store(Request $request)
@@ -31,8 +32,9 @@ class AnnouncementController extends Controller
             'title' => 'required|string|max:255',
             'slug' => 'nullable|string|max:255|unique:announcements,slug',
             'content' => 'required|string',
-            'category_id' => 'nullable|exists:post_categories,id',
-            'attachment' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx|max:5120', // maks 5MB
+           
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048', // Field baru
+            'document_id' => 'nullable|exists:documents,id', // Field baru
             'active' => 'nullable|boolean',
         ]);
 
@@ -40,9 +42,8 @@ class AnnouncementController extends Controller
             $validated['slug'] = Str::slug($validated['title']);
         }
 
-        if ($request->hasFile('attachment')) {
-            $path = $request->file('attachment')->store('attachments', 'public');
-            $validated['attachment'] = $path;
+        if ($request->hasFile('thumbnail')) {
+            $validated['thumbnail'] = $request->file('thumbnail')->store('announcements', 'public');
         }
 
         $validated['author_id'] = auth()->id();
@@ -56,8 +57,9 @@ class AnnouncementController extends Controller
 
     public function edit(Announcement $announcement)
     {
-        $categories = PostCategory::where('type', 'information')->orderBy('name')->get();
-        return view('admin.announcements.edit', compact('announcement', 'categories'));
+       
+        $documents = Document::orderBy('title')->get(); // Ambil daftar dokumen
+        return view('admin.announcements.edit', compact('announcement', 'documents'));
     }
 
     public function update(Request $request, Announcement $announcement)
@@ -66,8 +68,9 @@ class AnnouncementController extends Controller
             'title' => 'required|string|max:255',
             'slug' => ['nullable', 'string', 'max:255', Rule::unique('announcements')->ignore($announcement->id)],
             'content' => 'required|string',
-            'category_id' => 'nullable|exists:post_categories,id',
-            'attachment' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx|max:5120',
+           
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048', // Field baru
+            'document_id' => 'nullable|exists:documents,id', // Field baru
             'active' => 'nullable|boolean',
         ]);
 
@@ -75,10 +78,9 @@ class AnnouncementController extends Controller
             $validated['slug'] = Str::slug($validated['title']);
         }
 
-        if ($request->hasFile('attachment')) {
-            Storage::delete($announcement->attachment);
-            $path = $request->file('attachment')->store('attachments', 'public');
-            $validated['attachment'] = $path;
+        if ($request->hasFile('thumbnail')) {
+            if ($announcement->thumbnail) Storage::delete($announcement->thumbnail);
+            $validated['thumbnail'] = $request->file('thumbnail')->store('announcements', 'public');
         }
 
         $validated['active'] = $request->has('active');
@@ -89,7 +91,7 @@ class AnnouncementController extends Controller
 
     public function destroy(Announcement $announcement)
     {
-        Storage::delete($announcement->attachment);
+        if ($announcement->thumbnail) Storage::delete($announcement->thumbnail);
         $announcement->delete();
 
         return redirect()->route('admin.announcements.index')->with('success', 'Pengumuman berhasil dihapus.');

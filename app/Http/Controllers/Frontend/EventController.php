@@ -25,8 +25,7 @@ class EventController extends Controller
                                 ->take(5)
                                 ->get();
 
-        // Mengirim data event lengkap dan data sidebar ke view
-        return view('frontend.pages.event_show', compact(
+        return view('frontend.page.event_show', compact(
             'event', 
             'latestAnnouncements', 
             'latestEvents'

@@ -150,101 +150,108 @@
     @endif
 
     {{-- SECTION: KUMPULAN BERITA PER KATEGORI --}}
-@if ($categoriesWithPosts->isNotEmpty())
+    @if ($categoriesWithPosts->isNotEmpty())
+        {{-- Loop untuk SETIAP KATEGORI yang ditemukan --}}
+        @foreach ($categoriesWithPosts as $category)
+            <section class="py-16 lg:py-20">
+                <div class="container mx-auto px-4 sm:px-6 lg:px-8">
 
-    {{-- Loop untuk SETIAP KATEGORI yang ditemukan --}}
-    @foreach ($categoriesWithPosts as $category)
-        <section class="py-16 lg:py-20">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                
-                {{-- Beri garis pemisah antar kategori, kecuali yang pertama --}}
-                <div class="{{ $loop->first ? '' : 'border-t border-slate-200 pt-12' }}">
-                    
-                    <div class="mb-10 flex items-center justify-between">
-                        {{-- Judul section diambil dari nama Kategori --}}
-                        <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-gray-900">
-                            {{ $category->name }}
-                        </h2>
-                        
-                        {{-- Tombol Lihat Semua --}}
-                        <a href="{{ route('posts.index') }}"
-                            class="inline-flex items-center gap-2 px-4 py-2 rounded-xl ring-1 ring-slate-300 hover:ring-red-300 text-red-700 hover:bg-red-50 transition">
-                            Lihat semua
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M13 5l7 7-7 7-1.41-1.41L16.17 13H4v-2h12.17l-4.58-4.59L13 5z" />
-                            </svg>
-                        </a>
-                    </div>
-                    
-                    {{-- 
+                    {{-- Beri garis pemisah antar kategori, kecuali yang pertama --}}
+                    <div class="{{ $loop->first ? '' : 'border-t border-slate-200 pt-12' }}">
+
+                        <div class="mb-10 flex items-center justify-between">
+                            {{-- Judul section diambil dari nama Kategori --}}
+                            <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-gray-900">
+                                {{ $category->name }}
+                            </h2>
+
+                            {{-- Tombol Lihat Semua --}}
+                            <a href="{{ route('posts.index') }}"
+                                class="inline-flex items-center gap-2 px-4 py-2 rounded-xl ring-1 ring-slate-300 hover:ring-red-300 text-red-700 hover:bg-red-50 transition">
+                                Lihat semua
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4" viewBox="0 0 24 24"
+                                    fill="currentColor">
+                                    <path d="M13 5l7 7-7 7-1.41-1.41L16.17 13H4v-2h12.17l-4.58-4.59L13 5z" />
+                                </svg>
+                            </a>
+                        </div>
+
+                        {{-- 
                     // ==========================================================
                     // ## PERUBAHAN GRID: lg:grid-cols-5 diubah menjadi lg:grid-cols-3
                     // ==========================================================
                     --}}
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-                        
-                        {{-- Loop ini sekarang PASTI hanya 3 (atau kurang) --}}
-                        @foreach ($category->posts as $post)
-                            
-                            {{-- 
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+
+                            {{-- Loop ini sekarang PASTI hanya 3 (atau kurang) --}}
+                            @foreach ($category->posts as $post)
+                                {{-- 
                             // ==========================================================
                             // ## KARTU BERITA DENGAN STYLE BARU (SESUAI GAMBAR)
                             // ==========================================================
                             --}}
-                            <article
-                                class="group rounded-2xl overflow-hidden bg-white ring-1 ring-slate-200 hover:ring-red-300 hover:shadow-xl transition flex flex-col">
-                                {{-- Kita buat <a> sebagai flex-col agar seluruh kartu adalah link --}}
-                                <a href="{{ route('posts.show', $post->slug) }}" class="block h-full flex flex-col">
-                                    
-                                    {{-- Bagian Gambar --}}
-                                    <div class="relative aspect-[16/10] overflow-hidden">
-                                        <img src="{{ $post->thumbnail ? Storage::url($post->thumbnail) : 'https://via.placeholder.com/640x400' }}"
-                                            alt="{{ $post->title }}"
-                                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-                                    </div>
+                                <article
+                                    class="group rounded-2xl overflow-hidden bg-white ring-1 ring-slate-200 hover:ring-red-300 hover:shadow-xl transition flex flex-col">
+                                    {{-- Kita buat <a> sebagai flex-col agar seluruh kartu adalah link --}}
+                                    <a href="{{ route('posts.show', $post->slug) }}" class="block h-full flex flex-col">
 
-                                    {{-- Bagian Konten --}}
-                                    {{-- flex-grow agar block ini mengisi sisa ruang --}}
-                                    <div class="p-4 flex flex-col flex-grow"> 
-                                        
-                                        {{-- Blok Meta Tags (Tanggal & Kategori) --}}
-                                        <div class="mb-3 flex flex-wrap items-center gap-2">
-                                            {{-- Tag Tanggal (Style Merah) --}}
-                                            <span class="inline-flex items-center gap-1.5 rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-700">
-                                                {{-- Icon Kalender --}}
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
-                                                  <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
-                                                </svg>
-                                                {{-- Format tanggal seperti di gambar Anda --}}
-                                                {{ $post->created_at->translatedFormat('d M Y') }}
-                                            </span>
-                                            
-                                            {{-- Tag Kategori (Style Biru, agar beda) --}}
-                                            <span class="inline-flex items-center gap-1.5 rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-700">
-                                                {{-- Icon Tag --}}
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
-                                                  <path fill-rule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a1 1 0 011-1h5a.997.997 0 01.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
-                                                </svg>
-                                                {{ $category->name }}
-                                            </span>
+                                        {{-- Bagian Gambar --}}
+                                        <div class="relative aspect-[16/10] overflow-hidden">
+                                            <img src="{{ $post->thumbnail ? Storage::url($post->thumbnail) : 'https://via.placeholder.com/640x400' }}"
+                                                alt="{{ $post->title }}"
+                                                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                                         </div>
-                                        
-                                        {{-- Judul Berita --}}
-                                        {{-- line-clamp-3 agar bisa 3 baris seperti di gambar --}}
-                                        <h3
-                                            class="text-lg font-semibold leading-snug text-slate-900 line-clamp-3 group-hover:text-red-700 flex-grow">
-                                            {{ $post->title }}
-                                        </h3>
-                                    </div>
-                                </a>
-                            </article>
-                        @endforeach
+
+                                        {{-- Bagian Konten --}}
+                                        {{-- flex-grow agar block ini mengisi sisa ruang --}}
+                                        <div class="p-4 flex flex-col flex-grow">
+
+                                            {{-- Blok Meta Tags (Tanggal & Kategori) --}}
+                                            <div class="mb-3 flex flex-wrap items-center gap-2">
+                                                {{-- Tag Tanggal (Style Merah) --}}
+                                                <span
+                                                    class="inline-flex items-center gap-1.5 rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-700">
+                                                    {{-- Icon Kalender --}}
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5"
+                                                        viewBox="0 0 20 20" fill="currentColor">
+                                                        <path fill-rule="evenodd"
+                                                            d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                                                            clip-rule="evenodd" />
+                                                    </svg>
+                                                    {{-- Format tanggal seperti di gambar Anda --}}
+                                                    {{ $post->created_at->translatedFormat('d M Y') }}
+                                                </span>
+
+                                                {{-- Tag Kategori (Style Biru, agar beda) --}}
+                                                <span
+                                                    class="inline-flex items-center gap-1.5 rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-700">
+                                                    {{-- Icon Tag --}}
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5"
+                                                        viewBox="0 0 20 20" fill="currentColor">
+                                                        <path fill-rule="evenodd"
+                                                            d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a1 1 0 011-1h5a.997.997 0 01.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z"
+                                                            clip-rule="evenodd" />
+                                                    </svg>
+                                                    {{ $category->name }}
+                                                </span>
+                                            </div>
+
+                                            {{-- Judul Berita --}}
+                                            {{-- line-clamp-3 agar bisa 3 baris seperti di gambar --}}
+                                            <h3
+                                                class="text-lg font-semibold leading-snug text-slate-900 line-clamp-3 group-hover:text-red-700 flex-grow">
+                                                {{ $post->title }}
+                                            </h3>
+                                        </div>
+                                    </a>
+                                </article>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
-    @endforeach
-@endif
+            </section>
+        @endforeach
+    @endif
 
 
     {{-- SECTION: FAKTA KAMPUS --}}
@@ -812,34 +819,70 @@
 
 
     {{-- SECTION: AGENDA --}}
-    @if ($upcomingEvents->isNotEmpty())
+    @if ($latestAnnouncements->isNotEmpty() || $latestEvents->isNotEmpty())
         <section class="py-16 lg:py-20">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-12">
-                    <h2 class="text-base font-semibold text-red-800 tracking-wider uppercase">Agenda</h2>
-                    <p class="mt-2 text-3xl font-extrabold text-gray-900 tracking-tight sm:text-4xl">Jadwal Kegiatan
-                        Terdekat</p>
-                </div>
-                <div class="space-y-6 max-w-4xl mx-auto">
-                    @forelse($upcomingEvents as $event)
-                        <div class="bg-white p-6 rounded-xl shadow-md flex items-center space-x-6 ring-1 ring-slate-100">
-                            <div
-                                class="text-center bg-red-800 text-white rounded-lg p-4 w-20 h-20 flex flex-col justify-center">
-                                <p class="text-3xl font-bold leading-none">{{ $event->start_date->format('d') }}</p>
-                                <p class="text-sm uppercase tracking-wider">{{ $event->start_date->format('M') }}</p>
-                            </div>
-                            <div>
-                                <h3 class="font-bold text-lg text-gray-900">{{ $event->title }}</h3>
-                                <p class="text-gray-800 text-sm mt-1">{{ $event->location }}</p>
-                            </div>
+                {{-- Grid 2 kolom --}}
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+
+                    {{-- Kolom 1: Pengumuman (Merah Tua) --}}
+                    <div class="bg-red-800 text-white rounded-2xl shadow-xl p-8 lg:p-10 relative overflow-hidden">
+                        {{-- Efek dekorasi background --}}
+                        <div class="absolute inset-0 bg-gradient-to-br from-red-800 opacity-80 rounded-2xl"></div>
+
+                        <div class="relative z-10">
+                            <h2 class="text-3xl font-extrabold mb-6 border-b border-red-800 pb-2">Pengumuman</h2>
+
+                            <ul class="space-y-5">
+                                @foreach ($latestAnnouncements as $announcement)
+                                    <li>
+                                        <a href="{{ route('announcements.show', $announcement->slug) }}"
+                                            class="group flex items-start gap-4 transition transform hover:translate-x-1">
+                                            {{-- Icon --}}
+                                            <div class="flex-shrink-0 text-yellow-400 mt-1">
+                                                <i class="fa-solid fa-bullhorn text-lg"></i>
+                                            </div>
+                                            {{-- Konten --}}
+                                            <div>
+                                                <h3
+                                                    class="font-semibold text-white group-hover:text-yellow-300 transition line-clamp-2">
+                                                    {{ $announcement->title }}
+                                                </h3>
+                                            </div>
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
                         </div>
-                    @empty
-                        <p class="text-center text-gray-500">Belum ada agenda terdekat.</p>
-                    @endforelse
+                    </div> {{-- Akhir Kolom Pengumuman --}}
+
+                    {{-- Kolom 2: Agenda (Putih) --}}
+                    <div class="bg-white rounded-2xl shadow-xl p-8 lg:p-10 ring-1 ring-slate-200/70">
+                        <h2 class="text-3xl font-extrabold text-gray-900 mb-6 border-b border-gray-200 pb-2">Agenda</h2>
+
+                        <ul class="space-y-5">
+                            @foreach ($latestEvents as $event)
+                                <li>
+                                    <a href="{{ route('events.show', $event->slug) }}"
+                                        class="group block transition transform hover:translate-x-1">
+                                        <span class="text-sm text-red-700 font-semibold block">
+                                            {{ $event->start_date->translatedFormat('d F Y') }}
+                                        </span>
+                                        <h3
+                                            class="font-semibold text-gray-800 group-hover:text-red-700 transition line-clamp-2">
+                                            {{ $event->title }}
+                                        </h3>
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div> {{-- Akhir Kolom Agenda --}}
+
                 </div>
             </div>
         </section>
     @endif
+
 
     {{-- SECTION: PIMPINAN --}}
     @if ($leaders->isNotEmpty())
@@ -1059,60 +1102,59 @@
         </section>
     @endif
 
-        {{-- SECTION: TESTIMONI ALUMNI --}}
- @if ($testimonials->isNotEmpty())
-    <section class="py-16 lg:py-20">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-              <span
+    {{-- SECTION: TESTIMONI ALUMNI --}}
+    @if ($testimonials->isNotEmpty())
+        <section class="py-16 lg:py-20">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <span
                         class="inline-block text-red-800 font-extrabold tracking-widest uppercase text-sm border-b-2 border-red-500 pb-1">
                         Testimoni
                     </span>
-                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900">Apa Kata Alumni?</h2>
-                <p class="mt-2 text-lg text-slate-800">Cerita alumni yang menginspirasi generasi berikutnya.</p>
-            </div>
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900">Apa Kata Alumni?</h2>
+                    <p class="mt-2 text-lg text-slate-800">Cerita alumni yang menginspirasi generasi berikutnya.</p>
+                </div>
 
-            {{-- 
+                {{-- 
             // ==========================================================
             // ## PERUBAHAN UTAMA: DARI SWIPER MENJADI GRID 3 KOLOM ##
             // ==========================================================
             --}}
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                
-                {{-- Kita batasi hanya 3 testimoni yang tampil --}}
-                @foreach ($testimonials->take(3) as $testimonial)
-                    
-                    {{-- Ini adalah Kartu Testimoni Baru (sesuai gambar) --}}
-                    <div class="bg-white p-8 rounded-2xl shadow-lg ring-1 ring-slate-200/70 flex flex-col text-center items-center">
-                        
-                        {{-- Foto Profil --}}
-                        <img class="h-20 w-20 rounded-full object-cover"
-                            src="{{ $testimonial->photo ? Storage::url($testimonial->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($testimonial->name) }}"
-                            alt="{{ $testimonial->name }}">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 
-                        {{-- Konten Testimoni --}}
-                        <blockquote class="mt-6 flex-grow">
-                            <p class="text-slate-700 italic line-clamp-6"> {{-- Dibatasi 6 baris agar rapi --}}
-                                "{{ $testimonial->content }}"
-                            </p>
-                        </blockquote>
+                    {{-- Kita batasi hanya 3 testimoni yang tampil --}}
+                    @foreach ($testimonials->take(3) as $testimonial)
+                        {{-- Ini adalah Kartu Testimoni Baru (sesuai gambar) --}}
+                        <div
+                            class="bg-white p-8 rounded-2xl shadow-lg ring-1 ring-slate-200/70 flex flex-col text-center items-center">
 
-                        {{-- Nama dan Jabatan --}}
-                        <figcaption class="mt-6 flex-shrink-0">
-                            <div class="font-bold text-slate-900">{{ $testimonial->name }}</div>
-                            <div class="text-slate-500 text-sm">
-                                {{ $testimonial->occupation ? $testimonial->occupation . ' - ' : '' }}
-                                Angkatan {{ $testimonial->graduation_year }}
-                            </div>
-                        </figcaption>
-                    </div>
+                            {{-- Foto Profil --}}
+                            <img class="h-20 w-20 rounded-full object-cover"
+                                src="{{ $testimonial->photo ? Storage::url($testimonial->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($testimonial->name) }}"
+                                alt="{{ $testimonial->name }}">
 
-                @endforeach
+                            {{-- Konten Testimoni --}}
+                            <blockquote class="mt-6 flex-grow">
+                                <p class="text-slate-700 italic line-clamp-6"> {{-- Dibatasi 6 baris agar rapi --}}
+                                    "{{ $testimonial->content }}"
+                                </p>
+                            </blockquote>
+
+                            {{-- Nama dan Jabatan --}}
+                            <figcaption class="mt-6 flex-shrink-0">
+                                <div class="font-bold text-slate-900">{{ $testimonial->name }}</div>
+                                <div class="text-slate-500 text-sm">
+                                    {{ $testimonial->occupation ? $testimonial->occupation . ' - ' : '' }}
+                                    Angkatan {{ $testimonial->graduation_year }}
+                                </div>
+                            </figcaption>
+                        </div>
+                    @endforeach
+                </div>
+
             </div>
-            
-        </div>
-    </section>
-@endif
+        </section>
+    @endif
 
 
 @endsection

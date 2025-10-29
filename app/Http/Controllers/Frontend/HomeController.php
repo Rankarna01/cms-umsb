@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\Post;
 use App\Models\Slide;
+use App\Models\Announcement;
 use Illuminate\Http\Request;
 use App\Models\PostCategory;
 use App\Models\Photo;
@@ -39,6 +40,8 @@ class HomeController extends Controller
         $testimonials = Testimonial::where('active', true)->orderBy('sort_order')->take(4)->get();
         $academicServices = AcademicService::orderBy('sort_order')->get();
         $latestLecturers = Lecturer::latest()->take(4)->get();
+        $latestAnnouncements = Announcement::where('active', true)->latest('published_at')->take(4)->get();
+        $latestEvents = Event::where('active', true)->latest('start_date')->take(5)->get();
 
 
         // ---------------------------------
@@ -72,12 +75,13 @@ class HomeController extends Controller
             // Variabel berita lama ($featuredPost, $otherPosts) HILANG
             // Kita ganti dengan variabel baru:
             'categoriesWithPosts', // <-- INI VARIABEL BARU KITA
-            
             'galleryPhotos',
             'latestVideos',
             'quickLinks',
             'latestLecturers',
             'testimonials',
+            'latestAnnouncements', // <-- TAMBAHKAN INI
+            'latestEvents',        // <-- TAMBAHKAN INI
             'academicServices'
         ));
     }
