@@ -97,7 +97,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('/slide-images/{image}', [SlideImageController::class, 'destroy'])
         ->name('slide-images.destroy');
         Route::resource('announcements', AnnouncementController::class);
-        Route::resource('events', EventController::class);
+        // Route::resource('events', EventController::class);
         Route::resource('faculties', FacultyController::class);
         Route::resource('study-programs', StudyProgramController::class);
         Route::resource('lecturers', AdminLecturerController::class);

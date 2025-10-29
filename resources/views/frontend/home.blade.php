@@ -886,120 +886,141 @@
 
     {{-- SECTION: PIMPINAN --}}
     @if ($leaders->isNotEmpty())
-        <section class="relative overflow-hidden bg-white py-16">
-            <div class="container relative mx-auto px-6">
+<section class="relative bg-white py-16">
+  <div class="container relative mx-auto px-6">
+    {{-- Judul --}}
+    <div class="text-center mb-12">
+      <span class="inline-block text-red-800 font-extrabold tracking-widest uppercase text-sm border-b-2 border-red-500 pb-1">
+        Pimpinan Universitas
+      </span>
+      <p class="mt-2 text-slate-500 text-sm sm:text-base">Struktur kepemimpinan dan jajaran universitas.</p>
+    </div>
 
-                {{-- Judul --}}
-                <div class="text-center mb-12">
-                    <span
-                        class="inline-block text-red-800 font-extrabold text- tracking-widest uppercase text-sm border-b-2 border-red-500 pb-1">
-                        Pimpinan Universitas
-                    </span>
-                    <p class="mt-2 text-slate-500 text-sm sm:text-base">
-                        Struktur kepemimpinan dan jajaran universitas.
-                    </p>
+    {{-- MOBILE: Slider manual (tanpa swiper/marquee) --}}
+    <div class="sm:hidden">
+      <div class="flex items-center justify-between mb-4">
+        <button type="button"
+                class="inline-flex items-center justify-center h-10 w-10 rounded-full ring-1 ring-slate-300 text-slate-700 hover:bg-slate-50 active:scale-95"
+                aria-label="Geser kiri"
+                onclick="document.getElementById('leadersScroller').scrollBy({ left: -280, behavior: 'smooth' })">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <button type="button"
+                class="inline-flex items-center justify-center h-10 w-10 rounded-full ring-1 ring-slate-300 text-slate-700 hover:bg-slate-50 active:scale-95"
+                aria-label="Geser kanan"
+                onclick="document.getElementById('leadersScroller').scrollBy({ left: 280, behavior: 'smooth' })">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
+
+      <div id="leadersScroller"
+           class="overflow-x-auto no-scrollbar snap-x snap-mandatory -mx-2 px-2">
+        <ul class="flex items-stretch gap-4">
+          @foreach ($leaders as $leader)
+            <li class="shrink-0 snap-center">
+              {{-- kartu dengan ukuran konsisten --}}
+              <div class="w-64 h-[22rem] sm:w-72 rounded-2xl bg-white ring-1 ring-slate-200 hover:ring-red-400 hover:shadow-xl transition-all duration-300 overflow-hidden text-center p-5 flex flex-col">
+                <div class="relative mx-auto mb-3 overflow-hidden rounded-xl w-52 h-56">
+                  <img
+                    src="{{ $leader->photo ? Storage::url($leader->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($leader->name) . '&size=256' }}"
+                    alt="{{ $leader->name }}"
+                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 group-hover:brightness-110">
                 </div>
 
-                <div class="relative">
-                    <div class="pointer-events-none absolute inset-0 mask-gradient"></div>
-
-                    {{-- Container: mobile bisa geser manual (snap), desktop auto-marquee --}}
-                    <div class="overflow-x-auto sm:overflow-hidden snap-x snap-mandatory no-scrollbar">
-                        {{-- Track: duplikasi 2x untuk loop mulus --}}
-                        <ul class="marquee-track flex items-stretch gap-6 sm:gap-8">
-                            {{-- SET ASLI --}}
-                            @foreach ($leaders as $leader)
-                                <li class="shrink-0 w-[15rem] sm:w-[16rem] snap-center sm:snap-none">
-                                    <div
-                                        class="group relative rounded-2xl bg-white ring-1 ring-slate-200 hover:ring-red-400 hover:shadow-xl transition-all duration-300 overflow-hidden text-center p-6">
-                                        <div class="relative mx-auto mb-4 overflow-hidden rounded-xl w-52 h-64">
-                                            <img src="{{ $leader->photo ? Storage::url($leader->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($leader->name) . '&size=256' }}"
-                                                alt="{{ $leader->name }}"
-                                                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 group-hover:brightness-110">
-                                        </div>
-                                        <h3 class="text-lg font-bold text-slate-800 group-hover:text-red-800 transition">
-                                            {{ $leader->name }}
-                                        </h3>
-                                        <p class="text-slate-500 text-sm">{{ $leader->position }}</p>
-                                        <div class="mt-4 flex justify-center space-x-3">
-                                            @if ($leader->social_facebook)
-                                                <a href="{{ $leader->social_facebook }}" target="_blank"
-                                                    class="text-gray-400 hover:text-blue-800 transform hover:scale-125 transition">
-                                                    <i class="fa-brands fa-facebook-f text-xl"></i>
-                                                </a>
-                                            @endif
-                                            @if ($leader->social_instagram)
-                                                <a href="{{ $leader->social_instagram }}" target="_blank"
-                                                    class="text-gray-400 hover:text-pink-500 transform hover:scale-125 transition">
-                                                    <i class="fa-brands fa-instagram text-xl"></i>
-                                                </a>
-                                            @endif
-                                            @if ($leader->social_linkedin)
-                                                <a href="{{ $leader->social_linkedin }}" target="_blank"
-                                                    class="text-gray-400 hover:text-blue-700 transform hover:scale-125 transition">
-                                                    <i class="fa-brands fa-linkedin-in text-xl"></i>
-                                                </a>
-                                            @endif
-                                            @if ($leader->social_x)
-                                                <a href="{{ $leader->social_x }}" target="_blank"
-                                                    class="text-gray-400 hover:text-gray-800 transform hover:scale-125 transition">
-                                                    <i class="fa-brands fa-x-twitter text-xl"></i>
-                                                </a>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </li>
-                            @endforeach
-
-                            {{-- SET DUPLIKAT --}}
-                            @foreach ($leaders as $leader)
-                                <li class="shrink-0 w-[15rem] sm:w-[16rem] snap-center sm:snap-none" aria-hidden="true">
-                                    <div
-                                        class="group relative rounded-2xl bg-white ring-1 ring-slate-200 hover:ring-red-400 hover:shadow-xl transition-all duration-300 overflow-hidden text-center p-6">
-                                        <div class="relative mx-auto mb-4 overflow-hidden rounded-xl w-52 h-64">
-                                            <img src="{{ $leader->photo ? Storage::url($leader->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($leader->name) . '&size=256' }}"
-                                                alt=""
-                                                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 group-hover:brightness-110">
-                                        </div>
-                                        <h3 class="text-lg font-bold text-slate-800 group-hover:text-red-800 transition">
-                                            {{ $leader->name }}
-                                        </h3>
-                                        <p class="text-slate-500 text-sm">{{ $leader->position }}</p>
-                                        <div class="mt-4 flex justify-center space-x-3">
-                                            @if ($leader->social_facebook)
-                                                <a href="{{ $leader->social_facebook }}" target="_blank"
-                                                    class="text-gray-400 hover:text-blue-800 transform hover:scale-125 transition">
-                                                    <i class="fa-brands fa-facebook-f text-xl"></i>
-                                                </a>
-                                            @endif
-                                            @if ($leader->social_instagram)
-                                                <a href="{{ $leader->social_instagram }}" target="_blank"
-                                                    class="text-gray-400 hover:text-pink-500 transform hover:scale-125 transition">
-                                                    <i class="fa-brands fa-instagram text-xl"></i>
-                                                </a>
-                                            @endif
-                                            @if ($leader->social_linkedin)
-                                                <a href="{{ $leader->social_linkedin }}" target="_blank"
-                                                    class="text-gray-400 hover:text-blue-700 transform hover:scale-125 transition">
-                                                    <i class="fa-brands fa-linkedin-in text-xl"></i>
-                                                </a>
-                                            @endif
-                                            @if ($leader->social_x)
-                                                <a href="{{ $leader->social_x }}" target="_blank"
-                                                    class="text-gray-400 hover:text-gray-800 transform hover:scale-125 transition">
-                                                    <i class="fa-brands fa-x-twitter text-xl"></i>
-                                                </a>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
+                {{-- blok teks fixed height agar semua kotak sama --}}
+                <div class="px-1">
+                  <h3 class="text-base font-bold text-slate-800 line-clamp-2 min-h-[2.75rem]">
+                    {{ $leader->name }}
+                  </h3>
+                  <p class="text-slate-500 text-xs line-clamp-2 min-h-[2rem]">
+                    {{ $leader->position }}
+                  </p>
                 </div>
+
+                {{-- social di bawah --}}
+                <div class="mt-auto pt-3 flex justify-center gap-3">
+                  @if ($leader->social_facebook)
+                    <a href="{{ $leader->social_facebook }}" target="_blank" class="text-gray-400 hover:text-blue-800 transition">
+                      <i class="fa-brands fa-facebook-f text-lg"></i>
+                    </a>
+                  @endif
+                  @if ($leader->social_instagram)
+                    <a href="{{ $leader->social_instagram }}" target="_blank" class="text-gray-400 hover:text-pink-500 transition">
+                      <i class="fa-brands fa-instagram text-lg"></i>
+                    </a>
+                  @endif
+                  @if ($leader->social_linkedin)
+                    <a href="{{ $leader->social_linkedin }}" target="_blank" class="text-gray-400 hover:text-blue-700 transition">
+                      <i class="fa-brands fa-linkedin-in text-lg"></i>
+                    </a>
+                  @endif
+                  @if ($leader->social_x)
+                    <a href="{{ $leader->social_x }}" target="_blank" class="text-gray-400 hover:text-gray-800 transition">
+                      <i class="fa-brands fa-x-twitter text-lg"></i>
+                    </a>
+                  @endif
+                </div>
+              </div>
+            </li>
+          @endforeach
+        </ul>
+      </div>
+    </div>
+
+    {{-- DESKTOP/TABLET: Grid responsif (kotak seragam, tidak tergantung teks) --}}
+    <div class="hidden sm:block">
+      <ul class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        @foreach ($leaders as $leader)
+          <li>
+            <div class="rounded-2xl bg-white ring-1 ring-slate-200 hover:ring-red-400 hover:shadow-xl transition-all duration-300 overflow-hidden text-center p-6 flex flex-col h-full">
+              <div class="relative mx-auto mb-4 overflow-hidden rounded-xl w-52 h-56">
+                <img
+                  src="{{ $leader->photo ? Storage::url($leader->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($leader->name) . '&size=256' }}"
+                  alt="{{ $leader->name }}"
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 group-hover:brightness-110">
+              </div>
+
+              {{-- blok teks fixed height agar tinggi kartu konsisten --}}
+              <div class="px-2">
+                <h3 class="text-lg font-bold text-slate-800 line-clamp-2 min-h-[2.75rem]">
+                  {{ $leader->name }}
+                </h3>
+                <p class="text-slate-500 text-sm line-clamp-2 min-h-[2.25rem]">
+                  {{ $leader->position }}
+                </p>
+              </div>
+
+              <div class="mt-auto pt-4 flex justify-center gap-3">
+                @if ($leader->social_facebook)
+                  <a href="{{ $leader->social_facebook }}" target="_blank" class="text-gray-400 hover:text-blue-800 transition">
+                    <i class="fa-brands fa-facebook-f text-xl"></i>
+                  </a>
+                @endif
+                @if ($leader->social_instagram)
+                  <a href="{{ $leader->social_instagram }}" target="_blank" class="text-gray-400 hover:text-pink-500 transition">
+                    <i class="fa-brands fa-instagram text-xl"></i>
+                  </a>
+                @endif
+                @if ($leader->social_linkedin)
+                  <a href="{{ $leader->social_linkedin }}" target="_blank" class="text-gray-400 hover:text-blue-700 transition">
+                    <i class="fa-brands fa-linkedin-in text-xl"></i>
+                  </a>
+                @endif
+                @if ($leader->social_x)
+                  <a href="{{ $leader->social_x }}" target="_blank" class="text-gray-400 hover:text-gray-800 transition">
+                    <i class="fa-brands fa-x-twitter text-xl"></i>
+                  </a>
+                @endif
+              </div>
             </div>
-        </section>
-    @endif
+          </li>
+        @endforeach
+      </ul>
+    </div>
+  </div>
+</section>
+@endif
+
 
     {{-- SECTION: DOSEN --}}
 
