@@ -958,8 +958,7 @@
         </section>
     @endif
 
-        
-
+    {{-- SECTION: DOSEN --}}
 
     {{-- SECTION: KERJA SAMA --}}
     @if ($partners->isNotEmpty())
@@ -1060,84 +1059,60 @@
         </section>
     @endif
 
+        {{-- SECTION: TESTIMONI ALUMNI --}}
+ @if ($testimonials->isNotEmpty())
+    <section class="py-16 lg:py-20">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+              <span
+                        class="inline-block text-red-800 font-extrabold tracking-widest uppercase text-sm border-b-2 border-red-500 pb-1">
+                        Testimoni
+                    </span>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900">Apa Kata Alumni?</h2>
+                <p class="mt-2 text-lg text-slate-800">Cerita alumni yang menginspirasi generasi berikutnya.</p>
+            </div>
 
-    @if ($testimonials->isNotEmpty())
-        <section class="py-16 lg:py-20">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900">Apa Kata Alumni?</h2>
-                    <p class="mt-2 text-lg text-slate-800">Pengalaman mereka yang telah menjadi mahasiswa Universitas
-                        Muhammadiyah Sumatera Barat.</p>
-                </div>
+            {{-- 
+            // ==========================================================
+            // ## PERUBAHAN UTAMA: DARI SWIPER MENJADI GRID 3 KOLOM ##
+            // ==========================================================
+            --}}
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                {{-- Kita batasi hanya 3 testimoni yang tampil --}}
+                @foreach ($testimonials->take(3) as $testimonial)
+                    
+                    {{-- Ini adalah Kartu Testimoni Baru (sesuai gambar) --}}
+                    <div class="bg-white p-8 rounded-2xl shadow-lg ring-1 ring-slate-200/70 flex flex-col text-center items-center">
+                        
+                        {{-- Foto Profil --}}
+                        <img class="h-20 w-20 rounded-full object-cover"
+                            src="{{ $testimonial->photo ? Storage::url($testimonial->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($testimonial->name) }}"
+                            alt="{{ $testimonial->name }}">
 
-                {{-- Swiper Container --}}
-                <div class="swiper mySwiper !overflow-visible">
-                    <div class="swiper-wrapper">
-                        @foreach ($testimonials as $testimonial)
-                            <div class="swiper-slide">
-                                <div class="bg-white p-8 rounded-2xl shadow-lg ring-1 ring-slate-200/70 mx-2">
-                                    <div class="flex items-start gap-6">
-                                        <img class="h-16 w-16 rounded-full object-cover flex-shrink-0"
-                                            src="{{ $testimonial->photo ? Storage::url($testimonial->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($testimonial->name) }}"
-                                            alt="{{ $testimonial->name }}">
-                                        <div class="flex-grow">
-                                            <blockquote class="text-slate-700 italic">
-                                                <p>"{{ $testimonial->content }}"</p>
-                                            </blockquote>
-                                            <figcaption class="mt-4">
-                                                <div class="font-bold text-slate-900">{{ $testimonial->name }}</div>
-                                                <div class="text-slate-500 text-sm">
-                                                    {{ $testimonial->occupation ? $testimonial->occupation . ' - ' : '' }}
-                                                    Angkatan {{ $testimonial->graduation_year }}
-                                                </div>
-                                            </figcaption>
-                                        </div>
-                                    </div>
-                                </div>
+                        {{-- Konten Testimoni --}}
+                        <blockquote class="mt-6 flex-grow">
+                            <p class="text-slate-700 italic line-clamp-6"> {{-- Dibatasi 6 baris agar rapi --}}
+                                "{{ $testimonial->content }}"
+                            </p>
+                        </blockquote>
+
+                        {{-- Nama dan Jabatan --}}
+                        <figcaption class="mt-6 flex-shrink-0">
+                            <div class="font-bold text-slate-900">{{ $testimonial->name }}</div>
+                            <div class="text-slate-500 text-sm">
+                                {{ $testimonial->occupation ? $testimonial->occupation . ' - ' : '' }}
+                                Angkatan {{ $testimonial->graduation_year }}
                             </div>
-                        @endforeach
+                        </figcaption>
                     </div>
 
-                    {{-- Optional controls --}}
-                    <div class="swiper-pagination mt-6"></div>
-                    <div class="swiper-button-prev"></div>
-                    <div class="swiper-button-next"></div>
-                </div>
+                @endforeach
             </div>
-        </section>
-
-        {{-- SwiperJS CDN --}}
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-        <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-
-        <script>
-            new Swiper(".mySwiper", {
-                slidesPerView: 1,
-                spaceBetween: 30,
-                loop: true,
-                autoplay: {
-                    delay: 3000,
-                    disableOnInteraction: false,
-                },
-                breakpoints: {
-                    768: {
-                        slidesPerView: 2,
-                    },
-                    1024: {
-                        slidesPerView: 3,
-                    },
-                },
-                pagination: {
-                    el: ".swiper-pagination",
-                    clickable: true,
-                },
-                navigation: {
-                    nextEl: ".swiper-button-next",
-                    prevEl: ".swiper-button-prev",
-                },
-            });
-        </script>
-    @endif
+            
+        </div>
+    </section>
+@endif
 
 
 @endsection
