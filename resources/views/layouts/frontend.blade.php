@@ -275,109 +275,111 @@
 </section>
 
 
-    <footer class="relative bg-red-800 text-white">
-  {{-- aksen tipis --}}
-  <div class="absolute inset-0 pointer-events-none opacity-10"
-       style="background-image: linear-gradient(to right, #fff 1px, transparent 1px),
-              linear-gradient(to bottom, #fff 1px, transparent 1px);
-              background-size: 28px 28px;"></div>
+    <!-- FOOTER -->
+<footer class="bg-gradient-to-br from-red-800 to-red-700 text-white">
+    <div class="max-w-7xl mx-auto px-6 py-12">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
 
-  <div class="container relative mx-auto px-6 py-12">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-      {{-- Brand / Deskripsi --}}
-      <div>
-        <h3 class="text-lg font-extrabold tracking-tight">
-          {{ $siteSettings['site_name'] ?? 'Universitas' }}
-        </h3>
-        @if (!empty($siteSettings['site_tagline']))
-          <p class="mt-2 text-red-100">{{ $siteSettings['site_tagline'] }}</p>
-        @endif
-        @if (!empty($siteSettings['contact_address']))
-          <p class="mt-4 text-sm text-red-200">{{ $siteSettings['contact_address'] }}</p>
-        @endif
-      </div>
+            {{-- Kolom 1: Tentang Universitas --}}
+            <div>
+                <h3 class="font-bold text-lg text-white">
+                    {{ $siteSettings['site_name'] ?? 'Universitas' }}
+                </h3>
+                <p class="mt-3 text-sm text-red-50/90">
+                    {{ $siteSettings['contact_address'] ?? 'Alamat belum diatur.' }}
+                </p>
+                <p class="mt-5 text-sm text-red-50/90">
+                    <strong class="text-white">Phone:</strong> {{ $siteSettings['contact_phone'] ?? '-' }}<br>
+                    <strong class="text-white">Email:</strong> {{ $siteSettings['contact_email'] ?? '-' }}
+                </p>
+            </div>
 
-      {{-- Kontak --}}
-      <div>
-        <h4 class="text-lg font-bold">Kontak</h4>
-        <ul class="mt-3 space-y-1 text-sm">
-          <li class="text-red-100">
-            Email:
-            @if (!empty($siteSettings['contact_email']))
-              <a href="mailto:{{ $siteSettings['contact_email'] }}" class="underline decoration-white/30 hover:decoration-white">
-                {{ $siteSettings['contact_email'] }}
-              </a>
-            @else
-              <span class="text-red-200">-</span>
-            @endif
-          </li>
-          <li class="text-red-100">
-            Telepon:
-            @if (!empty($siteSettings['contact_phone']))
-              <a href="tel:{{ preg_replace('/\s+/', '', $siteSettings['contact_phone']) }}" class="underline decoration-white/30 hover:decoration-white">
-                {{ $siteSettings['contact_phone'] }}
-              </a>
-            @else
-              <span class="text-red-200">-</span>
-            @endif
-          </li>
-        </ul>
-      </div>
+            {{-- Kolom 2: Link Terkait --}}
+            <div>
+                <h3 class="font-bold text-lg text-white">Link Terkait</h3>
+                <ul class="mt-4 space-y-2">
+                    @if(isset($footerMenu) && $footerMenu->items->isNotEmpty())
+                        @foreach($footerMenu->items as $item)
+                            <li>
+                                <a href="{{ url($item->url) }}" target="_blank"
+                                   class="group text-sm text-red-50/90 hover:text-white hover:underline inline-flex items-center gap-2">
+                                    <i class="fa-solid fa-square text-[7px] opacity-80 group-hover:text-white"></i>
+                                    <span class="truncate">{{ $item->label }}</span>
+                                </a>
+                            </li>
+                        @endforeach
+                    @else
+                        <li>
+                            <a href="#" class="text-sm text-red-50/90 hover:text-white hover:underline">Atur link di admin</a>
+                        </li>
+                    @endif
+                </ul>
+            </div>
 
-      {{-- Media Sosial --}}
-      {{-- Media Sosial --}}
-<div>
-  <h4 class="text-lg font-bold">Media Sosial</h4>
-  <div class="mt-3 flex items-center gap-3">
-    @if (!empty($siteSettings['social_facebook']))
-      <a href="{{ $siteSettings['social_facebook'] }}" target="_blank" aria-label="Facebook"
-         class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition">
-        <i class="fa-brands fa-facebook-f"></i>
-      </a>
-    @endif
+            {{-- Kolom 3: Media Sosial --}}
+            <div>
+                <h3 class="font-bold text-lg text-white">Media Sosial</h3>
 
-    @if (!empty($siteSettings['social_instagram']))
-      <a href="{{ $siteSettings['social_instagram'] }}" target="_blank" aria-label="Instagram"
-         class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition">
-        <i class="fa-brands fa-instagram"></i>
-      </a>
-    @endif
+                <div class="mt-4 flex flex-wrap gap-3">
+                    @if(!empty($siteSettings['social_facebook']))
+                        <a href="{{ $siteSettings['social_facebook'] }}" target="_blank" aria-label="Facebook"
+                           class="inline-flex items-center justify-center h-11 w-11 rounded-full
+                                  bg-white/10 text-white ring-1 ring-white/20
+                                  hover:bg-white hover:text-red-700
+                                  focus:outline-none focus:ring-2 focus:ring-white/60
+                                  transition transform hover:scale-[1.03] active:scale-95">
+                            <i class="fa-brands fa-facebook-f text-xl"></i>
+                        </a>
+                    @endif
 
-    @if (!empty($siteSettings['social_linkedin']))
-      <a href="{{ $siteSettings['social_linkedin'] }}" target="_blank" aria-label="LinkedIn"
-         class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition">
-        <i class="fa-brands fa-linkedin-in"></i>
-      </a>
-    @endif
+                    @if(!empty($siteSettings['social_instagram']))
+                        <a href="{{ $siteSettings['social_instagram'] }}" target="_blank" aria-label="Instagram"
+                           class="inline-flex items-center justify-center h-11 w-11 rounded-full
+                                  bg-white/10 text-white ring-1 ring-white/20
+                                  hover:bg-white hover:text-red-700
+                                  focus:outline-none focus:ring-2 focus:ring-white/60
+                                  transition transform hover:scale-[1.03] active:scale-95">
+                            <i class="fa-brands fa-instagram text-xl"></i>
+                        </a>
+                    @endif
 
-    @if (!empty($siteSettings['social_x']))
-      <a href="{{ $siteSettings['social_x'] }}" target="_blank" aria-label="X (Twitter)"
-         class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition">
-        <i class="fa-brands fa-x-twitter"></i>
-      </a>
-    @endif
+                    @if(!empty($siteSettings['social_youtube']))
+                        <a href="{{ $siteSettings['social_youtube'] }}" target="_blank" aria-label="YouTube"
+                           class="inline-flex items-center justify-center h-11 w-11 rounded-full
+                                  bg-white/10 text-white ring-1 ring-white/20
+                                  hover:bg-white hover:text-red-700
+                                  focus:outline-none focus:ring-2 focus:ring-white/60
+                                  transition transform hover:scale-[1.03] active:scale-95">
+                            <i class="fa-brands fa-youtube text-xl"></i>
+                        </a>
+                    @endif
 
-    {{-- ✅ Tambahkan YouTube --}}
-    @if (!empty($siteSettings['social_youtube']))
-      <a href="{{ $siteSettings['social_youtube'] }}" target="_blank" aria-label="YouTube"
-         class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition">
-        <i class="fa-brands fa-youtube"></i>
-      </a>
-    @endif
-  </div>
-</div>
+                    @if(!empty($siteSettings['social_x']))
+                        <a href="{{ $siteSettings['social_x'] }}" target="_blank" aria-label="X/Twitter"
+                           class="inline-flex items-center justify-center h-11 w-11 rounded-full
+                                  bg-white/10 text-white ring-1 ring-white/20
+                                  hover:bg-white hover:text-red-700
+                                  focus:outline-none focus:ring-2 focus:ring-white/60
+                                  transition transform hover:scale-[1.03] active:scale-95">
+                            <i class="fa-brands fa-x-twitter text-xl"></i>
+                        </a>
+                    @endif
+                </div>
 
+                {{-- optional: teks ajakan --}}
+                <p class="mt-4 text-xs text-red-50/80">
+                    Ikuti kanal resmi kami untuk pembaruan terbaru.
+                </p>
+            </div>
+
+        </div>
+
+        <div class="mt-10 border-t border-white/20 pt-6 text-center text-sm text-red-50/90">
+            <p>&copy; {{ date('Y') }} {{ $siteSettings['site_name'] ?? 'Universitas' }}. All Rights Reserved.</p>
+        </div>
     </div>
-
-    <div class="mt-10 border-t border-white/20 pt-4 flex flex-col md:flex-row items-center justify-between gap-3 text-sm text-red-100">
-      <p>&copy; {{ date('Y') }} {{ $siteSettings['site_name'] ?? 'Universitas' }}. All rights reserved.</p>
-      <a href="#top" class="inline-flex items-center gap-2 hover:underline decoration-white/40">
-        <span>Kembali ke atas</span>
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 5l7 7h-4v7h-6v-7H5z"/></svg>
-      </a>
-    </div>
-  </div>
 </footer>
+
 
  <div id="videoModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden flex items-center justify-center p-4">
         <div class="relative w-full max-w-4xl">
