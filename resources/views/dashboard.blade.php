@@ -60,7 +60,7 @@
   <header class="sticky top-0 z-10 glass bg-white/60 border border-slate-200/60 rounded-2xl p-5 sm:p-6 shadow-sm">
     <div class="flex items-center justify-between gap-4">
       <div class="flex items-center gap-4">
-        <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-indigo-600 to-blue-500 grid place-content-center text-white shadow-md ring-1 ring-white/20">
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-red-600 to-red-500 grid place-content-center text-white shadow-md ring-1 ring-white/20">
           <span class="font-bold">UM</span>
         </div>
         <div>
@@ -76,15 +76,8 @@
     </div>
     <div class="fx-divider mt-4"></div>
     <div class="mt-4 flex flex-wrap items-center gap-3">
-      <div class="relative">
-        <i class="fa-solid fa-magnifying-glass text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
-        <input type="text" placeholder="Cari cepat…" class="pl-9 pr-3 py-2 text-sm rounded-xl border border-slate-200 bg-white/80 focus:outline-none focus:ring-2 focus:ring-indigo-500/40">
-      </div>
-      <div class="ml-auto flex items-center gap-2">
-        <button class="px-3 py-2 text-xs rounded-lg bg-white border border-slate-200 hover:bg-slate-50">Hari ini</button>
-        <button class="px-3 py-2 text-xs rounded-lg bg-white border border-slate-200 hover:bg-slate-50">Minggu ini</button>
-        <button class="px-3 py-2 text-xs rounded-lg bg-white border border-slate-200 hover:bg-slate-50">Bulan ini</button>
-      </div>
+     
+      
     </div>
   </header>
 

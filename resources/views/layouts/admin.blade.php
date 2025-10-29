@@ -65,7 +65,7 @@
 
     <div class="flex h-screen">
         <aside id="sidebar"
-            class="fixed z-40 inset-y-0 left-0 transform transition-all duration-300 ease-in-out bg-gradient-to-b from-blue-900 via-blue-800 to-blue-700 text-white shadow-2xl border-r border-white/10 pt-16 md:pt-20 nice-scroll overflow-y-auto w-72 md:w-64"
+            class="fixed z-40 inset-y-0 left-0 transform transition-all duration-300 ease-in-out bg-gradient-to-b from-red-900 via-red-800 to-red-700 text-white shadow-2xl border-r border-white/10 pt-16 md:pt-20 nice-scroll overflow-y-auto w-72 md:w-64"
             :class="[sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0', collapsed ? 'md:w-collapsed' :
                 'md:w-64'
             ]">
