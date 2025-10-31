@@ -61,7 +61,8 @@ Route::get('/berita/{slug}', [FrontendPostController::class, 'show'])->name('pos
 Route::get('/halaman/{slug}', [FrontendPageController::class, 'show'])->name('pages.show');
 Route::get('/galeri', [GalleryController::class, 'index'])->name('gallery.index');
 Route::get('/dosen', [FrontendLecturerController::class, 'index'])->name('lecturers.index');
-Route::get('/dosen/{lecturer:nidn}', [FrontendLecturerController::class, 'show'])->name('lecturers.show');
+// BARU (Otomatis mencari berdasarkan ID)
+Route::get('/dosen/{lecturer}', [FrontendLecturerController::class, 'show'])->name('lecturers.show');
 
 // ==========================================================
 // ## PERBAIKAN DI SINI ##

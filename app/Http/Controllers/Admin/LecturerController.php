@@ -25,8 +25,11 @@ class LecturerController extends Controller
      */
     public function create()
     {
+        // --- PERBAIKAN DI SINI ---
+        // Kita ambil data Fakultas dan Program Studi
         $faculties = Faculty::where('active', true)->orderBy('name')->get();
         $studyPrograms = StudyProgram::where('active', true)->orderBy('name')->get();
+        // Kirim ke view
         return view('admin.lecturers.create', compact('faculties', 'studyPrograms'));
     }
 
@@ -67,8 +70,11 @@ class LecturerController extends Controller
      */
     public function edit(Lecturer $lecturer)
     {
+        // --- PERBAIKAN DI SINI ---
+        // Kita ambil juga data Fakultas dan Program Studi
         $faculties = Faculty::where('active', true)->orderBy('name')->get();
         $studyPrograms = StudyProgram::where('active', true)->orderBy('name')->get();
+        // Kirim ke view
         return view('admin.lecturers.edit', compact('lecturer', 'faculties', 'studyPrograms'));
     }
 

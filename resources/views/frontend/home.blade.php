@@ -1023,6 +1023,128 @@
 
 
     {{-- SECTION: DOSEN --}}
+{{-- ... (bagian lain dari home page Anda) ... --}}
+
+<!-- ============================================ -->
+<!--      BAGIAN DOSEN (LECTURERS)                -->
+<!-- ============================================ -->
+{{-- 
+    Mengganti Swiper slider dengan grid responsif sederhana.
+    Hanya menampilkan Foto, Nama, dan Prodi.
+--}}
+{{-- ... (bagian lain dari home page Anda) ... --}}
+
+<!-- ============================================ -->
+<!--      BAGIAN DOSEN (LECTURERS)                -->
+<!-- ============================================ -->
+@if(isset($latestLecturers) && $latestLecturers->isNotEmpty())
+<section class="relative bg-gray-50 py-16 lg:py-20">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="mb-10 text-center">
+            <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-gray-900">Dosen Pengajar</h2>
+            <p class="mt-2 text-lg text-slate-800">Tenaga pendidik profesional di bidangnya.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            
+            @forelse ($latestLecturers as $lecturer)
+                <div class="bg-white shadow-lg rounded-xl overflow-hidden transition-transform duration-300 hover:-translate-y-2 group">
+                    
+                    <a href="{{ route('lecturers.show', $lecturer->id) }}" class="block">
+                        {{-- Hapus 'bg-gray-200' dan 'flex' karena kembali ke object-cover --}}
+                        <div class="overflow-hidden"> 
+                            <img 
+                                src="{{ $lecturer->photo ? Storage::url($lecturer->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($lecturer->name) . '&size=288&background=e2e8f0&color=64748b' }}" {{-- Ubah size=224 ke 288 --}}
+                                alt="Foto {{ $lecturer->name }}"
+                                {{-- KEMBALIKAN KE object-cover dan TAMBAH TINGGI ke h-72 --}}
+                                class="w-full h-72 object-cover transition-transform duration-300 group-hover:scale-105"
+                            >
+                        </div>
+                    </a>
+                    
+                    <div class="p-6 text-center">
+                        <h3 class="font-semibold text-lg text-gray-900">
+                            <a href="{{ route('lecturers.show', $lecturer->id) }}" class="hover:text-red-700 transition-colors">
+                                {{ $lecturer->name }}
+                            </a>
+                        </h3>
+                        
+                        <p class="text-sm text-red-800 font-semibold mt-1">
+                            {{ $lecturer->studyProgram->name ?? 'Program Studi' }}
+                        </p>
+                    </div>
+                </div>
+            
+            @empty
+                <div class="col-span-1 sm:col-span-2 lg:col-span-4 text-center text-gray-500 py-8">
+                    <p>Belum ada data dosen untuk ditampilkan.</p>
+                </div>
+            @endforelse
+
+        </div>
+
+        <div class="text-center mt-12">
+            <a href="{{ route('lecturers.index') }}"
+               class="inline-flex items-center gap-2 px-6 py-3 rounded-xl ring-1 ring-slate-300 hover:ring-red-300 text-red-700 hover:bg-red-50 transition font-semibold">
+                Lihat Semua Dosen
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M13 5l7 7-7 7-1.41-1.41L16.17 13H4v-2h12.17l-4.58-4.59L13 5z"/></svg>
+            </a>
+        </div>
+    </div>
+</section>
+@endif
+
+{{-- ... (bagian lain dari home page Anda) ... --}}
+
+
+
+{{-- 
+    @push('styles') dan @push('scripts') untuk Swiper
+    sengaja DIHAPUS karena sudah tidak diperlukan lagi.
+--}}
+
+{{-- ... (bagian lain dari home page Anda) ... --}}
+
+
+
+
+{{-- CSS kecil --}}
+<style>
+  /* sembunyikan scrollbar di container mobile */
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* fade kiri/kanan */
+  .mask-gradient {
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  }
+
+  /* track harus selebar konten, lalu animasi berjalan */
+  .marquee-track {
+    width: max-content;               /* biar lebarnya ngikut isi (dua set item) */
+    animation: marquee 28s linear infinite;
+    will-change: transform;
+  }
+
+  /* Pause saat hover (desktop) */
+  @media (hover:hover) {
+    .marquee-track:hover { animation-play-state: paused; }
+  }
+
+  /* Desktop only: aktifkan animasi; Mobile: matikan (biar swipe manual) */
+  @media (max-width: 639.98px) {      /* < sm */
+    .marquee-track { animation: none; }
+  }
+
+  /* Gerak ke kiri setengah lebar (duplikat konten) */
+  @keyframes marquee {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+</style>
+
 
     {{-- SECTION: KERJA SAMA --}}
     @if ($partners->isNotEmpty())
