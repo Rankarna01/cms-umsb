@@ -28,7 +28,7 @@
         }
 
         .nav-hover:hover::before {
-            box-shadow: 0 10px 26px -10px rgba(59, 130, 246, .6);
+            box-shadow: 0 10px 26px -10px rgba(218, 88, 88, 0.6);
             transform: translateY(-1px);
         }
 

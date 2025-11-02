@@ -16,7 +16,13 @@
     <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-
+    {{-- CSS untuk x-cloak --}}
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
+    
+    {{-- Script Alpine.js --}}
+    <script defer src=".../alpine.min.js"></script>
 
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
      {{-- INI ADALAH WADAH UNTUK MENERIMA STYLE DARI HALAMAN LAIN --}}

@@ -8,7 +8,12 @@
         <title>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Fonts -->
-        
+        <style>
+        [x-cloak] { display: none !important; }
+    </style>
+    
+    {{-- Script Alpine.js --}}
+    <script defer src=".../alpine.min.js"></script>
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
         <!-- Scripts -->
