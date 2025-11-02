@@ -36,7 +36,7 @@
                     </span>
                 </div>
                 <div class="min-w-0">
-                    <a href="{{ route('events.show', $item->slug) }}" class="group">
+                    <a href="{{ route('event.show', $item->slug) }}" class="group">
                         <p class="font-semibold leading-snug line-clamp-2 group-hover:text-red-700">{{ $item->title }}</p>
                         <p class="mt-0.5 text-xs text-slate-500 line-clamp-1">{{ $item->location }}</p>
                     </a>

@@ -202,7 +202,7 @@
     {{-- Actions --}}
     <div class="flex items-center gap-3">
       <button type="submit"
-              class="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-blue-700 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-200">
+              class="inline-flex items-center gap-2 rounded-xl bg-red-500 px-5 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-red-700 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-200">
         <i class="fa-solid fa-floppy-disk"></i> Simpan Pengaturan
       </button>
       <a href="{{ url()->previous() }}"

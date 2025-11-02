@@ -18,7 +18,7 @@
                 <i class="fa-solid fa-magnifying-glass text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
             </div>
             <a href="{{ route('admin.sliders.create') }}"
-               class="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-blue-700">
+               class="inline-flex items-center gap-2 rounded-xl bg-red-500 px-4 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-red-500">
                 <i class="fa-solid fa-plus"></i> Tambah
             </a>
         </div>

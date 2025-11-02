@@ -13,7 +13,7 @@
       <p class="text-sm text-slate-500">Kelola berita, kategori, dan status publikasi.</p>
     </div>
     <a href="{{ route('admin.posts.create') }}"
-       class="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-blue-700 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-200">
+       class="inline-flex items-center gap-2 rounded-xl bg-red-500 px-4 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-red-700 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-200">
       <i class="fa-solid fa-circle-plus"></i> Tambah Berita
     </a>
   </div>

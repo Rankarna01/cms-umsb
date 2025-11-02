@@ -22,7 +22,7 @@
       </div>
 
       <a href="{{ route('admin.announcements.create') }}"
-         class="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-blue-700 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-200">
+         class="inline-flex items-center gap-2 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-red-700 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-200">
         <i class="fa-solid fa-plus"></i> Tambah Pengumuman
       </a>
     </div>

@@ -863,7 +863,7 @@
                         <ul class="space-y-5">
                             @foreach ($latestEvents as $event)
                                 <li>
-                                    <a href="{{ route('events.show', $event->slug) }}"
+                                    <a href="{{ route('event.show', $event->slug) }}"
                                         class="group block transition transform hover:translate-x-1">
                                         <span class="text-sm text-red-700 font-semibold block">
                                             {{ $event->start_date->translatedFormat('d F Y') }}

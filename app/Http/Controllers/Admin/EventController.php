@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Frontend;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Announcement; // Untuk sidebar
@@ -26,7 +26,7 @@ class EventController extends Controller
                                 ->get();
 
         // Mengirim data event lengkap dan data sidebar ke view
-        return view('frontend.pages.event_show', compact(
+        return view('frontend.page.event_show', compact(
             'event', 
             'latestAnnouncements', 
             'latestEvents'

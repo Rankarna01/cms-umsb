@@ -22,7 +22,7 @@
       </div>
 
       <a href="{{ route('admin.events.create') }}"
-         class="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-blue-700 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-200">
+         class="inline-flex items-center gap-2 rounded-xl bg-red-500 px-4 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-red-700 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-200">
         <i class="fa-solid fa-calendar-plus"></i> Tambah Agenda
       </a>
     </div>
@@ -42,7 +42,7 @@
       <table id="eventTable" class="min-w-full table-auto">
         <thead class="bg-slate-50 sticky top-0 z-10">
           <tr>
-            <th class="px-5 py-3 text-left text-[11px] font-semibold tracking-wider text-slate-600 uppercase">Poster</th>
+            {{-- <th class="px-5 py-3 text-left text-[11px] font-semibold tracking-wider text-slate-600 uppercase">Poster</th> --}}
             <th class="px-5 py-3 text-left text-[11px] font-semibold tracking-wider text-slate-600 uppercase">Judul Acara</th>
             <th class="px-5 py-3 text-left text-[11px] font-semibold tracking-wider text-slate-600 uppercase">Waktu & Tempat</th>
             <th class="px-5 py-3 text-center text-[11px] font-semibold tracking-wider text-slate-600 uppercase">Aksi</th>
@@ -52,7 +52,7 @@
           @forelse ($events as $event)
             <tr class="hover:bg-slate-50/60 transition">
               {{-- Poster --}}
-              <td class="px-5 py-4">
+              {{-- <td class="px-5 py-4">
                 <div class="w-28 h-20 rounded-lg overflow-hidden bg-slate-100 flex items-center justify-center shadow-sm">
                   @if($event->poster)
                     <img src="{{ Storage::url($event->poster) }}" alt="{{ $event->title }}" class="w-full h-full object-cover">
@@ -60,7 +60,7 @@
                     <i class="fa-regular fa-image text-slate-400 text-xl"></i>
                   @endif
                 </div>
-              </td>
+              </td> --}}
 
               {{-- Judul + author --}}
               <td class="px-5 py-4">
@@ -128,7 +128,7 @@
                   <p class="font-semibold text-slate-700">Belum ada agenda</p>
                   <p class="text-sm text-slate-500">Tambahkan agenda baru untuk mulai mengelola acara.</p>
                   <a href="{{ route('admin.events.create') }}"
-                     class="mt-4 inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-blue-700">
+                     class="mt-4 inline-flex items-center gap-2 rounded-lg bg-red-500 px-4 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-red-700">
                     <i class="fa-solid fa-calendar-plus"></i> Tambah Agenda
                   </a>
                 </div>

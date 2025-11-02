@@ -11,7 +11,6 @@ use App\Http\Controllers\Admin\{
     DashboardController,
     DocumentCategoryController,
     DocumentController,
-    EventController,
     FactoidController,
     FacultyController,
     ImageUploadController,
@@ -19,6 +18,7 @@ use App\Http\Controllers\Admin\{
     LecturerController as AdminLecturerController,
     MenuController,
     MenuItemController,
+    EventController as AdminEventController,
     PageController as AdminPageController,
     PartnerController,
     PhotoController,
@@ -61,20 +61,9 @@ Route::get('/berita/{slug}', [FrontendPostController::class, 'show'])->name('pos
 Route::get('/halaman/{slug}', [FrontendPageController::class, 'show'])->name('pages.show');
 Route::get('/galeri', [GalleryController::class, 'index'])->name('gallery.index');
 Route::get('/dosen', [FrontendLecturerController::class, 'index'])->name('lecturers.index');
-// BARU (Otomatis mencari berdasarkan ID)
 Route::get('/dosen/{lecturer}', [FrontendLecturerController::class, 'show'])->name('lecturers.show');
-
-// ==========================================================
-// ## PERBAIKAN DI SINI ##
-// Kita gunakan alias 'FrontendAnnouncementController'
-// ==========================================================
 Route::get('/pengumuman/{announcement:slug}', [FrontendAnnouncementController::class, 'show'])->name('announcements.show');
-
-// ==========================================================
-// ## PERBAIKAN DI SINI ##
-// Kita gunakan alias 'FrontendEventController'
-// ==========================================================
-Route::get('/agenda/{event:slug}', [FrontendEventController::class, 'show'])->name('events.show');
+Route::get('/agenda/{event:slug}', [FrontendEventController::class, 'show'])->name('event.show');
 
 
 // --- ROUTE UNTUK SISTEM LOGIN & ADMIN ---
@@ -89,7 +78,6 @@ Route::middleware('auth')->group(function () {
 
     // === GROUP ROUTE UNTUK SEMUA MENU ADMIN ===
     Route::prefix('admin')->name('admin.')->group(function () {
-        
         // --- Route Resource (CRUD Standar) ---
         Route::resource('posts', AdminPostController::class);
         Route::resource('pages', AdminPageController::class);
@@ -98,7 +86,6 @@ Route::middleware('auth')->group(function () {
         Route::delete('/slide-images/{image}', [SlideImageController::class, 'destroy'])
         ->name('slide-images.destroy');
         Route::resource('announcements', AnnouncementController::class);
-        Route::resource('events', EventController::class);
         Route::resource('faculties', FacultyController::class);
         Route::resource('study-programs', StudyProgramController::class);
         Route::resource('lecturers', AdminLecturerController::class);
@@ -136,7 +123,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
         Route::post('settings', [SettingController::class, 'update'])->name('settings.update');
-
+        Route::resource('events', AdminEventController::class); // <-- MENGGUNAKAN ALIAS
         Route::get('menus', [MenuController::class, 'index'])->name('menus.index');
         Route::get('menus/{menu}/builder', [MenuController::class, 'show'])->name('menus.show');
         Route::get('menus/{menu}/items/create', [MenuItemController::class, 'create'])->name('menu-items.create');
