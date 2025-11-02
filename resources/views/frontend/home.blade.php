@@ -1021,22 +1021,6 @@
 </section>
 @endif
 
-
-    {{-- SECTION: DOSEN --}}
-{{-- ... (bagian lain dari home page Anda) ... --}}
-
-<!-- ============================================ -->
-<!--      BAGIAN DOSEN (LECTURERS)                -->
-<!-- ============================================ -->
-{{-- 
-    Mengganti Swiper slider dengan grid responsif sederhana.
-    Hanya menampilkan Foto, Nama, dan Prodi.
---}}
-{{-- ... (bagian lain dari home page Anda) ... --}}
-
-<!-- ============================================ -->
-<!--      BAGIAN DOSEN (LECTURERS)                -->
-<!-- ============================================ -->
 @if(isset($latestLecturers) && $latestLecturers->isNotEmpty())
 <section class="relative bg-gray-50 py-16 lg:py-20">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
