@@ -73,7 +73,7 @@
           <div class="lg:sticky lg:top-24 space-y-6">
 
             {{-- BERITA TERBARU --}}
-            <div class="rounded-2xl bg-white ring-1 ring-slate-200/70 shadow-md p-6">
+            {{-- <div class="rounded-2xl bg-white ring-1 ring-slate-200/70 shadow-md p-6">
               <h3 class="text-lg font-bold mb-4 pb-2 border-b border-slate-200">Berita Terbaru</h3>
               <ul class="space-y-4">
                 @forelse($latestPosts as $latestPost)
@@ -99,13 +99,12 @@
                   <li class="text-sm text-slate-500">Tidak ada berita terbaru.</li>
                 @endforelse
               </ul>
-            </div>
+            </div> --}}
 
             {{-- AGENDA TERDEKAT --}}
             <div class="rounded-2xl bg-white ring-1 ring-slate-200/70 shadow-md p-6">
-              <h3 class="text-lg font-bold mb-4 pb-2 border-b border-slate-200">Agenda Terdekat</h3>
-              <ul class="space-y-4">
-                @forelse($upcomingEvents as $event)
+              
+                {{-- @forelse($upcomingEvents as $event)
                   <li class="flex items-center gap-4">
                     <div class="flex flex-col items-center justify-center rounded-lg bg-red-50 text-red-700 px-3 py-2 ring-1 ring-red-100">
                       <span class="text-xl font-extrabold leading-none">
@@ -122,7 +121,7 @@
                   </li>
                 @empty
                   <li class="text-sm text-slate-500">Tidak ada agenda terdekat.</li>
-                @endforelse
+                @endforelse --}}
 
 
                 @if($quickLinks->isNotEmpty())

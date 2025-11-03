@@ -58,8 +58,11 @@ class HomeController extends Controller
             })
             ->with(['posts' => function ($query) {
                 $query->where('status', 'published')
-                      ->latest()
-                      ->take(3); // <-- MENJADI 3
+                      // --- PERUBAHAN DI SINI ---
+                      ->orderBy('headline', 'DESC')    // Prioritas 1: Tampilkan yg di-pin (headline = 1)
+                      ->orderBy('created_at', 'DESC')  // Prioritas 2: Urutkan berdasarkan terbaru
+                      // -------------------------
+                      ->take(3);
             }])
             ->orderBy('name', 'asc') // Urutkan kategori berdasarkan nama A-Z
             ->get();

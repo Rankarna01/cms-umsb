@@ -66,7 +66,7 @@
               </div>
             @endif
             <input type="file" name="site_logo" id="site_logo"
-                   class="block w-full cursor-pointer rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-sm text-slate-700 file:mr-3 file:rounded-lg file:border-0 file:bg-blue-600 file:px-3 file:py-2 file:text-white hover:file:bg-blue-700 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"/>
+                   class="block w-full cursor-pointer rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-sm text-slate-700 file:mr-3 file:rounded-lg file:border-0 file:bg-red-500 file:px-3 file:py-2 file:text-white hover:file:bg-red-700 focus:border-red-500 focus:ring-4 focus:ring-blue-100"/>
             <p class="mt-2 text-xs text-slate-500">Disarankan PNG transparan. Maks 1MB.</p>
           </div>
 
@@ -79,7 +79,7 @@
               </div>
             @endif
             <input type="file" name="site_favicon" id="site_favicon"
-                   class="block w-full cursor-pointer rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-sm text-slate-700 file:mr-3 file:rounded-lg file:border-0 file:bg-blue-600 file:px-3 file:py-2 file:text-white hover:file:bg-blue-700 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"/>
+                   class="block w-full cursor-pointer rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-sm text-slate-700 file:mr-3 file:rounded-lg file:border-0 file:bg-red-500 file:px-3 file:py-2 file:text-white hover:file:bg-red-700 focus:border-red-500 focus:ring-4 focus:ring-blue-100"/>
             <p class="mt-2 text-xs text-slate-500">Ukuran persegi (32×32/64×64). PNG/ICO.</p>
           </div>
         </div>
