@@ -885,7 +885,7 @@
 
 
     {{-- SECTION: PIMPINAN --}}
-    @if ($leaders->isNotEmpty())
+@if ($leaders->isNotEmpty())
 <section class="relative bg-white py-16">
   <div class="container relative mx-auto px-6">
     {{-- Judul --}}
@@ -919,12 +919,13 @@
           @foreach ($leaders as $leader)
             <li class="shrink-0 snap-center">
               {{-- kartu dengan ukuran konsisten --}}
-              <div class="w-64 h-[22rem] sm:w-72 rounded-2xl bg-white ring-1 ring-slate-200 hover:ring-red-400 hover:shadow-xl transition-all duration-300 overflow-hidden text-center p-5 flex flex-col">
-                <div class="relative mx-auto mb-3 overflow-hidden rounded-xl w-52 h-56">
+              <div class="w-64 h-[22rem] sm:w-72 rounded-2xl bg-white ring-1 ring-slate-200 hover:ring-red-400 hover:shadow-xl transition-all duration-300 overflow-hidden text-center p-5 flex flex-col group">
+                <div class="relative mx-auto mb-3 rounded-xl w-52 h-56 p-1 bg-slate-50 flex items-center justify-center">
                   <img
                     src="{{ $leader->photo ? Storage::url($leader->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($leader->name) . '&size=256' }}"
                     alt="{{ $leader->name }}"
-                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 group-hover:brightness-110">
+                    class="max-w-full max-h-full object-contain transition-transform duration-500 group-hover:scale-[1.02] group-hover:brightness-105"
+                    loading="lazy">
                 </div>
 
                 {{-- blok teks fixed height agar semua kotak sama --}}
@@ -972,12 +973,13 @@
       <ul class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         @foreach ($leaders as $leader)
           <li>
-            <div class="rounded-2xl bg-white ring-1 ring-slate-200 hover:ring-red-400 hover:shadow-xl transition-all duration-300 overflow-hidden text-center p-6 flex flex-col h-full">
-              <div class="relative mx-auto mb-4 overflow-hidden rounded-xl w-52 h-56">
+            <div class="rounded-2xl bg-white ring-1 ring-slate-200 hover:ring-red-400 hover:shadow-xl transition-all duration-300 overflow-hidden text-center p-6 flex flex-col h-full group">
+              <div class="relative mx-auto mb-4 rounded-xl w-52 h-56 p-1 bg-slate-50 flex items-center justify-center">
                 <img
                   src="{{ $leader->photo ? Storage::url($leader->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($leader->name) . '&size=256' }}"
                   alt="{{ $leader->name }}"
-                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 group-hover:brightness-110">
+                  class="max-w-full max-h-full object-contain transition-transform duration-500 group-hover:scale-[1.02] group-hover:brightness-105"
+                  loading="lazy">
               </div>
 
               {{-- blok teks fixed height agar tinggi kartu konsisten --}}
@@ -1020,6 +1022,8 @@
   </div>
 </section>
 @endif
+
+
 
 @if(isset($latestLecturers) && $latestLecturers->isNotEmpty())
 <section class="relative bg-gray-50 py-16 lg:py-20">
