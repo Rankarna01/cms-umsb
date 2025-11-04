@@ -19,10 +19,9 @@
                 <a href="{{ route('posts.index') }}" class="hover:text-white">Berita</a>
               </nav>
 
-              <h1 class="text-3xl md:text-4xl xl:text-5xl font-extrabold leading-tight">
-                {{ $post->title }}
-              </h1>
-
+             <h1 class="text-2xl md:text-3xl lg:text-[28px] xl:text-[32px] font-extrabold leading-tight">
+  {{ $post->title }}
+</h1>
               <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-6 text-white/90 text-sm">
                 <div>
                   <p class="opacity-90">Diterbitkan Pada</p>
@@ -88,15 +87,12 @@
       <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10">
         {{-- Konten utama --}}
          <article class="lg:col-span-8">
-                <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg ring-1 ring-black/5">
-                    <div class="prose prose-lg lg:prose-xl max-w-none prose-img:rounded-xl prose-a:text-red-600">
-                        
-                        {{-- PERBAIKAN DI SINI --}}
-                        {!! $post->content !!}
-
-                    </div>
-                </div>
-            </article>
+  <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg ring-1 ring-black/5">
+    <div class="prose prose-base md:prose-lg max-w-none prose-img:rounded-xl prose-a:text-red-600 lg:text-[12px] leading-relaxed">
+      {!! $post->content !!}
+    </div>
+  </div>
+</article>
         {{-- Sidebar --}}
         <aside class="lg:col-span-4">
           <div class="sticky top-24 space-y-6">
