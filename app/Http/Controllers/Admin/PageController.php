@@ -36,13 +36,19 @@ class PageController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255|unique:pages,title',
             'content' => 'required|string',
+            'slug' => 'nullable|string|max:255|unique:pages,slug', // <-- TAMBAHAN
             'header_image' => 'nullable|image|max:2048',
             'published_date' => 'nullable|date',
             'summary' => 'nullable|string',
             'active' => 'nullable|boolean',
         ]);
-
-        $validated['slug'] = Str::slug($validated['title']);
+        // --- LOGIKA SLUG BARU ---
+        if (empty($validated['slug'])) {
+            $validated['slug'] = Str::slug($validated['title']);
+        } else {
+            // Bersihkan slug yang diinput manual jika user mengetik spasi, dll.
+            $validated['slug'] = Str::slug($validated['slug']);
+        }
         $validated['active'] = $request->has('active');
 
         if ($request->hasFile('header_image')) {
@@ -70,13 +76,21 @@ class PageController extends Controller
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255', Rule::unique('pages')->ignore($page->id)],
             'content' => 'required|string',
+            'slug' => ['nullable', 'string', 'max:255', Rule::unique('pages')->ignore($page->id)], // <-- TAMBAHAN
             'header_image' => 'nullable|image|max:2048',
             'published_date' => 'nullable|date',
             'summary' => 'nullable|string',
             'active' => 'nullable|boolean',
         ]);
+        // --- LOGIKA SLUG BARU ---
+        if (empty($validated['slug'])) {
+            $validated['slug'] = Str::slug($validated['title']);
+        } else {
+            // Bersihkan slug yang diinput manual jika user mengetik spasi, dll.
+            $validated['slug'] = Str::slug($validated['slug']);
+        }
 
-        $validated['slug'] = Str::slug($validated['title']);
+        
         $validated['active'] = $request->has('active');
 
          if ($request->has('delete_header_image')) {

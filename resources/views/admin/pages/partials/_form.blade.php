@@ -15,6 +15,12 @@
     </div>
     
     <div class="mb-4">
+        <label for="slug" class="block font-bold mb-2">Slug (Opsional)</label>
+        <input type="text" name="slug" id="slug" value="{{ old('slug', $page->slug ?? '') }}" class="shadow border rounded w-full py-2 px-3">
+        <p class="text-gray-600 text-xs italic mt-1">Kosongkan agar dibuat otomatis dari judul.</p>
+    </div>
+
+    <div class="mb-4">
         <label for="summary" class="block font-bold mb-2">Ringkasan (Opsional)</label>
         <textarea name="summary" id="summary" rows="3" class="shadow border rounded w-full py-2 px-3">{{ old('summary', $page->summary ?? '') }}</textarea>
     </div>

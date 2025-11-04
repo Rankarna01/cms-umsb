@@ -66,12 +66,16 @@
               {{-- Slug + tombol copy --}}
               <td class="px-5 py-4">
                 <div class="flex items-center gap-2">
+                  
+                  {{-- PERBAIKAN TAMPILAN SLUG --}}
                   <span class="inline-flex items-center gap-2 rounded-lg bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700">
-                    <i class="fa-solid fa-link text-slate-500"></i> /{{ $page->slug }}
+                    <i class="fa-solid fa-link text-slate-500"></i> /halaman/{{ $page->slug }}
                   </span>
+
+                  {{-- PERBAIKAN TOMBOL SALIN --}}
                   <button type="button"
                           class="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-medium text-slate-600 hover:bg-slate-50"
-                          onclick="navigator.clipboard.writeText('{{ url($page->slug) }}'); this.innerHTML='<i class=&quot;fa-solid fa-check&quot;></i> Disalin'; setTimeout(()=>this.innerHTML='<i class=&quot;fa-regular fa-copy&quot;></i> Salin',1500)">
+                          onclick="navigator.clipboard.writeText('{{ url('halaman/' . $page->slug) }}'); this.innerHTML='<i class=&quot;fa-solid fa-check&quot;></i> Disalin'; setTimeout(()=>this.innerHTML='<i class=&quot;fa-regular fa-copy&quot;></i> Salin',1500)">
                     <i class="fa-regular fa-copy"></i> Salin
                   </button>
                 </div>
@@ -135,3 +139,4 @@
   }
 </script>
 @endsection
+
