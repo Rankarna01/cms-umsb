@@ -16,9 +16,10 @@
                 <section class="w-full bg-white">
                     {{-- LAYOUT: SPLIT (teks kiri, gambar kanan yg slideshow) --}}
                     @if ($slide->layout === 'split')
-                        <div class="w-full h-[72vh] md:h-[78vh] flex flex-col md:flex-row items-stretch">
-                            {{-- Teks kiri (statis) --}}
-                            <div class="w-full md:w-1/2 flex items-center justify-center px-6 md:px-10 lg:px-16 py-10">
+                        <div class="w-full min-h-[60svh] md:min-h-[78svh] flex flex-col md:flex-row items-stretch">
+                            {{-- TEKS KIRI --}}
+                            <div
+                                class="w-full md:w-1/2 min-w-0 flex items-center justify-center px-6 md:px-10 lg:px-16 py-10">
                                 <div class="max-w-2xl text-center md:text-left">
                                     <h1
                                         class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.05] tracking-tight text-red-700">
@@ -41,21 +42,21 @@
                                 </div>
                             </div>
 
-                            {{-- Gambar kanan (Swiper hanya di area ini) --}}
+                            {{-- GAMBAR KANAN --}}
                             <div
-                                class="w-full md:w-1/2 h-[36vh] md:h-full flex items-center justify-center px-6 md:px-10 lg:px-16 pb-10 md:pb-0">
+                                class="w-full md:w-1/2 min-w-0 h-[42svh] md:h-auto flex items-center justify-center px-6 md:px-10 lg:px-16 pb-10 md:pb-0">
                                 <div
                                     class="relative w-full max-w-3xl aspect-[16/9] rounded-3xl overflow-hidden ring-1 ring-slate-200 shadow-2xl">
-                                    <div id="{{ $swiperId }}" class="image-swiper h-full w-full">
+                                    <div id="{{ $swiperId }}" class="image-swiper absolute inset-0">
                                         <div class="swiper-wrapper">
                                             @foreach ($images as $image)
-                                                <div class="swiper-slide">
+                                                <div class="swiper-slide flex">
                                                     <img src="{{ Storage::url($image->image_path) }}"
-                                                        alt="{{ $slide->title }}" class="h-full w-full object-cover" />
+                                                        alt="{{ $slide->title }}"
+                                                        class="w-full h-full object-cover flex-1" />
                                                 </div>
                                             @endforeach
                                         </div>
-                                        {{-- optional controls untuk area gambar --}}
                                         <div class="swiper-pagination"></div>
                                         <div class="swiper-button-prev"></div>
                                         <div class="swiper-button-next"></div>
@@ -64,28 +65,26 @@
                             </div>
                         </div>
 
-                        {{-- LAYOUT: FULL WIDTH (banner; teks overlay statis; gambar di belakang slideshow) --}}
+                        {{-- LAYOUT: FULL WIDTH --}}
+                        {{-- LAYOUT: FULL WIDTH --}}
                     @else
-                        <div class="relative w-full h-[72vh] md:h-[78vh]">
-                            <div id="{{ $swiperId }}" class="image-swiper absolute inset-0">
-                                <div class="swiper-wrapper">
+                        <div class="relative w-full h-auto md:h-[78svh]" data-effect="fade">
+                            <div id="{{ $swiperId }}" class="image-swiper relative w-full h-auto md:h-full">
+                                <div class="swiper-wrapper h-auto md:h-full">
                                     @foreach ($images as $image)
-                                        <div class="swiper-slide">
+                                        <div
+                                            class="swiper-slide flex justify-center items-center h-auto md:h-full bg-black">
                                             <img src="{{ Storage::url($image->image_path) }}" alt="{{ $slide->title }}"
-                                                class="h-full w-full object-cover" />
+                                                class="w-full h-auto md:h-full object-contain md:object-cover transition-all duration-300" />
                                         </div>
                                     @endforeach
                                 </div>
                             </div>
 
-                            {{-- Overlay gelap biar teks kebaca --}}
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none">
-                            </div>
-
-                            {{-- Teks overlay (statis) --}}
+                            {{-- Overlay teks hanya muncul di desktop --}}
                             <div
-                                class="relative h-full container mx-auto px-6 md:px-10 lg:px-16 flex items-center justify-center">
-                                <div class="max-w-3xl w-full text-center text-white">
+                                class="hidden md:flex absolute inset-0 items-center justify-center px-6 md:px-10 lg:px-16 text-center text-white">
+                                <div class="max-w-3xl w-full">
                                     <h1 class="text-4xl md:text-6xl font-bold leading-tight">{{ $slide->title }}</h1>
                                     @if (!empty($slide->caption))
                                         <p class="mt-4 text-lg md:text-xl">{{ $slide->caption }}</p>
@@ -99,9 +98,9 @@
                                 </div>
                             </div>
 
-                            {{-- optional controls untuk background banner --}}
-                            <div class="absolute inset-x-0 bottom-4 flex items-center justify-center">
-                                <div class="flex items-center gap-4">
+                            {{-- Kontrol swiper --}}
+                            <div class="absolute inset-x-0 bottom-2 md:bottom-4 flex items-center justify-center z-10">
+                                <div class="flex items-center gap-4 text-white">
                                     <div class="swiper-button-prev !static !translate-x-0"></div>
                                     <div class="swiper-pagination !static"></div>
                                     <div class="swiper-button-next !static !translate-x-0"></div>
@@ -109,27 +108,26 @@
                             </div>
                         </div>
                     @endif
+
                 </section>
 
+                {{-- SCRIPT SWIPER --}}
                 <script>
                     document.addEventListener('DOMContentLoaded', function() {
                         document.querySelectorAll('.image-swiper').forEach(function(el) {
                             const slidesCount = el.querySelectorAll('.swiper-slide').length;
 
                             new Swiper(el, {
-                                // HANYA gambar yang slide, konten lain statis
                                 loop: slidesCount > 1,
                                 autoplay: slidesCount > 1 ? {
                                     delay: 4000,
                                     disableOnInteraction: false,
                                 } : false,
                                 speed: 700,
-                                // boleh pakai effect fade untuk banner; untuk split biasanya slide biasa
                                 effect: el.closest('[data-effect="fade"]') ? 'fade' : 'slide',
                                 fadeEffect: {
                                     crossFade: true
                                 },
-
                                 pagination: {
                                     el: el.querySelector('.swiper-pagination'),
                                     clickable: true,
@@ -138,7 +136,6 @@
                                     nextEl: el.querySelector('.swiper-button-next'),
                                     prevEl: el.querySelector('.swiper-button-prev'),
                                 },
-                                // biar Swiper reflow saat container berubah
                                 observer: true,
                                 observeParents: true,
                             });
@@ -148,6 +145,7 @@
             @endif
         @endforeach
     @endif
+
 
     {{-- SECTION: KUMPULAN BERITA PER KATEGORI --}}
     @if ($categoriesWithPosts->isNotEmpty())
@@ -885,254 +883,282 @@
 
 
     {{-- SECTION: PIMPINAN --}}
-@if ($leaders->isNotEmpty())
-<section class="relative bg-white py-16">
-  <div class="container relative mx-auto px-6">
-    {{-- Judul --}}
-    <div class="text-center mb-12">
-      <span class="inline-block text-red-800 font-extrabold tracking-widest uppercase text-sm border-b-2 border-red-500 pb-1">
-        Pimpinan Universitas
-      </span>
-      <p class="mt-2 text-slate-500 text-sm sm:text-base">Struktur kepemimpinan dan jajaran universitas.</p>
-    </div>
-
-    {{-- MOBILE: Slider manual (tanpa swiper/marquee) --}}
-    <div class="sm:hidden">
-      <div class="flex items-center justify-between mb-4">
-        <button type="button"
-                class="inline-flex items-center justify-center h-10 w-10 rounded-full ring-1 ring-slate-300 text-slate-700 hover:bg-slate-50 active:scale-95"
-                aria-label="Geser kiri"
-                onclick="document.getElementById('leadersScroller').scrollBy({ left: -280, behavior: 'smooth' })">
-          <i class="fa-solid fa-chevron-left"></i>
-        </button>
-        <button type="button"
-                class="inline-flex items-center justify-center h-10 w-10 rounded-full ring-1 ring-slate-300 text-slate-700 hover:bg-slate-50 active:scale-95"
-                aria-label="Geser kanan"
-                onclick="document.getElementById('leadersScroller').scrollBy({ left: 280, behavior: 'smooth' })">
-          <i class="fa-solid fa-chevron-right"></i>
-        </button>
-      </div>
-
-      <div id="leadersScroller"
-           class="overflow-x-auto no-scrollbar snap-x snap-mandatory -mx-2 px-2">
-        <ul class="flex items-stretch gap-4">
-          @foreach ($leaders as $leader)
-            <li class="shrink-0 snap-center">
-              {{-- kartu dengan ukuran konsisten --}}
-              <div class="w-64 h-[22rem] sm:w-72 rounded-2xl bg-white ring-1 ring-slate-200 hover:ring-red-400 hover:shadow-xl transition-all duration-300 overflow-hidden text-center p-5 flex flex-col group">
-                <div class="relative mx-auto mb-3 rounded-xl w-52 h-56 p-1 bg-slate-50 flex items-center justify-center">
-                  <img
-                    src="{{ $leader->photo ? Storage::url($leader->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($leader->name) . '&size=256' }}"
-                    alt="{{ $leader->name }}"
-                    class="max-w-full max-h-full object-contain transition-transform duration-500 group-hover:scale-[1.02] group-hover:brightness-105"
-                    loading="lazy">
+    @if ($leaders->isNotEmpty())
+        <section class="relative bg-white py-16">
+            <div class="container relative mx-auto px-6">
+                {{-- Judul --}}
+                <div class="text-center mb-12">
+                    <span
+                        class="inline-block text-red-800 font-extrabold tracking-widest uppercase text-sm border-b-2 border-red-500 pb-1">
+                        Pimpinan Universitas
+                    </span>
+                    <p class="mt-2 text-slate-500 text-sm sm:text-base">Struktur kepemimpinan dan jajaran universitas.</p>
                 </div>
 
-                {{-- blok teks fixed height agar semua kotak sama --}}
-                <div class="px-1">
-                  <h3 class="text-base font-bold text-slate-800 line-clamp-2 min-h-[2.75rem]">
-                    {{ $leader->name }}
-                  </h3>
-                  <p class="text-slate-500 text-xs line-clamp-2 min-h-[2rem]">
-                    {{ $leader->position }}
-                  </p>
-                </div>
+                {{-- MOBILE: Slider manual (tanpa swiper/marquee) --}}
+                <div class="sm:hidden">
+                    <div class="flex items-center justify-between mb-4">
+                        <button type="button"
+                            class="inline-flex items-center justify-center h-10 w-10 rounded-full ring-1 ring-slate-300 text-slate-700 hover:bg-slate-50 active:scale-95"
+                            aria-label="Geser kiri"
+                            onclick="document.getElementById('leadersScroller').scrollBy({ left: -280, behavior: 'smooth' })">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </button>
+                        <button type="button"
+                            class="inline-flex items-center justify-center h-10 w-10 rounded-full ring-1 ring-slate-300 text-slate-700 hover:bg-slate-50 active:scale-95"
+                            aria-label="Geser kanan"
+                            onclick="document.getElementById('leadersScroller').scrollBy({ left: 280, behavior: 'smooth' })">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
 
-                {{-- social di bawah --}}
-                <div class="mt-auto pt-3 flex justify-center gap-3">
-                  @if ($leader->social_facebook)
-                    <a href="{{ $leader->social_facebook }}" target="_blank" class="text-gray-400 hover:text-blue-800 transition">
-                      <i class="fa-brands fa-facebook-f text-lg"></i>
-                    </a>
-                  @endif
-                  @if ($leader->social_instagram)
-                    <a href="{{ $leader->social_instagram }}" target="_blank" class="text-gray-400 hover:text-pink-500 transition">
-                      <i class="fa-brands fa-instagram text-lg"></i>
-                    </a>
-                  @endif
-                  @if ($leader->social_linkedin)
-                    <a href="{{ $leader->social_linkedin }}" target="_blank" class="text-gray-400 hover:text-blue-700 transition">
-                      <i class="fa-brands fa-linkedin-in text-lg"></i>
-                    </a>
-                  @endif
-                  @if ($leader->social_x)
-                    <a href="{{ $leader->social_x }}" target="_blank" class="text-gray-400 hover:text-gray-800 transition">
-                      <i class="fa-brands fa-x-twitter text-lg"></i>
-                    </a>
-                  @endif
-                </div>
-              </div>
-            </li>
-          @endforeach
-        </ul>
-      </div>
-    </div>
+                    <div id="leadersScroller" class="overflow-x-auto no-scrollbar snap-x snap-mandatory -mx-2 px-2">
+                        <ul class="flex items-stretch gap-4">
+                            @foreach ($leaders as $leader)
+                                <li class="shrink-0 snap-center">
+                                    {{-- kartu dengan ukuran konsisten --}}
+                                    <div
+                                        class="w-64 h-[22rem] sm:w-72 rounded-2xl bg-white ring-1 ring-slate-200 hover:ring-red-400 hover:shadow-xl transition-all duration-300 overflow-hidden text-center p-5 flex flex-col group">
+                                        <div
+                                            class="relative mx-auto mb-3 rounded-xl w-52 h-56 p-1 bg-slate-50 flex items-center justify-center">
+                                            <img src="{{ $leader->photo ? Storage::url($leader->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($leader->name) . '&size=256' }}"
+                                                alt="{{ $leader->name }}"
+                                                class="max-w-full max-h-full object-contain transition-transform duration-500 group-hover:scale-[1.02] group-hover:brightness-105"
+                                                loading="lazy">
+                                        </div>
 
-    {{-- DESKTOP/TABLET: Grid responsif (kotak seragam, tidak tergantung teks) --}}
-    <div class="hidden sm:block">
-      <ul class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        @foreach ($leaders as $leader)
-          <li>
-            <div class="rounded-2xl bg-white ring-1 ring-slate-200 hover:ring-red-400 hover:shadow-xl transition-all duration-300 overflow-hidden text-center p-6 flex flex-col h-full group">
-              <div class="relative mx-auto mb-4 rounded-xl w-52 h-56 p-1 bg-slate-50 flex items-center justify-center">
-                <img
-                  src="{{ $leader->photo ? Storage::url($leader->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($leader->name) . '&size=256' }}"
-                  alt="{{ $leader->name }}"
-                  class="max-w-full max-h-full object-contain transition-transform duration-500 group-hover:scale-[1.02] group-hover:brightness-105"
-                  loading="lazy">
-              </div>
+                                        {{-- blok teks fixed height agar semua kotak sama --}}
+                                        <div class="px-1">
+                                            <h3 class="text-base font-bold text-slate-800 line-clamp-2 min-h-[2.75rem]">
+                                                {{ $leader->name }}
+                                            </h3>
+                                            <p class="text-slate-500 text-xs line-clamp-2 min-h-[2rem]">
+                                                {{ $leader->position }}
+                                            </p>
+                                        </div>
 
-              {{-- blok teks fixed height agar tinggi kartu konsisten --}}
-              <div class="px-2">
-                <h3 class="text-lg font-bold text-slate-800 line-clamp-2 min-h-[2.75rem]">
-                  {{ $leader->name }}
-                </h3>
-                <p class="text-slate-500 text-sm line-clamp-2 min-h-[2.25rem]">
-                  {{ $leader->position }}
-                </p>
-              </div>
-
-              <div class="mt-auto pt-4 flex justify-center gap-3">
-                @if ($leader->social_facebook)
-                  <a href="{{ $leader->social_facebook }}" target="_blank" class="text-gray-400 hover:text-blue-800 transition">
-                    <i class="fa-brands fa-facebook-f text-xl"></i>
-                  </a>
-                @endif
-                @if ($leader->social_instagram)
-                  <a href="{{ $leader->social_instagram }}" target="_blank" class="text-gray-400 hover:text-pink-500 transition">
-                    <i class="fa-brands fa-instagram text-xl"></i>
-                  </a>
-                @endif
-                @if ($leader->social_linkedin)
-                  <a href="{{ $leader->social_linkedin }}" target="_blank" class="text-gray-400 hover:text-blue-700 transition">
-                    <i class="fa-brands fa-linkedin-in text-xl"></i>
-                  </a>
-                @endif
-                @if ($leader->social_x)
-                  <a href="{{ $leader->social_x }}" target="_blank" class="text-gray-400 hover:text-gray-800 transition">
-                    <i class="fa-brands fa-x-twitter text-xl"></i>
-                  </a>
-                @endif
-              </div>
-            </div>
-          </li>
-        @endforeach
-      </ul>
-    </div>
-  </div>
-</section>
-@endif
-
-
-
-@if(isset($latestLecturers) && $latestLecturers->isNotEmpty())
-<section class="relative bg-gray-50 py-16 lg:py-20">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        
-        <div class="mb-10 text-center">
-            <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-gray-900">Dosen Pengajar</h2>
-            <p class="mt-2 text-lg text-slate-800">Tenaga pendidik profesional di bidangnya.</p>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            
-            @forelse ($latestLecturers as $lecturer)
-                <div class="bg-white shadow-lg rounded-xl overflow-hidden transition-transform duration-300 hover:-translate-y-2 group">
-                    
-                    <a href="{{ route('lecturers.show', $lecturer->id) }}" class="block">
-                        {{-- Hapus 'bg-gray-200' dan 'flex' karena kembali ke object-cover --}}
-                        <div class="overflow-hidden"> 
-                            <img 
-                                src="{{ $lecturer->photo ? Storage::url($lecturer->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($lecturer->name) . '&size=288&background=e2e8f0&color=64748b' }}" {{-- Ubah size=224 ke 288 --}}
-                                alt="Foto {{ $lecturer->name }}"
-                                {{-- KEMBALIKAN KE object-cover dan TAMBAH TINGGI ke h-72 --}}
-                                class="w-full h-72 object-cover transition-transform duration-300 group-hover:scale-105"
-                            >
-                        </div>
-                    </a>
-                    
-                    <div class="p-6 text-center">
-                        <h3 class="font-semibold text-lg text-gray-900">
-                            <a href="{{ route('lecturers.show', $lecturer->id) }}" class="hover:text-red-700 transition-colors">
-                                {{ $lecturer->name }}
-                            </a>
-                        </h3>
-                        
-                        <p class="text-sm text-red-800 font-semibold mt-1">
-                            {{ $lecturer->studyProgram->name ?? 'Program Studi' }}
-                        </p>
+                                        {{-- social di bawah --}}
+                                        <div class="mt-auto pt-3 flex justify-center gap-3">
+                                            @if ($leader->social_facebook)
+                                                <a href="{{ $leader->social_facebook }}" target="_blank"
+                                                    class="text-gray-400 hover:text-blue-800 transition">
+                                                    <i class="fa-brands fa-facebook-f text-lg"></i>
+                                                </a>
+                                            @endif
+                                            @if ($leader->social_instagram)
+                                                <a href="{{ $leader->social_instagram }}" target="_blank"
+                                                    class="text-gray-400 hover:text-pink-500 transition">
+                                                    <i class="fa-brands fa-instagram text-lg"></i>
+                                                </a>
+                                            @endif
+                                            @if ($leader->social_linkedin)
+                                                <a href="{{ $leader->social_linkedin }}" target="_blank"
+                                                    class="text-gray-400 hover:text-blue-700 transition">
+                                                    <i class="fa-brands fa-linkedin-in text-lg"></i>
+                                                </a>
+                                            @endif
+                                            @if ($leader->social_x)
+                                                <a href="{{ $leader->social_x }}" target="_blank"
+                                                    class="text-gray-400 hover:text-gray-800 transition">
+                                                    <i class="fa-brands fa-x-twitter text-lg"></i>
+                                                </a>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
                     </div>
                 </div>
-            
-            @empty
-                <div class="col-span-1 sm:col-span-2 lg:col-span-4 text-center text-gray-500 py-8">
-                    <p>Belum ada data dosen untuk ditampilkan.</p>
+
+                {{-- DESKTOP/TABLET: Grid responsif (kotak seragam, tidak tergantung teks) --}}
+                <div class="hidden sm:block">
+                    <ul class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                        @foreach ($leaders as $leader)
+                            <li>
+                                <div
+                                    class="rounded-2xl bg-white ring-1 ring-slate-200 hover:ring-red-400 hover:shadow-xl transition-all duration-300 overflow-hidden text-center p-6 flex flex-col h-full group">
+                                    <div
+                                        class="relative mx-auto mb-4 rounded-xl w-52 h-56 p-1 bg-slate-50 flex items-center justify-center">
+                                        <img src="{{ $leader->photo ? Storage::url($leader->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($leader->name) . '&size=256' }}"
+                                            alt="{{ $leader->name }}"
+                                            class="max-w-full max-h-full object-contain transition-transform duration-500 group-hover:scale-[1.02] group-hover:brightness-105"
+                                            loading="lazy">
+                                    </div>
+
+                                    {{-- blok teks fixed height agar tinggi kartu konsisten --}}
+                                    <div class="px-2">
+                                        <h3 class="text-lg font-bold text-slate-800 line-clamp-2 min-h-[2.75rem]">
+                                            {{ $leader->name }}
+                                        </h3>
+                                        <p class="text-slate-500 text-sm line-clamp-2 min-h-[2.25rem]">
+                                            {{ $leader->position }}
+                                        </p>
+                                    </div>
+
+                                    <div class="mt-auto pt-4 flex justify-center gap-3">
+                                        @if ($leader->social_facebook)
+                                            <a href="{{ $leader->social_facebook }}" target="_blank"
+                                                class="text-gray-400 hover:text-blue-800 transition">
+                                                <i class="fa-brands fa-facebook-f text-xl"></i>
+                                            </a>
+                                        @endif
+                                        @if ($leader->social_instagram)
+                                            <a href="{{ $leader->social_instagram }}" target="_blank"
+                                                class="text-gray-400 hover:text-pink-500 transition">
+                                                <i class="fa-brands fa-instagram text-xl"></i>
+                                            </a>
+                                        @endif
+                                        @if ($leader->social_linkedin)
+                                            <a href="{{ $leader->social_linkedin }}" target="_blank"
+                                                class="text-gray-400 hover:text-blue-700 transition">
+                                                <i class="fa-brands fa-linkedin-in text-xl"></i>
+                                            </a>
+                                        @endif
+                                        @if ($leader->social_x)
+                                            <a href="{{ $leader->social_x }}" target="_blank"
+                                                class="text-gray-400 hover:text-gray-800 transition">
+                                                <i class="fa-brands fa-x-twitter text-xl"></i>
+                                            </a>
+                                        @endif
+                                    </div>
+                                </div>
+                            </li>
+                        @endforeach
+                    </ul>
                 </div>
-            @endforelse
-
-        </div>
-
-        <div class="text-center mt-12">
-            <a href="{{ route('lecturers.index') }}"
-               class="inline-flex items-center gap-2 px-6 py-3 rounded-xl ring-1 ring-slate-300 hover:ring-red-300 text-red-700 hover:bg-red-50 transition font-semibold">
-                Lihat Semua Dosen
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M13 5l7 7-7 7-1.41-1.41L16.17 13H4v-2h12.17l-4.58-4.59L13 5z"/></svg>
-            </a>
-        </div>
-    </div>
-</section>
-@endif
-
-{{-- ... (bagian lain dari home page Anda) ... --}}
+            </div>
+        </section>
+    @endif
 
 
 
-{{-- 
+    @if (isset($latestLecturers) && $latestLecturers->isNotEmpty())
+        <section class="relative bg-gray-50 py-16 lg:py-20">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+
+                <div class="mb-10 text-center">
+                    <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-gray-900">Dosen Pengajar</h2>
+                    <p class="mt-2 text-lg text-slate-800">Tenaga pendidik profesional di bidangnya.</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+
+                    @forelse ($latestLecturers as $lecturer)
+                        <div
+                            class="bg-white shadow-lg rounded-xl overflow-hidden transition-transform duration-300 hover:-translate-y-2 group">
+
+                            <a href="{{ route('lecturers.show', $lecturer->id) }}" class="block">
+                                {{-- Hapus 'bg-gray-200' dan 'flex' karena kembali ke object-cover --}}
+                                <div class="overflow-hidden">
+                                    <img src="{{ $lecturer->photo ? Storage::url($lecturer->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($lecturer->name) . '&size=288&background=e2e8f0&color=64748b' }}"
+                                        {{-- Ubah size=224 ke 288 --}} alt="Foto {{ $lecturer->name }}" {{-- KEMBALIKAN KE object-cover dan TAMBAH TINGGI ke h-72 --}}
+                                        class="w-full h-72 object-cover transition-transform duration-300 group-hover:scale-105">
+                                </div>
+                            </a>
+
+                            <div class="p-6 text-center">
+                                <h3 class="font-semibold text-lg text-gray-900">
+                                    <a href="{{ route('lecturers.show', $lecturer->id) }}"
+                                        class="hover:text-red-700 transition-colors">
+                                        {{ $lecturer->name }}
+                                    </a>
+                                </h3>
+
+                                <p class="text-sm text-red-800 font-semibold mt-1">
+                                    {{ $lecturer->studyProgram->name ?? 'Program Studi' }}
+                                </p>
+                            </div>
+                        </div>
+
+                    @empty
+                        <div class="col-span-1 sm:col-span-2 lg:col-span-4 text-center text-gray-500 py-8">
+                            <p>Belum ada data dosen untuk ditampilkan.</p>
+                        </div>
+                    @endforelse
+
+                </div>
+
+                <div class="text-center mt-12">
+                    <a href="{{ route('lecturers.index') }}"
+                        class="inline-flex items-center gap-2 px-6 py-3 rounded-xl ring-1 ring-slate-300 hover:ring-red-300 text-red-700 hover:bg-red-50 transition font-semibold">
+                        Lihat Semua Dosen
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M13 5l7 7-7 7-1.41-1.41L16.17 13H4v-2h12.17l-4.58-4.59L13 5z" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+    @endif
+
+    {{-- ... (bagian lain dari home page Anda) ... --}}
+
+
+
+    {{-- 
     @push('styles') dan @push('scripts') untuk Swiper
     sengaja DIHAPUS karena sudah tidak diperlukan lagi.
 --}}
 
-{{-- ... (bagian lain dari home page Anda) ... --}}
+    {{-- ... (bagian lain dari home page Anda) ... --}}
 
 
 
 
-{{-- CSS kecil --}}
-<style>
-  /* sembunyikan scrollbar di container mobile */
-  .no-scrollbar::-webkit-scrollbar { display: none; }
-  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    {{-- CSS kecil --}}
+    <style>
+        /* sembunyikan scrollbar di container mobile */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
 
-  /* fade kiri/kanan */
-  .mask-gradient {
-    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
-    -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
-  }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
 
-  /* track harus selebar konten, lalu animasi berjalan */
-  .marquee-track {
-    width: max-content;               /* biar lebarnya ngikut isi (dua set item) */
-    animation: marquee 28s linear infinite;
-    will-change: transform;
-  }
+        /* fade kiri/kanan */
+        .mask-gradient {
+            mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+        }
 
-  /* Pause saat hover (desktop) */
-  @media (hover:hover) {
-    .marquee-track:hover { animation-play-state: paused; }
-  }
+        /* track harus selebar konten, lalu animasi berjalan */
+        .marquee-track {
+            width: max-content;
+            /* biar lebarnya ngikut isi (dua set item) */
+            animation: marquee 28s linear infinite;
+            will-change: transform;
+        }
 
-  /* Desktop only: aktifkan animasi; Mobile: matikan (biar swipe manual) */
-  @media (max-width: 639.98px) {      /* < sm */
-    .marquee-track { animation: none; }
-  }
+        /* Pause saat hover (desktop) */
+        @media (hover:hover) {
+            .marquee-track:hover {
+                animation-play-state: paused;
+            }
+        }
 
-  /* Gerak ke kiri setengah lebar (duplikat konten) */
-  @keyframes marquee {
-    0%   { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
-</style>
+        /* Desktop only: aktifkan animasi; Mobile: matikan (biar swipe manual) */
+        @media (max-width: 639.98px) {
 
+            /* < sm */
+            .marquee-track {
+                animation: none;
+            }
+        }
+
+        /* Gerak ke kiri setengah lebar (duplikat konten) */
+        @keyframes marquee {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+    </style>
 
     {{-- SECTION: KERJA SAMA --}}
     @if ($partners->isNotEmpty())
@@ -1232,64 +1258,63 @@
             </style>
         </section>
     @endif
-
     {{-- SECTION: TESTIMONI ALUMNI --}}
-   @if ($testimonials->isNotEmpty())
-<section class="py-16 lg:py-20">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12">
-            <span
-                class="inline-block text-red-800 font-extrabold tracking-widest uppercase text-sm border-b-2 border-red-500 pb-1">
-                Testimoni
-            </span>
-            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900">Apa Kata Alumni?</h2>
-            <p class="mt-2 text-lg text-slate-800">Cerita alumni yang menginspirasi generasi berikutnya.</p>
-        </div>
-
-        {{-- Grid 3 kolom responsif --}}
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 place-items-stretch">
-
-            {{-- tampilkan hanya 3 testimoni --}}
-            @foreach ($testimonials->take(3) as $testimonial)
-                <div
-                    class="bg-white p-8 rounded-2xl shadow-lg ring-1 ring-slate-200/70 flex flex-col text-center items-center transition-all hover:shadow-xl overflow-hidden">
-                    
-                    {{-- Foto Profil --}}
-                    <img class="h-20 w-20 rounded-full object-cover"
-                        src="{{ $testimonial->photo ? Storage::url($testimonial->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($testimonial->name) }}"
-                        alt="{{ $testimonial->name }}">
-
-                    {{-- Konten Testimoni --}}
-                    <blockquote class="mt-6 flex-grow">
-                        <p class="text-slate-700 italic text-base leading-relaxed break-words line-clamp-6">
-                            “{{ $testimonial->content }}”
-                        </p>
-                    </blockquote>
-
-                    {{-- Nama dan Jabatan --}}
-                    <figcaption class="mt-6 flex-shrink-0">
-                        <div class="font-bold text-slate-900">{{ $testimonial->name }}</div>
-                        <div class="text-slate-500 text-sm">
-                            {{ $testimonial->occupation ? $testimonial->occupation . ' - ' : '' }}
-                            Angkatan {{ $testimonial->graduation_year }}
-                        </div>
-                    </figcaption>
+    @if ($testimonials->isNotEmpty())
+        <section class="py-16 lg:py-20">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <span
+                        class="inline-block text-red-800 font-extrabold tracking-widest uppercase text-sm border-b-2 border-red-500 pb-1">
+                        Testimoni
+                    </span>
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900">Apa Kata Alumni?</h2>
+                    <p class="mt-2 text-lg text-slate-800">Cerita alumni yang menginspirasi generasi berikutnya.</p>
                 </div>
-            @endforeach
-        </div>
 
-        {{-- Tombol untuk lihat semua --}}
-        @if ($testimonials->count() > 3)
-            <div class="text-center mt-10">
-                <a href="{{ route('testimonials.index') }}"
-                   class="inline-block bg-red-700 text-white font-semibold px-6 py-3 rounded-lg shadow hover:bg-red-800 transition">
-                   Lihat Semua Testimoni
-                </a>
+                {{-- Grid 3 kolom responsif --}}
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 place-items-stretch">
+
+                    {{-- tampilkan hanya 3 testimoni --}}
+                    @foreach ($testimonials->take(3) as $testimonial)
+                        <div
+                            class="bg-white p-8 rounded-2xl shadow-lg ring-1 ring-slate-200/70 flex flex-col text-center items-center transition-all hover:shadow-xl overflow-hidden">
+
+                            {{-- Foto Profil --}}
+                            <img class="h-20 w-20 rounded-full object-cover"
+                                src="{{ $testimonial->photo ? Storage::url($testimonial->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($testimonial->name) }}"
+                                alt="{{ $testimonial->name }}">
+
+                            {{-- Konten Testimoni --}}
+                            <blockquote class="mt-6 flex-grow">
+                                <p class="text-slate-700 italic text-base leading-relaxed break-words line-clamp-6">
+                                    “{{ $testimonial->content }}”
+                                </p>
+                            </blockquote>
+
+                            {{-- Nama dan Jabatan --}}
+                            <figcaption class="mt-6 flex-shrink-0">
+                                <div class="font-bold text-slate-900">{{ $testimonial->name }}</div>
+                                <div class="text-slate-500 text-sm">
+                                    {{ $testimonial->occupation ? $testimonial->occupation . ' - ' : '' }}
+                                    Angkatan {{ $testimonial->graduation_year }}
+                                </div>
+                            </figcaption>
+                        </div>
+                    @endforeach
+                </div>
+
+                {{-- Tombol untuk lihat semua --}}
+                @if ($testimonials->count() > 3)
+                    <div class="text-center mt-10">
+                        <a href="{{ route('testimonials.index') }}"
+                            class="inline-block bg-red-700 text-white font-semibold px-6 py-3 rounded-lg shadow hover:bg-red-800 transition">
+                            Lihat Semua Testimoni
+                        </a>
+                    </div>
+                @endif
             </div>
-        @endif
-    </div>
-</section>
-@endif
+        </section>
+    @endif
 
 
 
