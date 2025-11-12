@@ -19,19 +19,14 @@ class Event extends Model
         'title',
         'slug',
         'description',
-        'category_id',
-        'start_date',
-        'end_date',
-        'time_start',
-        'time_end',
-        'location',
-        'thumbnail', // <-- Diperbarui dari 'poster'
-        'contact_person',
-        'registration_url',
+        'tanggal',          // <-- DIUBAH (dari start_date, end_date, dll)
+        'thumbnail',
         'active',
-        'published_at',
         'author_id',
-        'document_id', // <-- Tambahan baru
+        'document_id',
+        // Kolom 'category_id', 'start_date', 'end_date', 'time_start',
+        // 'time_end', 'location', 'contact_person', 'registration_url',
+        // 'published_at' semuanya DIHAPUS dari $fillable
     ];
 
     /**
@@ -40,8 +35,8 @@ class Event extends Model
      * @var array
      */
     protected $casts = [
-        'start_date' => 'datetime',
-        'end_date' => 'datetime',
+        'tanggal' => 'date', // <-- DIUBAH (dari start_date & end_date)
+        'active' => 'boolean', // <-- Tambahan bagus untuk switch 'active'
     ];
 
     /**
@@ -61,12 +56,8 @@ class Event extends Model
     }
     
     /**
-     * Relasi ke kategori (jika ada).
+     * Relasi ke kategori (DIHAPUS).
+     * Kita hapus relasi ini karena kolom 'category_id' sudah dihapus.
      */
-    public function category(): BelongsTo
-    {
-        // Asumsi Anda menggunakan PostCategory juga untuk agenda
-        return $this->belongsTo(PostCategory::class, 'category_id');
-    }
+    // public function category(): BelongsTo ... (Fungsi ini dihapus)
 }
-

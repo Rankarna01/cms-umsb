@@ -21,7 +21,7 @@ class AnnouncementController extends Controller
                                 ->get();
                                 
         $latestEvents = Event::where('active', true)
-                                ->latest('start_date')
+                                ->latest('tanggal')
                                 ->take(5)
                                 ->get();
 

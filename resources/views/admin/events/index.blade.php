@@ -10,12 +10,13 @@
   <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
     <div>
       <h1 class="text-3xl font-bold text-slate-800">Manajemen Agenda</h1>
-      <p class="text-sm text-slate-500">Kelola daftar acara, lokasi, dan waktu pelaksanaan.</p>
+      <p class="text-sm text-slate-500">Kelola daftar acara dan tanggal pelaksanaan.</p>
     </div>
 
     <div class="flex items-center gap-3">
       <div class="relative">
-        <input id="eventSearch" type="text" placeholder="Cari judul/lokasi/penyelenggara…"
+        
+        <input id="eventSearch" type="text" placeholder="Cari judul/penyelenggara…"
                class="peer w-56 sm:w-72 rounded-xl border border-slate-200 bg-white/80 px-10 py-2.5 text-sm text-slate-700 shadow-sm focus:border-blue-500 focus:ring-4 focus:ring-blue-100 outline-none"
                oninput="filterEventTable()" />
         <i class="fa-solid fa-magnifying-glass text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
@@ -44,7 +45,8 @@
           <tr>
             {{-- <th class="px-5 py-3 text-left text-[11px] font-semibold tracking-wider text-slate-600 uppercase">Poster</th> --}}
             <th class="px-5 py-3 text-left text-[11px] font-semibold tracking-wider text-slate-600 uppercase">Judul Acara</th>
-            <th class="px-5 py-3 text-left text-[11px] font-semibold tracking-wider text-slate-600 uppercase">Waktu & Tempat</th>
+            
+            <th class="px-5 py-3 text-left text-[11px] font-semibold tracking-wider text-slate-600 uppercase">Tanggal Pelaksanaan</th>
             <th class="px-5 py-3 text-center text-[11px] font-semibold tracking-wider text-slate-600 uppercase">Aksi</th>
           </tr>
         </thead>
@@ -52,15 +54,7 @@
           @forelse ($events as $event)
             <tr class="hover:bg-slate-50/60 transition">
               {{-- Poster --}}
-              {{-- <td class="px-5 py-4">
-                <div class="w-28 h-20 rounded-lg overflow-hidden bg-slate-100 flex items-center justify-center shadow-sm">
-                  @if($event->poster)
-                    <img src="{{ Storage::url($event->poster) }}" alt="{{ $event->title }}" class="w-full h-full object-cover">
-                  @else
-                    <i class="fa-regular fa-image text-slate-400 text-xl"></i>
-                  @endif
-                </div>
-              </td> --}}
+              {{-- <td class="px-5 py-4"> ... </td> --}}
 
               {{-- Judul + author --}}
               <td class="px-5 py-4">
@@ -69,31 +63,39 @@
               </td>
 
               {{-- Waktu & Tempat + badge status waktu --}}
-              <td class="px-5 py-4">
-                <div class="flex items-start gap-3">
-                  <span class="mt-1 inline-grid h-9 w-9 place-items-center rounded-lg bg-blue-50 text-blue-600">
-                    <i class="fa-regular fa-calendar-days"></i>
-                  </span>
-                  <div>
-                    <p class="text-slate-800">
-                      {{ $event->start_date->format('d M Y, H:i') }}
-                      @php $isPast = \Carbon\Carbon::now()->gt($event->start_date); @endphp
-                      @if($isPast)
+<td class="px-5 py-4">
+    <div class="flex items-start gap-3">
+        <span class="mt-1 inline-grid h-9 w-9 place-items-center rounded-lg bg-blue-50 text-blue-600">
+            <i class="fa-regular fa-calendar-days"></i>
+        </span>
+        <div>
+            <p class="text-slate-800">
+
+                @if($event->tanggal)
+                    @php
+                        // Cek apakah tanggal event adalah *sebelum* hari ini
+                        $isPast = $event->tanggal->lt( now()->startOfDay() );
+                    @endphp
+
+                    {{ $event->tanggal->format('d M Y') }}
+
+                    @if($isPast)
                         <span class="ml-2 inline-flex items-center gap-1 rounded-full bg-slate-100 px-2.5 py-0.5 text-[11px] font-semibold text-slate-600">
-                          <i class="fa-regular fa-clock"></i> Past
+                            <i class="fa-regular fa-clock"></i> Selesai
                         </span>
-                      @else
+                    @else
                         <span class="ml-2 inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-700">
-                          <i class="fa-solid fa-bolt"></i> Upcoming
+                            <i class="fa-solid fa-bolt"></i> Akan Datang
                         </span>
-                      @endif
-                    </p>
-                    <p class="text-xs text-slate-500 mt-1">
-                      <i class="fa-solid fa-location-dot mr-1"></i>{{ $event->location }}
-                    </p>
-                  </div>
-                </div>
-              </td>
+                    @endif
+                
+                @else
+                    <span class="italic text-slate-500">Tanggal belum diatur</span>
+                @endif
+                </p>
+        </div>
+    </div>
+</td>
 
               {{-- Aksi --}}
               <td class="px-5 py-4">
@@ -120,7 +122,7 @@
             </tr>
           @empty
             <tr>
-              <td colspan="4" class="py-16">
+              <td colspan="3" class="py-16">
                 <div class="mx-auto w-full max-w-md rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-8 text-center">
                   <div class="mx-auto mb-3 grid h-12 w-12 place-items-center rounded-xl bg-blue-100 text-blue-600">
                     <i class="fa-regular fa-calendar"></i>
@@ -143,6 +145,7 @@
 
 <script>
   // Filter client-side (tanpa ubah backend)
+  // Ini akan otomatis ikut ter-update karena 'lokasi' sudah tidak ada di innerText
   function filterEventTable(){
     const q = (document.getElementById('eventSearch').value || '').toLowerCase();
     const rows = document.querySelectorAll('#eventTable tbody tr');

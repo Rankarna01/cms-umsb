@@ -866,7 +866,7 @@
                                     <a href="{{ route('event.show', $event->slug) }}"
                                         class="group block transition transform hover:translate-x-1">
                                         <span class="text-sm text-red-700 font-semibold block">
-                                            {{ $event->start_date->translatedFormat('d F Y') }}
+                                            {{-- {{ $event->tanggal>translatedFormat('d F Y') }} --}}
                                         </span>
                                         <h3
                                             class="font-semibold text-gray-800 group-hover:text-red-700 transition line-clamp-2">

@@ -10,7 +10,7 @@
         <section class="relative w-full h-[42vh] md:h-[48vh] overflow-hidden">
             <div class="absolute inset-0">
                 <img src="{{ Storage::url($event->thumbnail) }}" alt="{{ $event->title }}"
-                    class="w-full h-full object-cover">
+                     class="w-full h-full object-cover">
             </div>
             <div class="absolute inset-0 bg-black/40"></div>
             <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-black/20 to-transparent"></div>
@@ -58,16 +58,32 @@
                 <article class="lg:col-span-8">
                     <div class="rounded-2xl bg-white ring-1 ring-slate-200/70 shadow-lg shadow-slate-200/40 p-6 md:p-10">
                         
-                        {{-- 
-                        // ==========================================================
-                        // ## BLOK "DETAIL INFO AGENDA" DIHAPUS DARI SINI ##
-                        // ==========================================================
-                        --}}
-                        
+                        <div class="mb-6 pb-6 border-b border-slate-200">
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">Detail Agenda</h3>
+                            <div class="flex items-center gap-4">
+                                <span class="inline-grid h-12 w-12 place-items-center rounded-lg bg-red-50 text-red-700">
+                                    {{-- Sesuaikan ikon jika perlu --}}
+                                    <i class="fa-solid fa-calendar-days text-xl"></i> 
+                                </span>
+                                <div>
+                                    <p class="text-sm font-semibold text-slate-500">Tanggal Pelaksanaan</p>
+                                    
+                                    {{-- Kita tambahkan @if untuk data lama yang mungkin NULL --}}
+                                    @if($event->tanggal)
+                                        <p class="text-lg font-bold text-slate-800">
+                                            {{ $event->tanggal->format('d F Y') }}
+                                        </p>
+                                    @else
+                                        <p class="text-lg font-italic text-slate-500">
+                                            (Tanggal belum diatur)
+                                        </p>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
                         {{-- Deskripsi --}}
-                        {{-- Tambahkan margin-bottom jika perlu, karena detail dihapus --}}
                         <h3 class="text-2xl font-bold text-gray-900 mb-4">Deskripsi</h3> 
-                        <div class="prose prose-slate prose-lg lg:prose-xl max-w-none prose-a:text-red-700 hover:prose-a:text-red-800 prose-img:rounded-xl mb-8"> {{-- Tambah mb-8 --}}
+                        <div class="prose prose-slate prose-lg lg:prose-xl max-w-none prose-a:text-red-700 hover:prose-a:text-red-800 prose-img:rounded-xl mb-8">
                             {!! $event->description !!}
                         </div>
 

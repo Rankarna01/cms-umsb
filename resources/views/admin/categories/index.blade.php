@@ -23,7 +23,7 @@
 
       {{-- Arahkan ke route create --}}
       <a href="{{ route('admin.categories.create') }}"
-         class="inline-flex items-center gap-2 rounded-xl bg-red-500 px-4 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-red-700 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-200">
+         class="inline-flex items-center gap-2 rounded-xl bg-red-500 px-4 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-redg-700 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-200">
         <i class="fa-solid fa-plus"></i> Tambah Kategori
       </a>
     </div>

@@ -15,7 +15,7 @@ class EventController extends Controller
 
         $latestEvents = Event::where('active', true)
             ->where('id', '!=', $event->id)
-            ->latest('start_date')->take(5)->get();
+            ->latest('tanggal')->take(5)->get();
 
         return view('frontend.page.event_show', compact(
             'event', 'latestAnnouncements', 'latestEvents'

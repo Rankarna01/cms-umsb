@@ -27,18 +27,27 @@
     <ul class="space-y-4">
         @foreach ($latestEvents as $item)
             <li class="flex items-center gap-4">
-                <div class="flex flex-col items-center justify-center rounded-lg bg-red-50 text-red-700 px-3 py-2 ring-1 ring-red-100">
-                    <span class="text-xl font-extrabold leading-none">
-                        {{ $item->start_date->format('d') }}
-                    </span>
-                    <span class="text-[10px] uppercase tracking-widest">
-                        {{ $item->start_date->format('M') }}
-                    </span>
-                </div>
+                
+                @if($item->tanggal)
+                    <div class="flex flex-col items-center justify-center rounded-lg bg-red-50 text-red-700 px-3 py-2 ring-1 ring-red-100 w-[48px] h-[48px]">
+                        <span class="text-xl font-extrabold leading-none">
+                            {{ $item->tanggal->format('d') }}
+                        </span>
+                        <span class="text-[10px] uppercase tracking-widest">
+                            {{ $item->tanggal->format('M') }}
+                        </span>
+                    </div>
+                @else
+                    {{-- Placeholder untuk data lama yang tanggalnya NULL --}}
+                    <div class="flex flex-col items-center justify-center rounded-lg bg-slate-50 text-slate-400 px-3 py-2 ring-1 ring-slate-100 w-[48px] h-[48px]">
+                        <i class="fa-regular fa-calendar-question"></i>
+                    </div>
+                @endif
                 <div class="min-w-0">
                     <a href="{{ route('event.show', $item->slug) }}" class="group">
                         <p class="font-semibold leading-snug line-clamp-2 group-hover:text-red-700">{{ $item->title }}</p>
-                        <p class="mt-0.5 text-xs text-slate-500 line-clamp-1">{{ $item->location }}</p>
+                        
+                        {{-- <p class="mt-0.5 text-xs text-slate-500 line-clamp-1">{{ $item->location }}</p> --}}
                     </a>
                 </div>
             </li>

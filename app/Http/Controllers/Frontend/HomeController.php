@@ -26,8 +26,8 @@ class HomeController extends Controller
         // --- Data Lain (Biarkan Saja) ---
         $sliders = Slide::where('active', true)->orderBy('sort_order')->get();
         $upcomingEvents = Event::where('active', true)
-            ->where('start_date', '>=', now())
-            ->orderBy('start_date', 'asc')
+            ->where('tanggal', '>=', now()) // <-- DIGANTI
+            ->orderBy('tanggal', 'asc')    // <-- DIGANTI
             ->take(3)
             ->get();
         $factoids = Factoid::orderBy('sort_order')->get();
@@ -41,7 +41,7 @@ class HomeController extends Controller
         $academicServices = AcademicService::orderBy('sort_order')->get();
         $latestLecturers = Lecturer::latest()->take(4)->get();
         $latestAnnouncements = Announcement::where('active', true)->latest('published_at')->take(4)->get();
-        $latestEvents = Event::where('active', true)->latest('start_date')->take(5)->get();
+        $latestEvents = Event::where('active', true)->latest('tanggal')->take(5)->get();
 
 
         // ---------------------------------

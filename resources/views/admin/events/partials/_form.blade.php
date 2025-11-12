@@ -16,22 +16,11 @@
             <input type="text" name="title" id="title" value="{{ old('title', $event->title ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" required>
         </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <div>
-                <label for="start_date" class="block text-gray-700 text-sm font-bold mb-2">Waktu Mulai</label>
-                <input type="datetime-local" name="start_date" id="start_date" value="{{ old('start_date', isset($event) ? $event->start_date->format('Y-m-d\TH:i') : '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" required>
-            </div>
-            <div>
-                <label for="end_date" class="block text-gray-700 text-sm font-bold mb-2">Waktu Selesai (Opsional)</label>
-                <input type="datetime-local" name="end_date" id="end_date" value="{{ old('end_date', isset($event) && $event->end_date ? $event->end_date->format('Y-m-d\TH:i') : '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700">
-            </div>
+        <div class="mb-4">
+            <label for="tanggal" class="block text-gray-700 text-sm font-bold mb-2">Tanggal Agenda</label>
+            <input type="date" name="tanggal" id="tanggal" value="{{ old('tanggal', isset($event) && $event->tanggal ? $event->tanggal->format('Y-m-d') : '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" required>
         </div>
         
-        <div class="mb-4">
-            <label for="location" class="block text-gray-700 text-sm font-bold mb-2">Lokasi</label>
-            <input type="text" name="location" id="location" value="{{ old('location', $event->location ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" required>
-        </div>
-
         {{-- ========================================================== --}}
         {{-- ## PERUBAHAN DI SINI: Textarea diubah jadi Rich Editor ## --}}
         {{-- ========================================================== --}}
@@ -48,12 +37,7 @@
             <input type="file" name="thumbnail" id="thumbnail" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700">
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-            <div>
-                <label for="contact_person" class="block text-gray-700 text-sm font-bold mb-2">Kontak Person (Opsional)</label>
-                <input type="text" name="contact_person" id="contact_person" value="{{ old('contact_person', $event->contact_person ?? '') }}" placeholder="Nama - 08123456789" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700">
-            </div>
-            <div>
+        <div class="mb-6"> <div>
                 <label class="block text-gray-700 text-sm font-bold mb-2">Status</label>
                 <label class="inline-flex items-center mt-2">
                     <input type="hidden" name="active" value="0">
